@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>User.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">backend</a> &gt; <a href="index.source.html" class="el_package">de.jonashackt.springbootvuejs.domain</a> &gt; <span class="el_source">User.java</span></div><h1>User.java</h1><pre class="source lang-java linenums">package de.jonashackt.springbootvuejs.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class User {
@@ -15,43 +15,231 @@ public class User {
 
     private String firstName;
     private String lastName;
+    private Date birthDate;
 
-<span class="fc" id="L19">    protected User() {}</span>
+    private Date registerDate;
 
-<span class="fc" id="L21">    public User(String firstName, String lastName) {</span>
-<span class="fc" id="L22">        this.firstName = firstName;</span>
-<span class="fc" id="L23">        this.lastName = lastName;</span>
-<span class="fc" id="L24">    }</span>
+    private String street;
+    private int streetNr;
+    private String city;
+    private String postcode;
+    private String telephone;
+    private String healthcareNr;
+    private String emergencyContact;
+    private boolean allowHomeAlone;
+    private boolean allowRiding;
+    private boolean allowSwimming;
+    @ManyToOne(cascade= CascadeType.ALL)
+    @JoinColumn(name=&quot;doctor_id&quot;)
+    private Doctor doctor;
 
     @Override
     public String toString() {
-<span class="fc" id="L28">        return String.format(</span>
-                &quot;User[id=%d, firstName='%s', lastName='%s']&quot;,
-<span class="fc" id="L30">                id, firstName, lastName);</span>
+<span class="fc" id="L38">        return &quot;User{&quot; +</span>
+                &quot;id=&quot; + id +
+                &quot;, firstName='&quot; + firstName + '\'' +
+                &quot;, lastName='&quot; + lastName + '\'' +
+                &quot;, birthDate=&quot; + birthDate +
+                &quot;, registerDate=&quot; + registerDate +
+                &quot;, street='&quot; + street + '\'' +
+                &quot;, streetNr=&quot; + streetNr +
+                &quot;, city='&quot; + city + '\'' +
+                &quot;, postcode='&quot; + postcode + '\'' +
+                &quot;, telephone='&quot; + telephone + '\'' +
+                &quot;, healthcareNr='&quot; + healthcareNr + '\'' +
+                &quot;, emergencyContact='&quot; + emergencyContact + '\'' +
+                &quot;, allowHomeAlone=&quot; + allowHomeAlone +
+                &quot;, allowRiding=&quot; + allowRiding +
+                &quot;, allowSwimming=&quot; + allowSwimming +
+                &quot;, doctor=&quot; + doctor +
+                &quot;, projects=&quot; + projects +
+                &quot;, limits=&quot; + limits +
+                '}';
     }
 
+<span class="fc" id="L60">    public User() {}</span>
+
+    // foreign key as JoinColumn annotation with type of class
+<span class="fc" id="L63">    @ManyToMany(cascade=CascadeType.ALL)</span>
+    @JoinTable(name=&quot;user_project&quot;,
+        joinColumns = @JoinColumn(name=&quot;id&quot;),
+        inverseJoinColumns = @JoinColumn(name=&quot;project_id&quot;)
+    )
+    private List&lt;Project&gt; projects = new ArrayList&lt;&gt;();
+
+    public User(String firstName, String lastName, Date birthDate, Date registerDate, String street,
+                int streetNr, String city, String postcode, String telephone, String healthcareNr,
+                String emergencyContact, boolean allowHomeAlone, boolean allowRiding,
+<span class="fc" id="L73">                boolean allowSwimming, Doctor doctor, List&lt;Project&gt; projects, List&lt;Limitation&gt; limits) {</span>
+<span class="fc" id="L74">        this.firstName = firstName;</span>
+<span class="fc" id="L75">        this.lastName = lastName;</span>
+<span class="fc" id="L76">        this.birthDate = birthDate;</span>
+<span class="fc" id="L77">        this.registerDate = registerDate;</span>
+<span class="fc" id="L78">        this.street = street;</span>
+<span class="fc" id="L79">        this.streetNr = streetNr;</span>
+<span class="fc" id="L80">        this.city = city;</span>
+<span class="fc" id="L81">        this.postcode = postcode;</span>
+<span class="fc" id="L82">        this.telephone = telephone;</span>
+<span class="fc" id="L83">        this.healthcareNr = healthcareNr;</span>
+<span class="fc" id="L84">        this.emergencyContact = emergencyContact;</span>
+<span class="fc" id="L85">        this.allowHomeAlone = allowHomeAlone;</span>
+<span class="fc" id="L86">        this.allowRiding = allowRiding;</span>
+<span class="fc" id="L87">        this.allowSwimming = allowSwimming;</span>
+<span class="fc" id="L88">        this.doctor = doctor;</span>
+<span class="fc" id="L89">        this.projects = projects;</span>
+<span class="fc" id="L90">        this.limits = limits;</span>
+<span class="fc" id="L91">    }</span>
+
+<span class="fc" id="L93">    @ManyToMany</span>
+    @JoinTable(name=&quot;user_limitation&quot;,
+            joinColumns = @JoinColumn(name=&quot;id&quot;),
+            inverseJoinColumns = @JoinColumn(name=&quot;limitation_id&quot;)
+    )
+    private List&lt;Limitation&gt; limits = new ArrayList&lt;&gt;();
+
+
+    public List&lt;Limitation&gt; getLimits() {
+<span class="fc" id="L102">        return limits;</span>
+    }
+
+    public void setLimits(List&lt;Limitation&gt; limits) {
+<span class="fc" id="L106">        this.limits = limits;</span>
+<span class="fc" id="L107">    }</span>
+
+    public Date getRegisterDate() {
+<span class="fc" id="L110">        return registerDate;</span>
+    }
+
+    public void setRegisterDate(Date registerDate) {
+<span class="fc" id="L114">        this.registerDate = registerDate;</span>
+<span class="fc" id="L115">    }</span>
+
+    public Doctor getDoctor() {
+<span class="fc" id="L118">        return doctor;</span>
+    }
+
+    public void setDoctor(Doctor doctor) {
+<span class="fc" id="L122">        this.doctor = doctor;</span>
+<span class="fc" id="L123">    }</span>
+
+    public List&lt;Project&gt; getProjects() {
+<span class="fc" id="L126">        return projects;</span>
+    }
+
+    public void setProjects(List&lt;Project&gt; projects) {
+<span class="fc" id="L130">        this.projects = projects;</span>
+<span class="fc" id="L131">    }</span>
+
     public String getFirstName() {
-<span class="fc" id="L34">        return firstName;</span>
+<span class="fc" id="L134">        return firstName;</span>
     }
 
     public void setFirstName(String firstName) {
-<span class="fc" id="L38">        this.firstName = firstName;</span>
-<span class="fc" id="L39">    }</span>
+<span class="fc" id="L138">        this.firstName = firstName;</span>
+<span class="fc" id="L139">    }</span>
 
     public String getLastName() {
-<span class="fc" id="L42">        return lastName;</span>
+<span class="fc" id="L142">        return lastName;</span>
     }
 
     public void setLastName(String lastName) {
-<span class="fc" id="L46">        this.lastName = lastName;</span>
-<span class="fc" id="L47">    }</span>
+<span class="fc" id="L146">        this.lastName = lastName;</span>
+<span class="fc" id="L147">    }</span>
 
     public long getId() {
-<span class="fc" id="L50">        return id;</span>
+<span class="fc" id="L150">        return id;</span>
     }
 
     public void setId(long id) {
-<span class="fc" id="L54">        this.id = id;</span>
-<span class="fc" id="L55">    }</span>
+<span class="fc" id="L154">        this.id = id;</span>
+<span class="fc" id="L155">    }</span>
+
+    public Date getBirthDate() {
+<span class="fc" id="L158">        return birthDate;</span>
+    }
+
+    public void setBirthDate(Date birthDate) {
+<span class="fc" id="L162">        this.birthDate = birthDate;</span>
+<span class="fc" id="L163">    }</span>
+
+    public String getStreet() {
+<span class="fc" id="L166">        return street;</span>
+    }
+
+    public void setStreet(String street) {
+<span class="fc" id="L170">        this.street = street;</span>
+<span class="fc" id="L171">    }</span>
+
+    public int getStreetNr() {
+<span class="fc" id="L174">        return streetNr;</span>
+    }
+
+    public void setStreetNr(int streetNr) {
+<span class="fc" id="L178">        this.streetNr = streetNr;</span>
+<span class="fc" id="L179">    }</span>
+
+    public String getCity() {
+<span class="fc" id="L182">        return city;</span>
+    }
+
+    public void setCity(String city) {
+<span class="fc" id="L186">        this.city = city;</span>
+<span class="fc" id="L187">    }</span>
+
+    public String getPostcode() {
+<span class="fc" id="L190">        return postcode;</span>
+    }
+
+    public void setPostcode(String postcode) {
+<span class="fc" id="L194">        this.postcode = postcode;</span>
+<span class="fc" id="L195">    }</span>
+
+    public String getTelephone() {
+<span class="fc" id="L198">        return telephone;</span>
+    }
+
+    public void setTelephone(String telephone) {
+<span class="fc" id="L202">        this.telephone = telephone;</span>
+<span class="fc" id="L203">    }</span>
+
+    public String getHealthcareNr() {
+<span class="fc" id="L206">        return healthcareNr;</span>
+    }
+
+    public void setHealthcareNr(String healthcareNr) {
+<span class="fc" id="L210">        this.healthcareNr = healthcareNr;</span>
+<span class="fc" id="L211">    }</span>
+
+    public String getEmergencyContact() {
+<span class="fc" id="L214">        return emergencyContact;</span>
+    }
+
+    public void setEmergencyContact(String emergencyInfo) {
+<span class="fc" id="L218">        this.emergencyContact = emergencyInfo;</span>
+<span class="fc" id="L219">    }</span>
+
+    public boolean isAllowHomeAlone() {
+<span class="fc" id="L222">        return allowHomeAlone;</span>
+    }
+
+    public void setAllowHomeAlone(boolean allowHomeAlone) {
+<span class="fc" id="L226">        this.allowHomeAlone = allowHomeAlone;</span>
+<span class="fc" id="L227">    }</span>
+
+    public boolean isAllowRiding() {
+<span class="fc" id="L230">        return allowRiding;</span>
+    }
+
+    public void setAllowRiding(boolean alowRiding) {
+<span class="fc" id="L234">        this.allowRiding = alowRiding;</span>
+<span class="fc" id="L235">    }</span>
+
+    public boolean isAllowSwimming() {
+<span class="fc" id="L238">        return allowSwimming;</span>
+    }
+
+    public void setAllowSwimming(boolean allowSwimming) {
+<span class="fc" id="L242">        this.allowSwimming = allowSwimming;</span>
+<span class="fc" id="L243">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

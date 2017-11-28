@@ -1,5 +1,8 @@
 package de.jonashackt.springbootvuejs.repository;
 
+import de.jonashackt.springbootvuejs.domain.Doctor;
+import de.jonashackt.springbootvuejs.domain.Limitation;
+import de.jonashackt.springbootvuejs.domain.Project;
 import de.jonashackt.springbootvuejs.domain.User;
 import org.junit.Before;
 import org.junit.Test;
@@ -7,14 +10,20 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.Matchers.contains;
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
+@ContextConfiguration(loader = AnnotationConfigContextLoader.class)
 @DataJpaTest
 public class UserRepositoryTest {
 
@@ -24,31 +33,38 @@ public class UserRepositoryTest {
     @Autowired
     private UserRepository users;
 
-    private User norbertSiegmund = new User("Norbert", "Siegmund");
-    private User jonasHecht = new User("Jonas", "Hecht");
+    Date registerDate = new Date();
+    Date birthDate = new Date();
+    Doctor doctor = new Doctor("Eich", "Route", 1, "Alabastia", "39829",
+            "555-6891");
+    Project project1 = new Project("Ball werfen", registerDate, 3, 1, "www.google.com");
+    List<Project> projects = new ArrayList<>();
+    List<Limitation> limits = new ArrayList<>();
+    User user = new User("Gary", "Eich", birthDate, registerDate, "Route", 1,
+            "Neuborkia",
+            "96826", "555-5262", "437647298", "Peter August 11194819",
+            true, true, true, doctor,
+            projects, limits);
 
     @Before
     public void fillSomeDataIntoOurDb() {
         // Add new Users to Database
-        entityManager.persist(norbertSiegmund);
-        entityManager.persist(jonasHecht);
+        entityManager.persist(user);
     }
-
     @Test
     public void testFindByLastName() throws Exception {
         // Search for specific User in Database according to lastname
-        List<User> usersWithLastNameSiegmund = users.findByLastName("Siegmund");
+        List<User> usersWithLastNameEich = users.findByLastName("Eich");
 
-        assertThat(usersWithLastNameSiegmund, contains(norbertSiegmund));
+        assertThat(usersWithLastNameEich, contains(user));
     }
 
 
     @Test
     public void testFindByFirstName() throws Exception {
         // Search for specific User in Database according to firstname
-        List<User> usersWithFirstNameJonas = users.findByFirstName("Jonas");
+        List<User> usersWithFirstNameJonas = users.findByFirstName("Gary");
 
-        assertThat(usersWithFirstNameJonas, contains(jonasHecht));
+        assertThat(usersWithFirstNameJonas, contains(user));
     }
-
 }
