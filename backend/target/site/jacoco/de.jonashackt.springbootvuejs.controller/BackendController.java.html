@@ -8,16 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.Null;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @RestController()
 @RequestMapping(&quot;/api&quot;)
-<span class="fc" id="L18">public class BackendController {</span>
+<span class="fc" id="L17">public class BackendController {</span>
 
-<span class="fc" id="L20">    private static final Logger LOG = LoggerFactory.getLogger(BackendController.class);</span>
+<span class="fc" id="L19">    private static final Logger LOG = LoggerFactory.getLogger(BackendController.class);</span>
 
     public static final String HELLO_TEXT = &quot;Hello from Spring Boot Backend!&quot;;
 
@@ -26,55 +25,45 @@ import java.util.List;
 
     @RequestMapping(path = &quot;/hello&quot;)
     public @ResponseBody String sayHello() {
-<span class="fc" id="L29">        LOG.info(&quot;GET called on /hello resource&quot;);</span>
-<span class="fc" id="L30">        return HELLO_TEXT;</span>
+<span class="fc" id="L28">        LOG.info(&quot;GET called on /hello resource&quot;);</span>
+<span class="fc" id="L29">        return HELLO_TEXT;</span>
     }
 
-    @RequestMapping(path = &quot;/test&quot;)
-    public  @ResponseBody String test() {
-<span class="nc" id="L35">        LOG.info(&quot;GET called on /hello resource&quot;);</span>
-<span class="nc" id="L36">        Date registerDate = new Date();</span>
-<span class="nc" id="L37">        Date birthDate = new Date();</span>
-<span class="nc" id="L38">        Doctor doctor = new Doctor(&quot;Eich&quot;, &quot;Route&quot;, 1, &quot;Alabastia&quot;, &quot;39829&quot;,</span>
-                &quot;555-6891&quot;);
-<span class="nc" id="L40">        Project project1 = new Project(&quot;Ball werfen&quot;, registerDate, 3, 1, &quot;www.google.com&quot;);</span>
-<span class="nc" id="L41">        List&lt;Project&gt; projects = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L42">        projects.add(project1);</span>
-<span class="nc" id="L43">        List&lt;Limitation&gt; limits = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L44">        User user = new User(&quot;Gary&quot;, &quot;Eich&quot;, birthDate, registerDate, &quot;Route&quot;, 1,</span>
-                &quot;Neuborkia&quot;,
-                &quot;96826&quot;, &quot;555-5262&quot;, &quot;437647298&quot;, &quot;Peter August 11194819&quot;,
-                true, true, true, doctor,
-                projects, limits);
-<span class="nc" id="L49">        return user.toString();</span>
+    @RequestMapping(path = &quot;/all&quot;)
+    @ResponseStatus(HttpStatus.CREATED)
+    public @ResponseBody
+    List&lt;User&gt; showAllUsers() {
+<span class="nc" id="L36">        LOG.info(&quot;GET called on /all resource&quot;);</span>
+<span class="nc" id="L37">        return userRepository.findAllUsers();</span>
     }
 
     @RequestMapping(path = &quot;/add&quot;)
     @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody long addNewUser (/*@RequestParam String firstName, @RequestParam String lastName*/) {
-<span class="fc" id="L55">        Date registerDate = new Date();</span>
-<span class="fc" id="L56">        Date birthDate = new Date();</span>
-<span class="fc" id="L57">        Doctor doctor = new Doctor(&quot;Eich&quot;, &quot;Route&quot;, 1, &quot;Alabastia&quot;, &quot;39829&quot;,</span>
+    public @ResponseBody
+    Long addNewUser (/*@RequestParam String firstName, @RequestParam String lastName*/) {
+<span class="fc" id="L44">        Date registerDate = new Date();</span>
+<span class="fc" id="L45">        Date birthDate = new Date();</span>
+<span class="fc" id="L46">        Doctor doctor = new Doctor(&quot;Eich&quot;, &quot;Route&quot;, 1, &quot;Alabastia&quot;, &quot;39829&quot;,</span>
                 &quot;555-6891&quot;);
-<span class="fc" id="L59">        Project project1 = new Project(&quot;Ball werfen&quot;, registerDate, 3, 1, &quot;www.google.com&quot;);</span>
-<span class="fc" id="L60">        List&lt;Project&gt; projects = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L61">        projects.add(project1);</span>
-<span class="fc" id="L62">        List&lt;Limitation&gt; limits = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L63">        User user = new User(&quot;Gary&quot;, &quot;Eich&quot;, birthDate, registerDate, &quot;Route&quot;, 1,</span>
+<span class="fc" id="L48">        Project project1 = new Project(&quot;Ball werfen&quot;, registerDate, 3, 1, &quot;www.google.com&quot;);</span>
+<span class="fc" id="L49">        List&lt;Project&gt; projects = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L50">        projects.add(project1);</span>
+<span class="fc" id="L51">        List&lt;Limitation&gt; limits = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L52">        User user = new User(&quot;Gary&quot;, &quot;Eich&quot;, birthDate, registerDate, &quot;Route&quot;, 1,</span>
                 &quot;Neuborkia&quot;,
                 &quot;96826&quot;, &quot;555-5262&quot;, &quot;437647298&quot;, &quot;Peter August 11194819&quot;,
                 true, true, true, doctor,
                 projects, limits);
-<span class="fc" id="L68">        userRepository.save(user);</span>
+<span class="fc" id="L57">        userRepository.save(user);</span>
 
-<span class="fc" id="L70">        LOG.info(user.toString() + &quot; successfully saved into DB&quot;);</span>
+<span class="fc" id="L59">        LOG.info(user.toString() + &quot; successfully saved into DB&quot;);</span>
 
-<span class="fc" id="L72">        return user.getId();</span>
+<span class="fc" id="L61">        return user.getId();</span>
     }
 
     @GetMapping(path=&quot;/user/{id}&quot;)
     public @ResponseBody User getUserById(@PathVariable(&quot;id&quot;) long id) {
-<span class="fc" id="L77">        return userRepository.findOne(id);</span>
+<span class="fc" id="L66">        return userRepository.findOne(id);</span>
     }
 
 }

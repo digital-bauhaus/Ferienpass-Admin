@@ -10,6 +10,7 @@ public class User {
 
     // PrimaryKey
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 

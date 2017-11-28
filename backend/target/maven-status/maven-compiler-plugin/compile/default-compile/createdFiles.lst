@@ -2,6 +2,7 @@ de/jonashackt/springbootvuejs/domain/User.class
 de/jonashackt/springbootvuejs/domain/Illness.class
 de/jonashackt/springbootvuejs/SpringBootVuejsApplication.class
 de/jonashackt/springbootvuejs/SpringBootVuejsApplication$1.class
+de/jonashackt/springbootvuejs/repository/DisabilityRepository.class
 de/jonashackt/springbootvuejs/repository/LimitationRepository.class
 de/jonashackt/springbootvuejs/repository/UserRepository.class
 de/jonashackt/springbootvuejs/domain/Disability.class

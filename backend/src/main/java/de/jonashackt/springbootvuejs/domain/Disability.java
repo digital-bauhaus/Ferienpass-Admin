@@ -1,12 +1,6 @@
 package de.jonashackt.springbootvuejs.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -17,7 +11,7 @@ public class Disability {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long disability_id;
     private String name;
-    @ManyToOne
+    @ManyToOne(cascade= CascadeType.ALL)
     @JoinColumn(name="d_code")
     private DisabilityCode code;
     private boolean approved;

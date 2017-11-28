@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.Null;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,28 +29,18 @@ public class BackendController {
         return HELLO_TEXT;
     }
 
-    @RequestMapping(path = "/test")
-    public  @ResponseBody String test() {
-        LOG.info("GET called on /hello resource");
-        Date registerDate = new Date();
-        Date birthDate = new Date();
-        Doctor doctor = new Doctor("Eich", "Route", 1, "Alabastia", "39829",
-                "555-6891");
-        Project project1 = new Project("Ball werfen", registerDate, 3, 1, "www.google.com");
-        List<Project> projects = new ArrayList<>();
-        projects.add(project1);
-        List<Limitation> limits = new ArrayList<>();
-        User user = new User("Gary", "Eich", birthDate, registerDate, "Route", 1,
-                "Neuborkia",
-                "96826", "555-5262", "437647298", "Peter August 11194819",
-                true, true, true, doctor,
-                projects, limits);
-        return user.toString();
+    @RequestMapping(path = "/all")
+    @ResponseStatus(HttpStatus.CREATED)
+    public @ResponseBody
+    List<User> showAllUsers() {
+        LOG.info("GET called on /all resource");
+        return userRepository.findAllUsers();
     }
 
     @RequestMapping(path = "/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody long addNewUser (/*@RequestParam String firstName, @RequestParam String lastName*/) {
+    public @ResponseBody
+    Long addNewUser (/*@RequestParam String firstName, @RequestParam String lastName*/) {
         Date registerDate = new Date();
         Date birthDate = new Date();
         Doctor doctor = new Doctor("Eich", "Route", 1, "Alabastia", "39829",

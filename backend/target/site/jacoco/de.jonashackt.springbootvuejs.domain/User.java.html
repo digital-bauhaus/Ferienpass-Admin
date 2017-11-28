@@ -10,6 +10,7 @@ public class User {
 
     // PrimaryKey
     @Id
+    @Column(name = &quot;id&quot;)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
@@ -35,7 +36,7 @@ public class User {
 
     @Override
     public String toString() {
-<span class="fc" id="L38">        return &quot;User{&quot; +</span>
+<span class="fc" id="L39">        return &quot;User{&quot; +</span>
                 &quot;id=&quot; + id +
                 &quot;, firstName='&quot; + firstName + '\'' +
                 &quot;, lastName='&quot; + lastName + '\'' +
@@ -57,10 +58,10 @@ public class User {
                 '}';
     }
 
-<span class="fc" id="L60">    public User() {}</span>
+<span class="fc" id="L61">    public User() {}</span>
 
     // foreign key as JoinColumn annotation with type of class
-<span class="fc" id="L63">    @ManyToMany(cascade=CascadeType.ALL)</span>
+<span class="fc" id="L64">    @ManyToMany(cascade=CascadeType.ALL)</span>
     @JoinTable(name=&quot;user_project&quot;,
         joinColumns = @JoinColumn(name=&quot;id&quot;),
         inverseJoinColumns = @JoinColumn(name=&quot;project_id&quot;)
@@ -70,27 +71,27 @@ public class User {
     public User(String firstName, String lastName, Date birthDate, Date registerDate, String street,
                 int streetNr, String city, String postcode, String telephone, String healthcareNr,
                 String emergencyContact, boolean allowHomeAlone, boolean allowRiding,
-<span class="fc" id="L73">                boolean allowSwimming, Doctor doctor, List&lt;Project&gt; projects, List&lt;Limitation&gt; limits) {</span>
-<span class="fc" id="L74">        this.firstName = firstName;</span>
-<span class="fc" id="L75">        this.lastName = lastName;</span>
-<span class="fc" id="L76">        this.birthDate = birthDate;</span>
-<span class="fc" id="L77">        this.registerDate = registerDate;</span>
-<span class="fc" id="L78">        this.street = street;</span>
-<span class="fc" id="L79">        this.streetNr = streetNr;</span>
-<span class="fc" id="L80">        this.city = city;</span>
-<span class="fc" id="L81">        this.postcode = postcode;</span>
-<span class="fc" id="L82">        this.telephone = telephone;</span>
-<span class="fc" id="L83">        this.healthcareNr = healthcareNr;</span>
-<span class="fc" id="L84">        this.emergencyContact = emergencyContact;</span>
-<span class="fc" id="L85">        this.allowHomeAlone = allowHomeAlone;</span>
-<span class="fc" id="L86">        this.allowRiding = allowRiding;</span>
-<span class="fc" id="L87">        this.allowSwimming = allowSwimming;</span>
-<span class="fc" id="L88">        this.doctor = doctor;</span>
-<span class="fc" id="L89">        this.projects = projects;</span>
-<span class="fc" id="L90">        this.limits = limits;</span>
-<span class="fc" id="L91">    }</span>
+<span class="fc" id="L74">                boolean allowSwimming, Doctor doctor, List&lt;Project&gt; projects, List&lt;Limitation&gt; limits) {</span>
+<span class="fc" id="L75">        this.firstName = firstName;</span>
+<span class="fc" id="L76">        this.lastName = lastName;</span>
+<span class="fc" id="L77">        this.birthDate = birthDate;</span>
+<span class="fc" id="L78">        this.registerDate = registerDate;</span>
+<span class="fc" id="L79">        this.street = street;</span>
+<span class="fc" id="L80">        this.streetNr = streetNr;</span>
+<span class="fc" id="L81">        this.city = city;</span>
+<span class="fc" id="L82">        this.postcode = postcode;</span>
+<span class="fc" id="L83">        this.telephone = telephone;</span>
+<span class="fc" id="L84">        this.healthcareNr = healthcareNr;</span>
+<span class="fc" id="L85">        this.emergencyContact = emergencyContact;</span>
+<span class="fc" id="L86">        this.allowHomeAlone = allowHomeAlone;</span>
+<span class="fc" id="L87">        this.allowRiding = allowRiding;</span>
+<span class="fc" id="L88">        this.allowSwimming = allowSwimming;</span>
+<span class="fc" id="L89">        this.doctor = doctor;</span>
+<span class="fc" id="L90">        this.projects = projects;</span>
+<span class="fc" id="L91">        this.limits = limits;</span>
+<span class="fc" id="L92">    }</span>
 
-<span class="fc" id="L93">    @ManyToMany</span>
+<span class="fc" id="L94">    @ManyToMany</span>
     @JoinTable(name=&quot;user_limitation&quot;,
             joinColumns = @JoinColumn(name=&quot;id&quot;),
             inverseJoinColumns = @JoinColumn(name=&quot;limitation_id&quot;)
@@ -99,147 +100,147 @@ public class User {
 
 
     public List&lt;Limitation&gt; getLimits() {
-<span class="fc" id="L102">        return limits;</span>
+<span class="fc" id="L103">        return limits;</span>
     }
 
     public void setLimits(List&lt;Limitation&gt; limits) {
-<span class="fc" id="L106">        this.limits = limits;</span>
-<span class="fc" id="L107">    }</span>
+<span class="fc" id="L107">        this.limits = limits;</span>
+<span class="fc" id="L108">    }</span>
 
     public Date getRegisterDate() {
-<span class="fc" id="L110">        return registerDate;</span>
+<span class="fc" id="L111">        return registerDate;</span>
     }
 
     public void setRegisterDate(Date registerDate) {
-<span class="fc" id="L114">        this.registerDate = registerDate;</span>
-<span class="fc" id="L115">    }</span>
+<span class="fc" id="L115">        this.registerDate = registerDate;</span>
+<span class="fc" id="L116">    }</span>
 
     public Doctor getDoctor() {
-<span class="fc" id="L118">        return doctor;</span>
+<span class="fc" id="L119">        return doctor;</span>
     }
 
     public void setDoctor(Doctor doctor) {
-<span class="fc" id="L122">        this.doctor = doctor;</span>
-<span class="fc" id="L123">    }</span>
+<span class="fc" id="L123">        this.doctor = doctor;</span>
+<span class="fc" id="L124">    }</span>
 
     public List&lt;Project&gt; getProjects() {
-<span class="fc" id="L126">        return projects;</span>
+<span class="fc" id="L127">        return projects;</span>
     }
 
     public void setProjects(List&lt;Project&gt; projects) {
-<span class="fc" id="L130">        this.projects = projects;</span>
-<span class="fc" id="L131">    }</span>
+<span class="fc" id="L131">        this.projects = projects;</span>
+<span class="fc" id="L132">    }</span>
 
     public String getFirstName() {
-<span class="fc" id="L134">        return firstName;</span>
+<span class="fc" id="L135">        return firstName;</span>
     }
 
     public void setFirstName(String firstName) {
-<span class="fc" id="L138">        this.firstName = firstName;</span>
-<span class="fc" id="L139">    }</span>
+<span class="fc" id="L139">        this.firstName = firstName;</span>
+<span class="fc" id="L140">    }</span>
 
     public String getLastName() {
-<span class="fc" id="L142">        return lastName;</span>
+<span class="fc" id="L143">        return lastName;</span>
     }
 
     public void setLastName(String lastName) {
-<span class="fc" id="L146">        this.lastName = lastName;</span>
-<span class="fc" id="L147">    }</span>
+<span class="fc" id="L147">        this.lastName = lastName;</span>
+<span class="fc" id="L148">    }</span>
 
     public long getId() {
-<span class="fc" id="L150">        return id;</span>
+<span class="fc" id="L151">        return id;</span>
     }
 
     public void setId(long id) {
-<span class="fc" id="L154">        this.id = id;</span>
-<span class="fc" id="L155">    }</span>
+<span class="fc" id="L155">        this.id = id;</span>
+<span class="fc" id="L156">    }</span>
 
     public Date getBirthDate() {
-<span class="fc" id="L158">        return birthDate;</span>
+<span class="fc" id="L159">        return birthDate;</span>
     }
 
     public void setBirthDate(Date birthDate) {
-<span class="fc" id="L162">        this.birthDate = birthDate;</span>
-<span class="fc" id="L163">    }</span>
+<span class="fc" id="L163">        this.birthDate = birthDate;</span>
+<span class="fc" id="L164">    }</span>
 
     public String getStreet() {
-<span class="fc" id="L166">        return street;</span>
+<span class="fc" id="L167">        return street;</span>
     }
 
     public void setStreet(String street) {
-<span class="fc" id="L170">        this.street = street;</span>
-<span class="fc" id="L171">    }</span>
+<span class="fc" id="L171">        this.street = street;</span>
+<span class="fc" id="L172">    }</span>
 
     public int getStreetNr() {
-<span class="fc" id="L174">        return streetNr;</span>
+<span class="fc" id="L175">        return streetNr;</span>
     }
 
     public void setStreetNr(int streetNr) {
-<span class="fc" id="L178">        this.streetNr = streetNr;</span>
-<span class="fc" id="L179">    }</span>
+<span class="fc" id="L179">        this.streetNr = streetNr;</span>
+<span class="fc" id="L180">    }</span>
 
     public String getCity() {
-<span class="fc" id="L182">        return city;</span>
+<span class="fc" id="L183">        return city;</span>
     }
 
     public void setCity(String city) {
-<span class="fc" id="L186">        this.city = city;</span>
-<span class="fc" id="L187">    }</span>
+<span class="fc" id="L187">        this.city = city;</span>
+<span class="fc" id="L188">    }</span>
 
     public String getPostcode() {
-<span class="fc" id="L190">        return postcode;</span>
+<span class="fc" id="L191">        return postcode;</span>
     }
 
     public void setPostcode(String postcode) {
-<span class="fc" id="L194">        this.postcode = postcode;</span>
-<span class="fc" id="L195">    }</span>
+<span class="fc" id="L195">        this.postcode = postcode;</span>
+<span class="fc" id="L196">    }</span>
 
     public String getTelephone() {
-<span class="fc" id="L198">        return telephone;</span>
+<span class="fc" id="L199">        return telephone;</span>
     }
 
     public void setTelephone(String telephone) {
-<span class="fc" id="L202">        this.telephone = telephone;</span>
-<span class="fc" id="L203">    }</span>
+<span class="fc" id="L203">        this.telephone = telephone;</span>
+<span class="fc" id="L204">    }</span>
 
     public String getHealthcareNr() {
-<span class="fc" id="L206">        return healthcareNr;</span>
+<span class="fc" id="L207">        return healthcareNr;</span>
     }
 
     public void setHealthcareNr(String healthcareNr) {
-<span class="fc" id="L210">        this.healthcareNr = healthcareNr;</span>
-<span class="fc" id="L211">    }</span>
+<span class="fc" id="L211">        this.healthcareNr = healthcareNr;</span>
+<span class="fc" id="L212">    }</span>
 
     public String getEmergencyContact() {
-<span class="fc" id="L214">        return emergencyContact;</span>
+<span class="fc" id="L215">        return emergencyContact;</span>
     }
 
     public void setEmergencyContact(String emergencyInfo) {
-<span class="fc" id="L218">        this.emergencyContact = emergencyInfo;</span>
-<span class="fc" id="L219">    }</span>
+<span class="fc" id="L219">        this.emergencyContact = emergencyInfo;</span>
+<span class="fc" id="L220">    }</span>
 
     public boolean isAllowHomeAlone() {
-<span class="fc" id="L222">        return allowHomeAlone;</span>
+<span class="fc" id="L223">        return allowHomeAlone;</span>
     }
 
     public void setAllowHomeAlone(boolean allowHomeAlone) {
-<span class="fc" id="L226">        this.allowHomeAlone = allowHomeAlone;</span>
-<span class="fc" id="L227">    }</span>
+<span class="fc" id="L227">        this.allowHomeAlone = allowHomeAlone;</span>
+<span class="fc" id="L228">    }</span>
 
     public boolean isAllowRiding() {
-<span class="fc" id="L230">        return allowRiding;</span>
+<span class="fc" id="L231">        return allowRiding;</span>
     }
 
     public void setAllowRiding(boolean alowRiding) {
-<span class="fc" id="L234">        this.allowRiding = alowRiding;</span>
-<span class="fc" id="L235">    }</span>
+<span class="fc" id="L235">        this.allowRiding = alowRiding;</span>
+<span class="fc" id="L236">    }</span>
 
     public boolean isAllowSwimming() {
-<span class="fc" id="L238">        return allowSwimming;</span>
+<span class="fc" id="L239">        return allowSwimming;</span>
     }
 
     public void setAllowSwimming(boolean allowSwimming) {
-<span class="fc" id="L242">        this.allowSwimming = allowSwimming;</span>
-<span class="fc" id="L243">    }</span>
+<span class="fc" id="L243">        this.allowSwimming = allowSwimming;</span>
+<span class="fc" id="L244">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
