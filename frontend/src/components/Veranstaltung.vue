@@ -7,7 +7,9 @@
       <input type="text" name="org" placeholder="Veranstalter"><br/>
       <input type="submit" value="Hinzufügen">
     </form>
-    
+    <p>
+      <a href="/#/Test/" >Zurück zur Übersicht</a>
+    </p>
 
 
   </div>

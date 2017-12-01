@@ -27,16 +27,16 @@
 		<br/>
 		<h1>Hello App!</h1>
 		<p>
-			<a href="/#/Veranstaltung/" target="_blank">Veranstaltung erstellen</a>
+			<a href="/#/Veranstaltung/" >Veranstaltung erstellen</a>
 		</p>
     <p>
-      <a href="/#/Verwaltung/" target="_blank">Veranstaltungen verwalten</a>
+      <a href="/#/Verwaltung/" >Veranstaltungen verwalten</a>
     </p>
     <p>
-      <a href="/#/Teilnehmer/" target="_blank">Teilnehmer</a>
+      <a href="/#/Teilnehmer/" >Teilnehmer</a>
     </p>
     <p>
-      <a href="/#/Reservierung/" target="_blank">Reservierungen</a>
+      <a href="/#/Reservierung/" >Reservierungen</a>
     </p>
 	</div>
 </template>

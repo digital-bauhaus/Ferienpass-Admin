@@ -2,6 +2,10 @@
 	<div>
 		<h2>{{title}}</h2>
 
+    <p>
+      <a href="/#/Test/" >Zurück zur Übersicht</a>
+    </p>
+
 	</div>
 </template>
 
@@ -39,4 +43,4 @@ a {
   color: #42b983;
 }
 </style>
- 
+
