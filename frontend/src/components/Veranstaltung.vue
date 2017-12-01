@@ -2,15 +2,12 @@
   <div>
     <form>
       <b>Event hinzufügen: </b><br/>
-      <input type="text" name="eventname" value="Event Name"> <br/>
-      <input type="text" name="idnummer" value="ID"><br/>
+      <input type="text" name="label" placeholder="Event-Name"> <br/>
+      <input type="text" name="date" placeholder="Zeitraum"><br/>
+      <input type="text" name="org" placeholder="Veranstalter"><br/>
       <input type="submit" value="Hinzufügen">
     </form>
-
-    <p>
-      <a href="/#/Test" target="_blank">Übersicht</a>
-    </p>
-
+    
 
 
   </div>
