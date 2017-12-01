@@ -1,22 +1,38 @@
 <template>
 	<div>
-		<h2>{{title}}</h2>
+    <h1>Verwaltung</h1>
 
     <p>
       <a href="/#/Test/" >Zurück zur Übersicht</a>
     </p>
+    <!-- v-if laden wenn formDataLoaded true, dann dürfte auch form-data.title
+    vue.js doku guide-->
 
 	</div>
 </template>
 
 <script>
-
 export default {
   name: 'Verwaltung',
-
   data () {
     return {
-      title: 'Verwaltung'
+      formDataLoaded: false,
+      formData: null
+    };
+  },
+  created () {
+    this.fetchData();
+  },
+  methods: {
+    fetchData () {
+      fetch('/static/form-data.json')
+        .then(response => {
+          return response.json();
+        })
+        .then(json => {
+          this.formData = json;
+          this.formDataLoaded = true;
+        });
     }
   }
 }
