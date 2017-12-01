@@ -6,16 +6,6 @@
 		Übersicht über Kinder in der jeweiligen Veranstaltung <br/>
 		Editing <br/>
 		<br/>
-		<form>
-			<b>Event hinzufügen: </b><br/>
-			<input type="text" name="eventname" value="Event Name"> <br/>
-			<input type="text" name="idnummer" value="ID"><br/>
-			<input type="submit" value="Hinzufügen">
-		</form>
-		<form>
-			<button type="button">Verwaltung</button>
-		</form>
-
 
 		<br/>
 		<b>Event bearbeiten:</b><br/>
@@ -37,11 +27,17 @@
 		<br/>
 		<h1>Hello App!</h1>
 		<p>
-			<a href="/#/Hello.vue/" target="_blank">/hello</a>
+			<a href="/#/Veranstaltung/" target="_blank">Veranstaltung erstellen</a>
 		</p>
-
-
-		
+    <p>
+      <a href="/#/Verwaltung/" target="_blank">Veranstaltungen verwalten</a>
+    </p>
+    <p>
+      <a href="/#/Teilnehmer/" target="_blank">Teilnehmer</a>
+    </p>
+    <p>
+      <a href="/#/Reservierung/" target="_blank">Reservierungen</a>
+    </p>
 	</div>
 </template>
 
@@ -80,4 +76,4 @@ a {
   color: #42b983;
 }
 </style>
- 
+

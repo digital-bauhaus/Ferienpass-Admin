@@ -4,8 +4,8 @@ backend,de.jonashackt.springbootvuejs,SpringBootVuejsApplication.new WebMvcConfi
 backend,de.jonashackt.springbootvuejs,SpringBootVuejsApplication,5,8,0,0,2,2,1,2,1,2
 backend,de.jonashackt.springbootvuejs.domain,Doctor,0,115,0,0,0,32,0,17,0,17
 backend,de.jonashackt.springbootvuejs.domain,User,0,316,0,0,0,77,0,39,0,39
-backend,de.jonashackt.springbootvuejs.domain,Project,0,101,0,0,0,28,0,15,0,15
 backend,de.jonashackt.springbootvuejs.domain,Allergy,15,0,0,0,6,0,3,0,3,0
+backend,de.jonashackt.springbootvuejs.domain,Project,0,101,0,0,0,28,0,15,0,15
 backend,de.jonashackt.springbootvuejs.domain,FoodLimit,5,0,0,0,2,0,1,0,1,0
 backend,de.jonashackt.springbootvuejs.domain,DisabilityCode,9,0,0,0,4,0,1,0,1,0
 backend,de.jonashackt.springbootvuejs.domain,Disability,73,3,0,0,30,2,15,1,15,1
