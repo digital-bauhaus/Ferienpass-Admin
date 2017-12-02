@@ -1,16 +1,12 @@
 package de.jonashackt.springbootvuejs.repository;
 
-import de.jonashackt.springbootvuejs.domain.Doctor;
-import de.jonashackt.springbootvuejs.domain.Limitation;
-import de.jonashackt.springbootvuejs.domain.Project;
-import de.jonashackt.springbootvuejs.domain.User;
+import de.jonashackt.springbootvuejs.domain.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
@@ -37,12 +33,13 @@ public class UserRepositoryTest {
     Date birthDate = new Date();
     Doctor doctor = new Doctor("Eich", "Route", 1, "Alabastia", "39829",
             "555-6891");
+    Contact contact = new Contact("Igor Eich", "Route 4 Neuborkia  96825", "555-2532");
     Project project1 = new Project("Ball werfen", registerDate, 3, 1, "www.google.com");
     List<Project> projects = new ArrayList<>();
     List<Limitation> limits = new ArrayList<>();
-    User user = new User("Gary", "Eich", birthDate, registerDate, "Route", 1,
+    User user = new User("Gary", "Eich", birthDate, registerDate, "Route 1",
             "Neuborkia",
-            "96826", "555-5262", "437647298", "Peter August 11194819",
+            "96826", "555-5262", "437647298", false,  contact,
             true, true, true, doctor,
             projects, limits);
 

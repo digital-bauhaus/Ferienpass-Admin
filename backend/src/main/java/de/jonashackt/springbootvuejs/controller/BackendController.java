@@ -41,17 +41,18 @@ public class BackendController {
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
     Long addNewUser (/*@RequestParam String firstName, @RequestParam String lastName*/) {
+        // EXAMPLE USER
         Date registerDate = new Date();
         Date birthDate = new Date();
         Doctor doctor = new Doctor("Eich", "Route", 1, "Alabastia", "39829",
                 "555-6891");
+        Contact contact = new Contact("Igor Eich", "Route 4 Neuborkia  96825", "555-2532");
         Project project1 = new Project("Ball werfen", registerDate, 3, 1, "www.google.com");
         List<Project> projects = new ArrayList<>();
-        projects.add(project1);
         List<Limitation> limits = new ArrayList<>();
-        User user = new User("Gary", "Eich", birthDate, registerDate, "Route", 1,
+        User user = new User("Gary", "Eich", birthDate, registerDate, "Route 1",
                 "Neuborkia",
-                "96826", "555-5262", "437647298", "Peter August 11194819",
+                "96826", "555-5262", "437647298", false,  contact,
                 true, true, true, doctor,
                 projects, limits);
         userRepository.save(user);

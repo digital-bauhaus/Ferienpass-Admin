@@ -11,6 +11,7 @@ de/jonashackt/springbootvuejs/domain/Allergy.class
 de/jonashackt/springbootvuejs/controller/BackendController.class
 de/jonashackt/springbootvuejs/domain/Doctor.class
 de/jonashackt/springbootvuejs/repository/ProjectRepository.class
+de/jonashackt/springbootvuejs/domain/Contact.class
 de/jonashackt/springbootvuejs/domain/Limitation.class
 de/jonashackt/springbootvuejs/domain/DisabilityCode.class
 de/jonashackt/springbootvuejs/domain/FoodLimit.class

@@ -1,10 +1,7 @@
 package de.jonashackt.springbootvuejs.controller;
 
 import de.jonashackt.springbootvuejs.SpringBootVuejsApplication;
-import de.jonashackt.springbootvuejs.domain.Doctor;
-import de.jonashackt.springbootvuejs.domain.Limitation;
-import de.jonashackt.springbootvuejs.domain.Project;
-import de.jonashackt.springbootvuejs.domain.User;
+import de.jonashackt.springbootvuejs.domain.*;
 import org.apache.http.HttpStatus;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,23 +40,10 @@ public class BackendControllerTest {
 
 	@Test
     public void addNewUserAndRetrieveItBack() {
-		Date registerDate = new Date();
-		Date birthDate = new Date();
-		Doctor doctor = new Doctor("Eich", "Route", 1, "Alabastia", "39829",
-				"555-6891");
-		Project project1 = new Project("Ball werfen", registerDate, 3, 1, "www.google.com");
-		List<Project> projects = new ArrayList<>();
-		List<Limitation> limits = new ArrayList<>();
-		User user = new User("Gary", "Eich", birthDate, registerDate, "Route", 1,
-				"Neuborkia",
-				"96826", "555-5262", "437647298", "Peter August 11194819",
-				true, true, true, doctor,
-				projects, limits);
-
         Long userId =
-            given()
+            given()/*
                 .queryParam("firstName", "Gary")
-                .queryParam("lastName", "Eich")
+                .queryParam("lastName", "Eich")*/
             .when()
                 .post(BASE_URL + "/add")
             .then()
@@ -77,7 +61,6 @@ public class BackendControllerTest {
                     .assertThat()
                         .extract().as(User.class);
 
-	    // Did Norbert came back?
         assertThat(responseUser.getFirstName(), is("Gary"));
         assertThat(responseUser.getLastName(), is("Eich"));
     }

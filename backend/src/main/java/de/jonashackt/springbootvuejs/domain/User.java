@@ -21,12 +21,15 @@ public class User {
     private Date registerDate;
 
     private String street;
-    private int streetNr;
     private String city;
     private String postcode;
     private String telephone;
     private String healthcareNr;
-    private String emergencyContact;
+    private boolean allowTreatment;
+
+    @ManyToOne(cascade= CascadeType.ALL)
+    @JoinColumn(name="contact_id")
+    private Contact emergencyContact;
     private boolean allowHomeAlone;
     private boolean allowRiding;
     private boolean allowSwimming;
@@ -43,11 +46,11 @@ public class User {
                 ", birthDate=" + birthDate +
                 ", registerDate=" + registerDate +
                 ", street='" + street + '\'' +
-                ", streetNr=" + streetNr +
                 ", city='" + city + '\'' +
                 ", postcode='" + postcode + '\'' +
                 ", telephone='" + telephone + '\'' +
                 ", healthcareNr='" + healthcareNr + '\'' +
+                ", allowTreatment=" + allowTreatment +
                 ", emergencyContact='" + emergencyContact + '\'' +
                 ", allowHomeAlone=" + allowHomeAlone +
                 ", allowRiding=" + allowRiding +
@@ -68,20 +71,21 @@ public class User {
     )
     private List<Project> projects = new ArrayList<>();
 
+
     public User(String firstName, String lastName, Date birthDate, Date registerDate, String street,
-                int streetNr, String city, String postcode, String telephone, String healthcareNr,
-                String emergencyContact, boolean allowHomeAlone, boolean allowRiding,
+                String city, String postcode, String telephone, String healthcareNr, boolean allowTreatment,
+                Contact emergencyContact, boolean allowHomeAlone, boolean allowRiding,
                 boolean allowSwimming, Doctor doctor, List<Project> projects, List<Limitation> limits) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
         this.registerDate = registerDate;
         this.street = street;
-        this.streetNr = streetNr;
         this.city = city;
         this.postcode = postcode;
         this.telephone = telephone;
         this.healthcareNr = healthcareNr;
+        this.allowTreatment = allowTreatment;
         this.emergencyContact = emergencyContact;
         this.allowHomeAlone = allowHomeAlone;
         this.allowRiding = allowRiding;
@@ -171,14 +175,6 @@ public class User {
         this.street = street;
     }
 
-    public int getStreetNr() {
-        return streetNr;
-    }
-
-    public void setStreetNr(int streetNr) {
-        this.streetNr = streetNr;
-    }
-
     public String getCity() {
         return city;
     }
@@ -211,12 +207,12 @@ public class User {
         this.healthcareNr = healthcareNr;
     }
 
-    public String getEmergencyContact() {
+    public Contact getEmergencyContact() {
         return emergencyContact;
     }
 
-    public void setEmergencyContact(String emergencyInfo) {
-        this.emergencyContact = emergencyInfo;
+    public void setEmergencyContact(Contact emergencyContact) {
+        this.emergencyContact = emergencyContact;
     }
 
     public boolean isAllowHomeAlone() {
@@ -242,4 +238,8 @@ public class User {
     public void setAllowSwimming(boolean allowSwimming) {
         this.allowSwimming = allowSwimming;
     }
+
+    public boolean isAllowTreatment() {return allowTreatment;}
+
+    public void setAllowTreatment(boolean allowTreatment) {this.allowTreatment = allowTreatment; }
 }

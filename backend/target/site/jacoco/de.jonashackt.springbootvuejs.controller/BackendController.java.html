@@ -41,29 +41,30 @@ import java.util.List;
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
     Long addNewUser (/*@RequestParam String firstName, @RequestParam String lastName*/) {
-<span class="fc" id="L44">        Date registerDate = new Date();</span>
-<span class="fc" id="L45">        Date birthDate = new Date();</span>
-<span class="fc" id="L46">        Doctor doctor = new Doctor(&quot;Eich&quot;, &quot;Route&quot;, 1, &quot;Alabastia&quot;, &quot;39829&quot;,</span>
+        // EXAMPLE USER
+<span class="fc" id="L45">        Date registerDate = new Date();</span>
+<span class="fc" id="L46">        Date birthDate = new Date();</span>
+<span class="fc" id="L47">        Doctor doctor = new Doctor(&quot;Eich&quot;, &quot;Route&quot;, 1, &quot;Alabastia&quot;, &quot;39829&quot;,</span>
                 &quot;555-6891&quot;);
-<span class="fc" id="L48">        Project project1 = new Project(&quot;Ball werfen&quot;, registerDate, 3, 1, &quot;www.google.com&quot;);</span>
-<span class="fc" id="L49">        List&lt;Project&gt; projects = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L50">        projects.add(project1);</span>
-<span class="fc" id="L51">        List&lt;Limitation&gt; limits = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L52">        User user = new User(&quot;Gary&quot;, &quot;Eich&quot;, birthDate, registerDate, &quot;Route&quot;, 1,</span>
+<span class="fc" id="L49">        Contact contact = new Contact(&quot;Igor Eich&quot;, &quot;Route 4 Neuborkia  96825&quot;, &quot;555-2532&quot;);</span>
+<span class="fc" id="L50">        Project project1 = new Project(&quot;Ball werfen&quot;, registerDate, 3, 1, &quot;www.google.com&quot;);</span>
+<span class="fc" id="L51">        List&lt;Project&gt; projects = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L52">        List&lt;Limitation&gt; limits = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L53">        User user = new User(&quot;Gary&quot;, &quot;Eich&quot;, birthDate, registerDate, &quot;Route 1&quot;,</span>
                 &quot;Neuborkia&quot;,
-                &quot;96826&quot;, &quot;555-5262&quot;, &quot;437647298&quot;, &quot;Peter August 11194819&quot;,
+                &quot;96826&quot;, &quot;555-5262&quot;, &quot;437647298&quot;, false,  contact,
                 true, true, true, doctor,
                 projects, limits);
-<span class="fc" id="L57">        userRepository.save(user);</span>
+<span class="fc" id="L58">        userRepository.save(user);</span>
 
-<span class="fc" id="L59">        LOG.info(user.toString() + &quot; successfully saved into DB&quot;);</span>
+<span class="fc" id="L60">        LOG.info(user.toString() + &quot; successfully saved into DB&quot;);</span>
 
-<span class="fc" id="L61">        return user.getId();</span>
+<span class="fc" id="L62">        return user.getId();</span>
     }
 
     @GetMapping(path=&quot;/user/{id}&quot;)
     public @ResponseBody User getUserById(@PathVariable(&quot;id&quot;) long id) {
-<span class="fc" id="L66">        return userRepository.findOne(id);</span>
+<span class="fc" id="L67">        return userRepository.findOne(id);</span>
     }
 
 }

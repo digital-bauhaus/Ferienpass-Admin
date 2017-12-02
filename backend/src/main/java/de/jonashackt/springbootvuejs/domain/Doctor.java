@@ -17,28 +17,22 @@ public class Doctor {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long doctor_id;
     private String name;
-    private String street;
-    private int streetNr;
-    private String city;
-    private String postcode;
+    private String address;
     private String telephone;
 
     protected Doctor() {}
 
     public Doctor(String name, String street, int streetNr, String city, String postcode, String telephone) {
         this.name = name;
-        this.street = street;
-        this.streetNr = streetNr;
-        this.city = city;
-        this.postcode = postcode;
+        this.address = address;
         this.telephone = telephone;
     }
 
     @Override
     public String toString() {
         return String.format(
-                "Doctor[doctor_id=%d, name='%s', street='%s', streetNr='%d', city='%s', postcode='%s', telephone='%s']",
-                doctor_id, name, street, streetNr, city, postcode, telephone);
+                "Doctor[doctor_id=%d, name='%s', address='%s', telephone='%s']",
+                doctor_id, name, address, telephone);
     }
 
 
@@ -58,36 +52,12 @@ public class Doctor {
         this.name = name;
     }
 
-    public String getStreet() {
-        return street;
+    public String getAddress() {
+        return address;
     }
 
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public int getStreetNr() {
-        return streetNr;
-    }
-
-    public void setStreetNr(int streetNr) {
-        this.streetNr = streetNr;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getPostcode() {
-        return postcode;
-    }
-
-    public void setPostcode(String postcode) {
-        this.postcode = postcode;
+    public void setAddress(String street) {
+        this.address = address;
     }
 
     public String getTelephone() {

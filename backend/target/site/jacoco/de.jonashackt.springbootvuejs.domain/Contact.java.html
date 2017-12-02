@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Contact.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">backend</a> &gt; <a href="index.source.html" class="el_package">de.jonashackt.springbootvuejs.domain</a> &gt; <span class="el_source">Contact.java</span></div><h1>Contact.java</h1><pre class="source lang-java linenums">package de.jonashackt.springbootvuejs.domain;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
+import java.util.Date;
+
+@Entity
+public class Contact {
+
+    // PrimaryKey
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long contact_id;
+    private String name;
+    private String address;
+    private String telephone;
+
+<span class="fc" id="L23">    protected Contact() {}</span>
+
+<span class="fc" id="L25">    public Contact(String name, String address, String telephone) {</span>
+<span class="fc" id="L26">        this.name = name;</span>
+<span class="fc" id="L27">        this.address = address;</span>
+<span class="fc" id="L28">        this.telephone = telephone;</span>
+<span class="fc" id="L29">    }</span>
+
+    @Override
+    public String toString() {
+<span class="fc" id="L33">        return String.format(</span>
+                &quot;Contact[contact_id=%d, name='%s', address='%s', telephone='%s']&quot;,
+<span class="fc" id="L35">                contact_id, name, address, telephone);</span>
+    }
+
+
+    public long getContact_id() {
+<span class="fc" id="L40">        return contact_id;</span>
+    }
+
+    public void setContact_id(long doctor_id) {
+<span class="fc" id="L44">        this.contact_id = contact_id;</span>
+<span class="fc" id="L45">    }</span>
+
+    public String getName() {
+<span class="fc" id="L48">        return name;</span>
+    }
+
+    public void setName(String name) {
+<span class="fc" id="L52">        this.name = name;</span>
+<span class="fc" id="L53">    }</span>
+
+    public String getAddress() {
+<span class="fc" id="L56">        return address;</span>
+    }
+
+    public void setAddress(String street) {
+<span class="fc" id="L60">        this.address = address;</span>
+<span class="fc" id="L61">    }</span>
+
+    public String getTelephone() {
+<span class="fc" id="L64">        return telephone;</span>
+    }
+
+    public void setTelephone(String telephone) {
+<span class="fc" id="L68">        this.telephone = telephone;</span>
+<span class="fc" id="L69">    }</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
