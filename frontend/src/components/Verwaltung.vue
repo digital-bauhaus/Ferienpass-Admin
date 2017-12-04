@@ -1,6 +1,9 @@
 <template>
 	<div>
     <h1>Verwaltung</h1>
+    <form v-if="formDataLoaded" class="form">
+      <h1>{{ formData.title }}</h1>
+    </form>
 
     <p>
       <a href="/#/Test/" >Zurück zur Übersicht</a>
