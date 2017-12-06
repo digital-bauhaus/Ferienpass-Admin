@@ -1,6 +1,30 @@
 <template>
   <div>
-    <h2>{{title}}</h2>
+    <h1>Teilnehmer</h1>
+    <br/>
+    <form v-if="formDataLoaded" class="form">
+      <br/>
+      <ul>
+        <!--<li>{{ formData.sections[2].title }}</li>-->
+        <li v-for="entry in formData.sections[2].components[0].params.components">
+          <h3>{{ entry.params.lastname }},
+
+            {{ entry.params.firstname }}
+          </h3>
+          <p>
+            {{ entry.params.date }}
+            <br/>
+            {{ entry.params.street }}
+            <br/>
+            {{ entry.params.location }}
+            <br/>
+            {{ entry.params.phone }}
+          </p>
+
+          <br/>
+        </li>
+      </ul>
+    </form>
 
     <p>
       <a href="/#/Test/" >Zurück zur Übersicht</a>
@@ -13,10 +37,25 @@
 
 export default {
   name: 'Teilnehmer',
-
   data () {
     return {
-      title: 'Teilnehmer'
+      formDataLoaded: false,
+      formData: null
+    };
+  },
+  created () {
+    this.fetchData();
+  },
+  methods: {
+    fetchData () {
+      fetch('/static/form-data.json')
+        .then(response => {
+          return response.json();
+        })
+        .then(json => {
+          this.formData = json;
+          this.formDataLoaded = true;
+        });
     }
   }
 }
@@ -35,7 +74,6 @@ ul {
 }
 
 li {
-  display: inline-block;
   margin: 0 10px;
 }
 
