@@ -1,8 +1,21 @@
 <template>
 	<div>
-    <h1>Verwaltung</h1>
+    <h1>Veranstaltungen verwalten</h1>
     <form v-if="formDataLoaded" class="form">
-      <h1>{{ formData.title }}</h1>
+      <br/>
+      <ul>
+<!--        <li>{{ formData.sections[1].components }}</li> -->
+        <li v-for="entry in formData.sections[1].components[0].params.components">
+          <h3>{{ entry.params.label }}</h3>
+          <p>
+            {{ entry.params.date }}
+            <br/>
+            {{ entry.params.org }}
+          </p>
+
+          <br/>
+        </li>
+      </ul>
     </form>
 
     <p>
@@ -54,7 +67,6 @@ ul {
 }
 
 li {
-  display: inline-block;
   margin: 0 10px;
 }
 
