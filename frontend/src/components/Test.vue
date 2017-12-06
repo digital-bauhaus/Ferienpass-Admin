@@ -1,12 +1,13 @@
 <template>
   <div>
-    <h2>{{title}}</h2>
+    <h1>{{title}}</h1>
+    <!--
     Erstellen von Veranstaltung <br/>
     Übersicht über Veranstaltung <br/>
     Übersicht über Kinder in der jeweiligen Veranstaltung <br/>
-    Editing <br/>
+    Editing <br/>-->
     <br/>
-    <h1>Hello App!</h1>
+    <h3>Menü:</h3> <br/>
     <p>
       <a href="/#/Veranstaltung/" >Veranstaltung erstellen</a>
     </p>
@@ -21,6 +22,7 @@
     </p>
 
     <br/>
+    <!--
     <b>Event bearbeiten:</b><br/>
     <b>Verwaltung</b>:
     Ich als Admin möchte die Anmeldung zu allen Veranstaltungen einsehen und verwalten können. <br/>
@@ -36,7 +38,7 @@
     <br/>
     <b>Stornierung</b>:
     Ich als Admin möchte bestimmte Anmeldungen stornieren können. <br/>
-    -> eintrag aus datenbank entfernen <br/>
+    -> eintrag aus datenbank entfernen <br/>-->
     <br/>
 	</div>
 </template>

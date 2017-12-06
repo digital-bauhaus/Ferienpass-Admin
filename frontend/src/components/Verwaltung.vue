@@ -1,6 +1,9 @@
 <template>
 	<div>
     <h1>Veranstaltungen verwalten</h1>
+    <br/>
+    <input type="text" name="label" placeholder="Suchen"> <br/>
+    <br/>
     <form v-if="formDataLoaded" class="form">
       <br/>
       <ul>
@@ -13,6 +16,7 @@
             {{ entry.params.org }}
             <br/>
             <button v-on:click="kill($event)">löschen</button>
+            <button>bearbeiten</button>
           </p>
 
           <br/>

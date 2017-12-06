@@ -2,6 +2,8 @@
   <div>
     <h1>Teilnehmer</h1>
     <br/>
+    <input type="text" name="label" placeholder="Suchen"> <br/>
+    <br/>
     <form v-if="formDataLoaded" class="form">
       <br/>
       <ul>
@@ -20,7 +22,8 @@
             <br/>
             {{ entry.params.phone }}
           </p>
-
+          <button v-on:click="kill($event)">stornieren</button>
+          <br/>
           <br/>
         </li>
       </ul>
