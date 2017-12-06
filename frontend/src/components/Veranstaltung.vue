@@ -1,10 +1,15 @@
 <template>
   <div>
+    <h1> {{title}} </h1>
+    <br/>
     <form>
       <b>Event hinzufügen: </b><br/>
       <input type="text" name="label" placeholder="Event-Name"> <br/>
+      &nbsp <br/>
       <input type="text" name="date" placeholder="Zeitraum"><br/>
+      &nbsp <br/>
       <input type="text" name="org" placeholder="Veranstalter"><br/>
+      &nbsp <br/>
       <input type="submit" value="Hinzufügen">
     </form>
     <p>
@@ -20,10 +25,9 @@
 
 export default {
   name: 'Veranstaltung-erstellen',
-
   data () {
     return {
-      title: 'Veranstaltung-erstellen'
+      title: 'Veranstaltung erstellen'
     }
   }
 }
