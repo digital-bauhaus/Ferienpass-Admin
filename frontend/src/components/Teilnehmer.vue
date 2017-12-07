@@ -59,6 +59,9 @@ export default {
           this.formData = json;
           this.formDataLoaded = true;
         });
+    },
+    kill (event) {
+      event.target.parentElement.remove();
     }
   }
 }
