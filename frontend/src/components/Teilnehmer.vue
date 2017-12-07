@@ -69,7 +69,7 @@ export default {
         });
     },
     kill (event) {
-      event.target.parentElement.remove();
+      event.target.parentElement.parentElement.remove();
     }
   }
 }
