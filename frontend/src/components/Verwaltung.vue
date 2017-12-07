@@ -6,23 +6,21 @@
     <br/>
     <form v-if="formDataLoaded" class="form">
       <br/>
-      <ul>
+      <table>
 
-        <li v-for="entry in formData.sections[1].components[0].params.components">
-          <h3>{{ entry.params.label }}</h3>
-          <p>
-            {{ entry.params.date }}
-            <br/>
-            {{ entry.params.org }}
-            <br/>
-            <button v-on:click="kill($event)">löschen</button>
-            <button>bearbeiten</button>
-          </p>
+        <tr v-for="entry in formData.sections[1].components[0].params.components">
+          <th v-on:click="unfold()">{{ entry.params.label }}</th>
+
+          <th> {{ entry.params.date }}</th>
+          <th> {{ entry.params.org }}</th>
+          <th><button v-on:click="kill($event)">löschen</button>
+          <button>bearbeiten</button></th>
+
 
           <br/>
 
-        </li>
-      </ul>
+        </tr>
+      </table>
     </form>
 
     <p>
@@ -58,13 +56,31 @@ export default {
     kill (event) {
       event.target.parentElement.parentElement.remove();
     }
+  },
+  unfold () {
   }
+
 }
 </script>
 
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
 h1, h2 {
   font-weight: normal;
 }

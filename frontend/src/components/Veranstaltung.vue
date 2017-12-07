@@ -10,7 +10,7 @@
       &nbsp <br/>
       <input type="text" name="org" placeholder="Veranstalter"><br/>
       &nbsp <br/>
-      <input type="submit" value="Hinzufügen">
+      <input type="submit" v-on:click="create()" value="Hinzufügen">
     </form>
     <p>
       <a href="/#/Test/" >Zurück zur Übersicht</a>
@@ -28,6 +28,11 @@ export default {
   data () {
     return {
       title: 'Veranstaltung erstellen'
+    }
+  },
+  methods: {
+    create () {
+      alert('Sie haben das Event erstellt');
     }
   }
 }
