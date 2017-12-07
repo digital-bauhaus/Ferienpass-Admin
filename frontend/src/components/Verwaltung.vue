@@ -13,12 +13,12 @@
           </th>
           <th> {{ entry.params.date }}</th>
           <th> {{ entry.params.org }}</th>
-          <th><button v-on:click="kill($event)">löschen</button>
-          <button>bearbeiten</button></th>
-
+          <th><nobr><button v-on:click="kill($event)">löschen</button>
+          <button>bearbeiten</button>
+            <button>PDF exportieren</button></nobr>
+          </th>
 
           <br/>
-
         </tr>
       </table>
     </form>
