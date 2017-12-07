@@ -9,8 +9,8 @@
       <table>
 
         <tr v-for="entry in formData.sections[1].components[0].params.components">
-          <th v-on:click="unfold()">{{ entry.params.label }}</th>
-
+          <th v-on:click="unfold()">{{ entry.params.label }}
+          </th>
           <th> {{ entry.params.date }}</th>
           <th> {{ entry.params.org }}</th>
           <th><button v-on:click="kill($event)">löschen</button>
