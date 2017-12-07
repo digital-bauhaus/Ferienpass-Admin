@@ -18,29 +18,23 @@
     </form>
     <form v-if="formDataLoaded" class="form">
       <br/>
-      <ul>
+      <table>
         <!--<li>{{ formData.sections[2].title }}</li>-->
-        <li v-for="entry in formData.sections[2].components[0].params.components">
-          <h3>{{ entry.params.lastname }},
+        <tr v-for="entry in formData.sections[2].components[0].params.components">
+          <th>{{ entry.params.lastname }},
 
             {{ entry.params.firstname }}
-          </h3>
-          <p>
-            {{ entry.params.date }}
-            <br/>
-            {{ entry.params.street }}
-            <br/>
-            {{ entry.params.location }}
-            <br/>
-            {{ entry.params.phone }}
-          </p>
-          <button v-on:click="kill($event)">stornieren</button>
+          </th>
+          <th>{{ entry.params.date }}</th>
+          <th>{{ entry.params.street }}</th>
+          <th>{{ entry.params.location }}</th>
+          <th>{{ entry.params.phone }}</th>
+
+          <th><button v-on:click="kill($event)">stornieren</button>
           <button>bearbeiten</button>
-          <button>als PDF exportieren</button>
-          <br/>
-          <br/>
-        </li>
-      </ul>
+            <button>als PDF exportieren</button></th>
+        </tr>
+      </table>
     </form>
 
     <p>
@@ -84,6 +78,21 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
 h1, h2 {
   font-weight: normal;
 }
