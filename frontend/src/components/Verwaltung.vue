@@ -23,9 +23,9 @@
       </table>
     </form>
 
-    <p>
+    <footer>
       <a href="/#/Test/" >Zurück zur Übersicht</a>
-    </p>
+    </footer>
 
 	</div>
 </template>
@@ -96,6 +96,18 @@ li {
 
 a {
   color: #42b983;
+}
+footer {
+    clear: both;
+    background: White;
+    padding: 0;
+    text-align: center;
+    vertical-align: middle;
+    line-height: normal;
+    margin: 0;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
 }
 </style>
 
