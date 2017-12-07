@@ -54,7 +54,7 @@ export default {
         });
     },
     kill (event) {
-      event.target.parentElement.parentElement.remove();
+      event.target.parentElement.parentElement.parentElement.remove();
     }
   },
   unfold () {
