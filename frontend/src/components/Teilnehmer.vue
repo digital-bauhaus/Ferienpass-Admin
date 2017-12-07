@@ -2,8 +2,20 @@
   <div>
     <h1>Teilnehmer</h1>
     <br/>
-    <input type="text" name="label" placeholder="Suchen"> <br/>
-    <br/>
+    <form action="#">
+      <p>
+        <input type="search" placeholder="Suchen" list="Teilnehmer">
+        <datalist id="Teilnehmer">
+          <option value="Koenig,Thorsten"></option>
+          <option value="Kohler, Marie"></option>
+          <option value="Keller, Florian"></option>
+          <option value="Wirtz, Felix"></option>
+          <option value="Steinbrecher, Jonas"></option>
+          <option value="Durr, Tina"></option>
+        </datalist>
+        <button>finden</button>
+      </p>
+    </form>
     <form v-if="formDataLoaded" class="form">
       <br/>
       <ul>
@@ -23,6 +35,8 @@
             {{ entry.params.phone }}
           </p>
           <button v-on:click="kill($event)">stornieren</button>
+          <button>bearbeiten</button>
+          <button>als PDF exportieren</button>
           <br/>
           <br/>
         </li>
