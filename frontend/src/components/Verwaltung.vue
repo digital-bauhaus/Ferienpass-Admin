@@ -61,7 +61,7 @@ export default {
         });
     },
     kill (event) {
-      event.target.parentElement.parentElement.remove();
+      event.target.parentElement.parentElement.parentElement.remove();
     },
     teil (event) {
       event.target.parentElement.insertAdjacentHTML('afterend', '</table> <table><tr><th>Thorsten Koenig</th><th><button onclick="this.parentElement.parentElement.remove()">stornieren</button><th><button>als PDF exportieren</button></th></tr> </table>');
