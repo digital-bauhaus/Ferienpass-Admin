@@ -5,22 +5,23 @@
     <input type="text" name="label" placeholder="Suchen"> <br/>
     <br/>
     <form v-if="formDataLoaded" class="form">
+      <form>
       <br/>
-      <table>
+        <table>
 
-        <tr v-for="entry in formData.sections[1].components[0].params.components">
-          <th v-on:click="unfold()">{{ entry.params.label }}
-          </th>
-          <th> {{ entry.params.date }}</th>
-          <th> {{ entry.params.org }}</th>
-          <th><button v-on:click="kill($event)">löschen</button>
-          <button>bearbeiten</button></th>
+          <tr v-for="entry in formData.sections[1].components[0].params.components">
+            <th v-on:click="teil($event)">{{ entry.params.label }}</th>
+            <th> {{ entry.params.date }}</th>
+            <th> {{ entry.params.org }}</th>
+            <th><button v-on:click="kill($event)">löschen</button>
+            <button>bearbeiten</button></th>
 
 
-          <br/>
+            <br/>
 
-        </tr>
-      </table>
+          </tr>
+        </table>
+      </form>
     </form>
 
     <footer>
@@ -52,12 +53,23 @@ export default {
           this.formData = json;
           this.formDataLoaded = true;
         });
+      fetch('/static/form-data.json')
+        .then(response => {
+          return response.json();
+        })
+        .then(json => {
+          this.dummy = json;
+          this.dummyLoaded = true;
+        });
     },
     kill (event) {
       event.target.parentElement.parentElement.remove();
+    },
+    teil (event) {
+      event.target.parentElement.insertAdjacentHTML('afterend', '</table> <table><tr><th>Thorsten Koenig</th><th><button onclick="this.parentElement.parentElement.remove()">stornieren</button><th><button>als PDF exportieren</button></th></tr> </table>');
+      event.target.parentElement.insertAdjacentHTML('afterend', '</table> <table><tr><th>Marie Kohler</th><th><button onclick="this.parentElement.parentElement.remove()">stornieren</button><th><button>als PDF exportieren</button></th></tr> </table>');
+      event.target.parentElement.insertAdjacentHTML('afterend', '</table> <table><tr><th>Florian Keller</th><th><button onclick="this.parentElement.parentElement.remove()">stornieren</button><th><button>als PDF exportieren</button></th></tr> </table>');
     }
-  },
-  unfold () {
   }
 
 }

@@ -1,0 +1,105 @@
+{
+	"title": "Teilnehmerliste",
+	"Teilnehmer": [
+		{
+			"params": {
+				"lastname": "Koenig",
+				"firstname": "Thorsten",
+				"date": "30.11.2005",
+				"street": "Wallstraße 23",
+				"location": "Weimar",
+				"phone": "02636/101068"
+			}
+		},
+		{
+			"params": {
+				"lastname": "Kohler",
+				"firstname": "Marie",
+				"date": "01.11.2003",
+				"street": "Boxhagener Straße 69",
+				"location": "Weimar",
+				"phone": "04048/8413"
+			}
+		},
+		{
+			"params": {
+				"lastname": "Keller",
+				"firstname": "Florian",
+				"date": "12.05.2008",
+				"street": "Leipziger Straße 73",
+				"location": "Weimar",
+				"phone": "05532/482377"
+			}
+		},
+		{
+			"params": {
+				"lastname": "Wirtz",
+				"firstname": "Felix",
+				"date": "05.06.2006",
+				"street": "Koenigsstraße 93",
+				"location": "Weimar",
+				"phone": "036333/4778"
+			}
+		},
+		{
+			"params": {
+				"lastname": "Steinbrecher",
+				"firstname": "Jonas",
+				"date": "08.07.2007",
+				"street": "Pohlstraße 82",
+				"location": "Apolda",
+				"phone": "05354/445260"
+			}
+		},
+		{
+			"params": {
+				"lastname": "Durr",
+				"firstname": "Tina",
+				"date": "11.08.2007",
+				"street": "Luebeckertordamm 37",
+				"location": "Apolda",
+				"phone": "09162/434535"
+			}
+		},
+		{
+			"params": {
+				"lastname": "Reserviert",
+				"firstname": " ",
+				"date": " ",
+				"street": " ",
+				"location": " ",
+				"phone": " "
+			}
+		},
+		{
+			"params": {
+				"lastname": "Frei",
+				"firstname": " ",
+				"date": " ",
+				"street": " ",
+				"location": " ",
+				"phone": " "
+			}
+		},
+		{
+			"params": {
+				"lastname": "Frei",
+				"firstname": " ",
+				"date": " ",
+				"street": " ",
+				"location": " ",
+				"phone": " "
+			}
+		},
+		{
+			"params": {
+				"lastname": "Frei",
+				"firstname": " ",
+				"date": " ",
+				"street": " ",
+				"location": " ",
+				"phone": " "
+			}
+		}
+	]
+}
