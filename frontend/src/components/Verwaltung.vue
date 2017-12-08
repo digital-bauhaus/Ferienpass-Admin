@@ -5,23 +5,21 @@
     <input type="text" name="label" placeholder="Suchen"> <br/>
     <br/>
     <form v-if="formDataLoaded" class="form">
-      <form>
       <br/>
         <table>
+        <tr v-for="entry in formData.sections[1].components[0].params.components">
+          <th v-on:click="teil($event)">{{ entry.params.label }}
+          </th>
+          <th> {{ entry.params.date }}</th>
+          <th> {{ entry.params.org }}</th>
+          <th><nobr><button v-on:click="kill($event)">löschen</button>
+          <button>bearbeiten</button>
+            <button>PDF exportieren</button></nobr>
+          </th>
 
-          <tr v-for="entry in formData.sections[1].components[0].params.components">
-            <th v-on:click="teil($event)">{{ entry.params.label }}</th>
-            <th> {{ entry.params.date }}</th>
-            <th> {{ entry.params.org }}</th>
-            <th><button v-on:click="kill($event)">löschen</button>
-            <button>bearbeiten</button></th>
-
-
-            <br/>
-
-          </tr>
-        </table>
-      </form>
+          <br/>
+        </tr>
+      </table>
     </form>
 
     <footer>
