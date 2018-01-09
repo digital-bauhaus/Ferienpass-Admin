@@ -9,6 +9,8 @@ import Login from '@/components/Login'
 import Teilnehmer from '@/components/Teilnehmer'
 import Reservierung from '@/components/Reservierung'
 import Veranstaltung from '@/components/Veranstaltung'
+import VeranstaltungEdit from '@/components/VeranstaltungEdit'
+import TeilnehmerEdit from '@/components/TeilnehmerEdit'
 
 Vue.use(Router)
 
@@ -50,11 +52,20 @@ export default new Router({
       name: 'Hello',
       component: Hello
     },
-
     {
       path: '/callservice',
       name: 'Service',
       component: Service
+    },
+    {
+      path: '/VeranstaltungEdit',
+      name: 'VeranstaltungEdit',
+      component: VeranstaltungEdit
+    },
+    {
+      path: '/TeilnehmerEdit',
+      name: 'TeilnehmerEdit',
+      component: TeilnehmerEdit
     },
     {
       path: '/bootstrap',
