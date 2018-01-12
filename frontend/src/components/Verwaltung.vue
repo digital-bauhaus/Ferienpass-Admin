@@ -7,18 +7,25 @@
     <form v-if="formDataLoaded" class="form">
       <br/>
         <table>
-        <tr v-for="entry in formData.sections[1].components[0].params.components">
-          <th v-on:click="teil($event)">{{ entry.params.label }}
-          </th>
-          <th> {{ entry.params.date }}</th>
-          <th> {{ entry.params.org }}</th>
-          <th><nobr><button v-on:click="kill($event)">löschen</button>
-          <button>bearbeiten</button>
-            <button>PDF exportieren</button></nobr>
-          </th>
+        <tr>
+          <th>Veranstaltung</th>
+          <th>Datum</th>
+          <th>Veranstalter</th>
+          <th> belegt / gesamt Plätze</th>
+          <th>Bearbeiten</th>
 
           <br/>
         </tr>
+          <tr v-for="entry in formData.sections[1].components[0].params.components">
+            <td v-on:click="teil($event)">{{ entry.params.label }}</td>
+            <td>{{ entry.params.date }}</td>
+            <td>{{ entry.params.org }}</td>
+            <td>{{ entry.params.full }} / </nobr> {{ entry.params.space }}</td>
+            <td><nobr><button v-on:click="kill($event)">löschen</button>
+              <button>bearbeiten</button>
+              <button>PDF exportieren</button></nobr>
+            </td>
+          </tr>
       </table>
     </form>
 

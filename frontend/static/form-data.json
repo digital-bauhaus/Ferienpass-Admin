@@ -75,7 +75,9 @@
                 "params": {
                   "label": "Piratenfest an der Ilm",
                   "date": "26. Juni 2017",
-                  "org": "Sportjugend Weimar"
+                  "org": "Sportjugend Weimar",
+                  "full": "13",
+                  "space": "18"
                 }
               },
               {
@@ -83,7 +85,9 @@
                 "params": {
                   "label": "Bauspielplatz",
                   "date": "26. bis 28. Juni 2017",
-                  "org": "Kramixxo & Waggong"
+                  "org": "Kramixxo & Waggong",
+                  "full": "9",
+                  "space": "15"
                 }
               },
               {
@@ -91,7 +95,9 @@
                 "params": {
                   "label": "Papier-Werkstatt",
                   "date": "26. bis 28. Juni 2017",
-                  "org": "Weimarer Mal- und Zeichenschule e.V."
+                  "org": "Weimarer Mal- und Zeichenschule e.V.",
+                  "full": "8",
+                  "space": "12"
                 }
               },
               {
@@ -99,7 +105,9 @@
                 "params": {
                   "label": "Indianer und ihre Tiere",
                   "date": "27. bis 28. Juni 2017",
-                  "org": "Camsin e.V."
+                  "org": "Camsin e.V.",
+                  "full": "5",
+                  "space": "10"
                 }
               },
               {
@@ -107,7 +115,9 @@
                 "params": {
                   "label": "Filz-Werkstatt",
                   "date": "29. bis 30. Juni 2017",
-                  "org": "Weimarer Mal- und Zeichenschule e.V."
+                  "org": "Weimarer Mal- und Zeichenschule e.V.",
+                  "full": "6",
+                  "space": "10"
                 }
               },
               {
@@ -115,7 +125,9 @@
                 "params": {
                   "label": "Indianer und ihre Tiere",
                   "date": "29. bis 30. Juni 2017",
-                  "org": "Camsin e.V."
+                  "org": "Camsin e.V.",
+                  "full": "7",
+                  "space": "10"
                 }
               },
               {
@@ -123,7 +135,9 @@
                 "params": {
                   "label": "Das Alien vom Planeten Alpha Omega Pi",
                   "date": "3. bis 7. Juli 2017",
-                  "org": "Buchkinder_Weimar"
+                  "org": "Buchkinder_Weimar",
+                  "full": "8",
+                  "space": "12"
                 }
               },
               {
@@ -132,7 +146,9 @@
                   "label": "Graffiti",
                   "date": "3. bis 4. Juli 2017",
                   "org":
-                    "„Für Euch“ e.V. – Schulförderverein des Johannes Landenberger Förderzentrums"
+                    "„Für Euch“ e.V. – Schulförderverein des Johannes Landenberger Förderzentrums",
+                  "full": "13",
+                  "space": "15"
                 }
               },
               {
@@ -140,7 +156,9 @@
                 "params": {
                   "label": "Fahrrad-Tour aus dem Feiniger Radweg",
                   "date": "4. Juli 2017",
-                  "org": "Team Jugendarbeit Weimar"
+                  "org": "Team Jugendarbeit Weimar",
+                  "full": "9",
+                  "space": "10"
                 }
               },
               {
@@ -148,7 +166,9 @@
                 "params": {
                   "label": "Die große Schatzsuche",
                   "date": "10. bis 12. Juli 2017",
-                  "org": "Weimarer Mal- und Zeichenschule e.V."
+                  "org": "Weimarer Mal- und Zeichenschule e.V.",
+                  "full": "6",
+                  "space": "12"
                 }
               },
               {
@@ -156,7 +176,9 @@
                 "params": {
                   "label": "Skateboard-Kurs",
                   "date": "12. bis 14. Juli 2017",
-                  "org": "Nordlicht e.V."
+                  "org": "Nordlicht e.V.",
+                  "full": "13",
+                  "space": "15"
                 }
               },
               {
@@ -164,7 +186,9 @@
                 "params": {
                   "label": "Kinderzirkus",
                   "date": "17. bis 19. Juli 2017",
-                  "org": "Tasifan"
+                  "org": "Tasifan",
+                  "full": "23",
+                  "space": "32"
                 }
               },
               {
@@ -172,7 +196,9 @@
                 "params": {
                   "label": "Klettern",
                   "date": "25. Juli 2017",
-                  "org": "Sektion Weimar des Deutschen Alpenvereins e.V."
+                  "org": "Sektion Weimar des Deutschen Alpenvereins e.V.",
+                  "full": "9",
+                  "space": "12"
                 }
               },
               {
@@ -180,7 +206,9 @@
                 "params": {
                   "label": "Klettern",
                   "date": "26. Juli 2017",
-                  "org": "Sektion Weimar des Deutschen Alpenvereins e.V."
+                  "org": "Sektion Weimar des Deutschen Alpenvereins e.V.",
+                  "full": "11",
+                  "space": "12"
                 }
               },
               {
@@ -188,7 +216,9 @@
                 "params": {
                   "label": "GrenzbeWEGnung",
                   "date": "31. Juli bis 4. August 2017",
-                  "org": "WE-DANCE e.V."
+                  "org": "WE-DANCE e.V.",
+                  "full": "14",
+                  "space": "15"
                 }
               },
               {
@@ -196,7 +226,9 @@
                 "params": {
                   "label": "Angeln",
                   "date": "31. Juli bis 1. August 2017",
-                  "org": "Nordlicht e.V."
+                  "org": "Nordlicht e.V.",
+                  "full": "6",
+                  "space": "8"
                 }
               },
               {
@@ -204,7 +236,9 @@
                 "params": {
                   "label": "Jiddisch – Wir singen tanzen spielen",
                   "date": "2. bis 6. August 2017",
-                  "org": "other music e.V."
+                  "org": "other music e.V.",
+                  "full": "7",
+                  "space": "10"
                 }
               },
               {
@@ -212,7 +246,9 @@
                 "params": {
                   "label": "Angeln",
                   "date": "2. bis 3. August 2017",
-                  "org": "Nordlicht e.V."
+                  "org": "Nordlicht e.V.",
+                  "full": "5",
+                  "space": "8"
                 }
               },
               {
@@ -220,7 +256,9 @@
                 "params": {
                   "label": "Natur-Erlebnis-Camp",
                   "date": "7. bis 9. August 2017",
-                  "org": "Kramixxo & Waggong"
+                  "org": "Kramixxo & Waggong",
+                  "full": "10",
+                  "space": "15"
                 }
               },
               {
@@ -228,7 +266,9 @@
                 "params": {
                   "label": "Geräusche-Jagd",
                   "date": "8. August 2017",
-                  "org": "Radio LOTTE Weimar"
+                  "org": "Radio LOTTE Weimar",
+                  "full": "14",
+                  "space": "15"
                 }
               },
               {
@@ -236,7 +276,9 @@
                 "params": {
                   "label": "Schlauchboot-Tour",
                   "date": "9. August 2017",
-                  "org": "erlebniswelten"
+                  "org": "erlebniswelten",
+                  "full": "37",
+                  "space": "40"
                 }
               }
             ]
