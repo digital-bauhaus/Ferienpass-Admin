@@ -8,4 +8,7 @@ after_success:
   - mvn clean test jacoco:report coveralls:report
   
 notifications:
-  slack: digital-bauhaus:dgT2SMQCbcq3J89fYje4X0fs
+  slack: digital-bauhaus:2ZFDhvBSWsjMpEVQitxCzxmY
+  email:
+    on_success: never # default:change
+    on_failure: change # default:allways

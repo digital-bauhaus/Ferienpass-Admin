@@ -1,3 +1,8 @@
+Travis-CI
+=============================
+[![Build Status](https://travis-ci.org/digital-bauhaus/Ferienpass-Admin.svg?branch=master)](https://travis-ci.org/digital-bauhaus/Ferienpass-Admin)
+
+
 spring-boot-vuejs
 =============================
 [![Build Status](https://travis-ci.org/codecentric/cxf-spring-boot-starter-maven-plugin.svg?branch=master)](https://travis-ci.org/codecentric/cxf-spring-boot-starter-maven-plugin)
