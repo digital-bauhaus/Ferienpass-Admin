@@ -1,11 +1,6 @@
 <template>
   <div>
     <h1>{{title}}</h1>
-    <!--
-    Erstellen von Veranstaltung <br/>
-    Übersicht über Veranstaltung <br/>
-    Übersicht über Kinder in der jeweiligen Veranstaltung <br/>
-    Editing <br/>-->
     <br/>
     <h3>Menü:</h3> <br/>
     <p>
@@ -22,23 +17,6 @@
     </p>
 
     <br/>
-    <!--
-    <b>Event bearbeiten:</b><br/>
-    <b>Verwaltung</b>:
-    Ich als Admin möchte die Anmeldung zu allen Veranstaltungen einsehen und verwalten können. <br/>
-    -> eventuell Button, drauf klicken und dann weiterleitung an datenbank bzw erstmal dummy daten <br/>
-    <br/>
-    <b>Reservierung:</b>
-    Ich als Admin möchte eine gewisse Anzahl von Veranstaltungsplätzen reservieren können und wieder freigeben können. <br/>
-    -> Reservierung über eine Nummer die dann gesendet wird, platz für veranstaltung eingeben <br/>
-    <br/>
-    <b>Reporting </b>:
-    Ich als Admin möchte die Anmeldung zu einer Veranstaltung exportieren können. Vielleicht als veranstaltungsname.pdf <br/>
-    -> veranstaltung einsehen, über datenbank und dann exportieren <br/>
-    <br/>
-    <b>Stornierung</b>:
-    Ich als Admin möchte bestimmte Anmeldungen stornieren können. <br/>
-    -> eintrag aus datenbank entfernen <br/>-->
     <br/>
 	</div>
 </template>
@@ -75,7 +53,17 @@ li {
 }
 
 a {
+  color: #022051;
+  text-decoration: none;
+  padding: 8px 20px;
+  margin: 10px 10px;
+  font-size: 200%;
+  font-weight: bold;
+}
+
+a:hover {
   color: #42b983;
+  text-decoration: none;
 }
 </style>
 
