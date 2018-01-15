@@ -1,14 +1,14 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-backend,de.jonashackt.springbootvuejs.controller,BackendController,7,102,0,0,2,16,1,5,1,5
+backend,de.jonashackt.springbootvuejs.controller,BackendController,189,12,0,0,29,4,6,3,6,3
 backend,de.jonashackt.springbootvuejs,SpringBootVuejsApplication,5,8,0,0,2,2,1,2,1,2
 backend,de.jonashackt.springbootvuejs,SpringBootVuejsApplication.new WebMvcConfigurerAdapter() {...},0,18,0,0,0,3,0,2,0,2
-backend,de.jonashackt.springbootvuejs.domain,Doctor,0,71,0,0,0,20,0,11,0,11
+backend,de.jonashackt.springbootvuejs.domain,Doctor,55,16,0,0,14,6,9,2,9,2
 backend,de.jonashackt.springbootvuejs.domain,Allergy,15,0,0,0,6,0,3,0,3,0
 backend,de.jonashackt.springbootvuejs.domain,FoodLimit,5,0,0,0,2,0,1,0,1,0
 backend,de.jonashackt.springbootvuejs.domain,Illness,39,0,0,0,9,0,5,0,5,0
-backend,de.jonashackt.springbootvuejs.domain,User,0,316,0,0,0,76,0,39,0,39
-backend,de.jonashackt.springbootvuejs.domain,Project,80,21,0,0,20,8,13,2,13,2
+backend,de.jonashackt.springbootvuejs.domain,User,239,77,0,0,54,22,37,2,37,2
+backend,de.jonashackt.springbootvuejs.domain,Project,106,27,0,0,26,10,17,2,17,2
 backend,de.jonashackt.springbootvuejs.domain,DisabilityCode,9,0,0,0,4,0,1,0,1,0
-backend,de.jonashackt.springbootvuejs.domain,Contact,0,71,0,0,0,20,0,11,0,11
+backend,de.jonashackt.springbootvuejs.domain,Contact,56,15,0,0,14,6,9,2,9,2
 backend,de.jonashackt.springbootvuejs.domain,Disability,73,3,0,0,30,2,15,1,15,1
 backend,de.jonashackt.springbootvuejs.domain,Limitation,51,3,0,0,15,1,8,1,8,1

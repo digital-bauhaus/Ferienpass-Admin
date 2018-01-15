@@ -6,12 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "[User]")
 public class User {
 
     // PrimaryKey
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String firstName;
@@ -27,15 +28,32 @@ public class User {
     private String healthcareNr;
     private boolean allowTreatment;
 
-    @ManyToOne(cascade= CascadeType.ALL)
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="contact_id")
     private Contact emergencyContact;
     private boolean allowHomeAlone;
     private boolean allowRiding;
     private boolean allowSwimming;
-    @ManyToOne(cascade= CascadeType.ALL)
+
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="doctor_id")
     private Doctor doctor;
+    // foreign key as JoinColumn annotation with type of class
+
+    @ManyToMany(cascade=CascadeType.ALL)
+    @JoinTable(name="user_project",
+            joinColumns = @JoinColumn(name="id"),
+            inverseJoinColumns = @JoinColumn(name="project_id")
+    )
+    private List<Project> projects = new ArrayList<>();
+
+    @ManyToMany(cascade=CascadeType.ALL)
+    @JoinTable(name="user_limitation",
+            joinColumns = @JoinColumn(name="id"),
+            inverseJoinColumns = @JoinColumn(name="limitation_id")
+    )
+    private List<Limitation> limits = new ArrayList<>();
+
 
     @Override
     public String toString() {
@@ -63,15 +81,6 @@ public class User {
 
     public User() {}
 
-    // foreign key as JoinColumn annotation with type of class
-    @ManyToMany(cascade=CascadeType.ALL)
-    @JoinTable(name="user_project",
-        joinColumns = @JoinColumn(name="id"),
-        inverseJoinColumns = @JoinColumn(name="project_id")
-    )
-    private List<Project> projects = new ArrayList<>();
-
-
     public User(String firstName, String lastName, Date birthDate, Date registerDate, String street,
                 String city, String postcode, String telephone, String healthcareNr, boolean allowTreatment,
                 Contact emergencyContact, boolean allowHomeAlone, boolean allowRiding,
@@ -94,13 +103,6 @@ public class User {
         this.projects = projects;
         this.limits = limits;
     }
-
-    @ManyToMany
-    @JoinTable(name="user_limitation",
-            joinColumns = @JoinColumn(name="id"),
-            inverseJoinColumns = @JoinColumn(name="limitation_id")
-    )
-    private List<Limitation> limits = new ArrayList<>();
 
 
     public List<Limitation> getLimits() {

@@ -23,38 +23,86 @@ public class BackendController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ProjectRepository projectRepository;
+
     @RequestMapping(path = "/hello")
     public @ResponseBody String sayHello() {
         LOG.info("GET called on /hello resource");
         return HELLO_TEXT;
     }
 
-    @RequestMapping(path = "/all")
+    @RequestMapping(path = "/allusers")
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
     List<User> showAllUsers() {
-        LOG.info("GET called on /all resource");
+        LOG.info("GET called on /allusers resource");
         return userRepository.findAllUsers();
     }
 
-    @RequestMapping(path = "/add")
+    @RequestMapping(path = "/allprojects")
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
-    Long addNewUser (/*@RequestParam String firstName, @RequestParam String lastName*/) {
+    List<Project> showAllProjects() {
+        LOG.info("GET called on /allprojects resource");
+        return projectRepository.findAllProjects();
+    }
+
+    @RequestMapping(path = "/projectsof")
+    @ResponseStatus(HttpStatus.CREATED)
+    public @ResponseBody
+    List<Project> showProjectsOfUser(@RequestParam String firstName, @RequestParam String lastName) {
+        LOG.info("GET called on /projectsof resource");
+        return userRepository.findProjectsByFirstNameAndLastName(firstName,lastName);
+    }
+
+    @RequestMapping(path = "/sample")
+    @ResponseStatus(HttpStatus.CREATED)
+    public @ResponseBody
+    Long addNewUser () {
         // EXAMPLE USER
         Date registerDate = new Date();
         Date birthDate = new Date();
         Doctor doctor = new Doctor("Eich", "Route", 1, "Alabastia", "39829",
                 "555-6891");
         Contact contact = new Contact("Igor Eich", "Route 4 Neuborkia  96825", "555-2532");
-        Project project1 = new Project("Ball werfen", registerDate, 3, 1, "www.google.com");
+        Project project1 = new Project("Ball werfen", registerDate, 10, 20, 3, 1, "www.google.com");
+        FoodLimit limit1 = new FoodLimit("Laktoseintoleranz","");
+        Illness limit2 = new Illness("Was ganz dolle schlimmes", "Macht immer richtig komische Sachen","Honigmelone");
         List<Project> projects = new ArrayList<>();
+        projects.add(project1);
+        projects.add(project1);
         List<Limitation> limits = new ArrayList<>();
+        limits.add(limit1);
+        limits.add(limit2);
         User user = new User("Gary", "Eich", birthDate, registerDate, "Route 1",
                 "Neuborkia",
                 "96826", "555-5262", "437647298", false,  contact,
                 true, true, true, doctor,
                 projects, limits);
+        userRepository.save(user);
+
+        LOG.info(user.toString() + " successfully saved into DB");
+
+        return user.getId();
+    }
+
+
+
+    @RequestMapping(path = "/add")
+    @ResponseStatus(HttpStatus.CREATED)
+    public @ResponseBody
+    Long addNewUser (@RequestParam String firstName, @RequestParam String lastName, @RequestParam Date birthDate,
+                     @RequestParam String street, @RequestParam String city, @RequestParam String postcode,
+                     @RequestParam String telephone, @RequestParam String healthcareNr, @RequestParam boolean allowTreatment,
+                     @RequestParam Contact contact, @RequestParam boolean allowHomeAlone, @RequestParam boolean allowRiding,
+                     @RequestParam boolean allowSwimming, @RequestParam Doctor doctor, @RequestParam List<Project> projects,
+                     @RequestParam List<Limitation> limits) {
+
+        Date registerDate = new Date();
+        User user = new User(firstName, lastName, birthDate, registerDate, street, city,
+                postcode, telephone, healthcareNr, allowTreatment,  contact,
+                allowHomeAlone, allowRiding, allowSwimming, doctor, projects, limits);
         userRepository.save(user);
 
         LOG.info(user.toString() + " successfully saved into DB");

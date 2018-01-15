@@ -14,19 +14,23 @@ public class Project {
 
     // PrimaryKey
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long project_id;
     private String name;
     private Date date;
+    private int age;
+    private int price;
     private int slots;
     private int slotsReserved;
     private String weblink;
 
     protected Project() {}
 
-    public Project(String name, Date date, int slots, int slotsReserved, String weblink) {
+    public Project(String name, Date date, int age, int price, int slots, int slotsReserved, String weblink) {
         this.name = name;
         this.date = date;
+        this.age = age;
+        this.price = price;
         this.slots = slots;
         this.slotsReserved = slotsReserved;
         this.weblink = weblink;
@@ -35,8 +39,8 @@ public class Project {
     @Override
     public String toString() {
         return String.format(
-                "Project[project_id=%d, name='%s', date='%tD', slots='%d', slotsReserved='%d', weblink='%s']",
-                project_id, name, date, slots, slotsReserved, weblink);
+                "Project[project_id=%d, name='%s', date='%tD', age='%d', price='%d' slots='%d', slotsReserved='%d', weblink='%s']",
+                project_id, name, date, age, price, slots, slotsReserved, weblink);
     }
 
 
@@ -88,4 +92,19 @@ public class Project {
         this.weblink = weblink;
     }
 
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
 }

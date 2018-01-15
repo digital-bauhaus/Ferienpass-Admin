@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -34,8 +35,8 @@ public class UserRepositoryTest {
     Doctor doctor = new Doctor("Eich", "Route", 1, "Alabastia", "39829",
             "555-6891");
     Contact contact = new Contact("Igor Eich", "Route 4 Neuborkia  96825", "555-2532");
-    Project project1 = new Project("Ball werfen", registerDate, 3, 1, "www.google.com");
-    List<Project> projects = new ArrayList<>();
+    Project project1 = new Project("Ball werfen", registerDate, 10, 20, 3, 1, "www.google.com");
+    List<Project> projects = new ArrayList<>(Arrays.asList(project1));
     List<Limitation> limits = new ArrayList<>();
     User user = new User("Gary", "Eich", birthDate, registerDate, "Route 1",
             "Neuborkia",
@@ -54,6 +55,12 @@ public class UserRepositoryTest {
         List<User> usersWithLastNameEich = users.findByLastName("Eich");
 
         assertThat(usersWithLastNameEich, contains(user));
+    }
+
+    @Test
+    public void testFindProjectsByFirstNameAndLastName() throws Exception {
+        List<Project> projectsByFirstNameAndLastName = users.findProjectsByFirstNameAndLastName("Gary","Eich");
+        assertEquals(projectsByFirstNameAndLastName, projects);
     }
 
 

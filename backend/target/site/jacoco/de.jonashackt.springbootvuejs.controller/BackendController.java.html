@@ -23,48 +23,96 @@ import java.util.List;
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ProjectRepository projectRepository;
+
     @RequestMapping(path = &quot;/hello&quot;)
     public @ResponseBody String sayHello() {
-<span class="fc" id="L28">        LOG.info(&quot;GET called on /hello resource&quot;);</span>
-<span class="fc" id="L29">        return HELLO_TEXT;</span>
+<span class="fc" id="L31">        LOG.info(&quot;GET called on /hello resource&quot;);</span>
+<span class="fc" id="L32">        return HELLO_TEXT;</span>
     }
 
-    @RequestMapping(path = &quot;/all&quot;)
+    @RequestMapping(path = &quot;/allusers&quot;)
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
     List&lt;User&gt; showAllUsers() {
-<span class="nc" id="L36">        LOG.info(&quot;GET called on /all resource&quot;);</span>
-<span class="nc" id="L37">        return userRepository.findAllUsers();</span>
+<span class="nc" id="L39">        LOG.info(&quot;GET called on /allusers resource&quot;);</span>
+<span class="nc" id="L40">        return userRepository.findAllUsers();</span>
     }
 
-    @RequestMapping(path = &quot;/add&quot;)
+    @RequestMapping(path = &quot;/allprojects&quot;)
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
-    Long addNewUser (/*@RequestParam String firstName, @RequestParam String lastName*/) {
+    List&lt;Project&gt; showAllProjects() {
+<span class="nc" id="L47">        LOG.info(&quot;GET called on /allprojects resource&quot;);</span>
+<span class="nc" id="L48">        return projectRepository.findAllProjects();</span>
+    }
+
+    @RequestMapping(path = &quot;/projectsof&quot;)
+    @ResponseStatus(HttpStatus.CREATED)
+    public @ResponseBody
+    List&lt;Project&gt; showProjectsOfUser(@RequestParam String firstName, @RequestParam String lastName) {
+<span class="nc" id="L55">        LOG.info(&quot;GET called on /projectsof resource&quot;);</span>
+<span class="nc" id="L56">        return userRepository.findProjectsByFirstNameAndLastName(firstName,lastName);</span>
+    }
+
+    @RequestMapping(path = &quot;/sample&quot;)
+    @ResponseStatus(HttpStatus.CREATED)
+    public @ResponseBody
+    Long addNewUser () {
         // EXAMPLE USER
-<span class="fc" id="L45">        Date registerDate = new Date();</span>
-<span class="fc" id="L46">        Date birthDate = new Date();</span>
-<span class="fc" id="L47">        Doctor doctor = new Doctor(&quot;Eich&quot;, &quot;Route&quot;, 1, &quot;Alabastia&quot;, &quot;39829&quot;,</span>
+<span class="nc" id="L64">        Date registerDate = new Date();</span>
+<span class="nc" id="L65">        Date birthDate = new Date();</span>
+<span class="nc" id="L66">        Doctor doctor = new Doctor(&quot;Eich&quot;, &quot;Route&quot;, 1, &quot;Alabastia&quot;, &quot;39829&quot;,</span>
                 &quot;555-6891&quot;);
-<span class="fc" id="L49">        Contact contact = new Contact(&quot;Igor Eich&quot;, &quot;Route 4 Neuborkia  96825&quot;, &quot;555-2532&quot;);</span>
-<span class="fc" id="L50">        Project project1 = new Project(&quot;Ball werfen&quot;, registerDate, 3, 1, &quot;www.google.com&quot;);</span>
-<span class="fc" id="L51">        List&lt;Project&gt; projects = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L52">        List&lt;Limitation&gt; limits = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L53">        User user = new User(&quot;Gary&quot;, &quot;Eich&quot;, birthDate, registerDate, &quot;Route 1&quot;,</span>
+<span class="nc" id="L68">        Contact contact = new Contact(&quot;Igor Eich&quot;, &quot;Route 4 Neuborkia  96825&quot;, &quot;555-2532&quot;);</span>
+<span class="nc" id="L69">        Project project1 = new Project(&quot;Ball werfen&quot;, registerDate, 10, 20, 3, 1, &quot;www.google.com&quot;);</span>
+<span class="nc" id="L70">        FoodLimit limit1 = new FoodLimit(&quot;Laktoseintoleranz&quot;,&quot;&quot;);</span>
+<span class="nc" id="L71">        Illness limit2 = new Illness(&quot;Was ganz dolle schlimmes&quot;, &quot;Macht immer richtig komische Sachen&quot;,&quot;Honigmelone&quot;);</span>
+<span class="nc" id="L72">        List&lt;Project&gt; projects = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L73">        projects.add(project1);</span>
+<span class="nc" id="L74">        projects.add(project1);</span>
+<span class="nc" id="L75">        List&lt;Limitation&gt; limits = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L76">        limits.add(limit1);</span>
+<span class="nc" id="L77">        limits.add(limit2);</span>
+<span class="nc" id="L78">        User user = new User(&quot;Gary&quot;, &quot;Eich&quot;, birthDate, registerDate, &quot;Route 1&quot;,</span>
                 &quot;Neuborkia&quot;,
                 &quot;96826&quot;, &quot;555-5262&quot;, &quot;437647298&quot;, false,  contact,
                 true, true, true, doctor,
                 projects, limits);
-<span class="fc" id="L58">        userRepository.save(user);</span>
+<span class="nc" id="L83">        userRepository.save(user);</span>
 
-<span class="fc" id="L60">        LOG.info(user.toString() + &quot; successfully saved into DB&quot;);</span>
+<span class="nc" id="L85">        LOG.info(user.toString() + &quot; successfully saved into DB&quot;);</span>
 
-<span class="fc" id="L62">        return user.getId();</span>
+<span class="nc" id="L87">        return user.getId();</span>
+    }
+
+
+
+    @RequestMapping(path = &quot;/add&quot;)
+    @ResponseStatus(HttpStatus.CREATED)
+    public @ResponseBody
+    Long addNewUser (@RequestParam String firstName, @RequestParam String lastName, @RequestParam Date birthDate,
+                     @RequestParam String street, @RequestParam String city, @RequestParam String postcode,
+                     @RequestParam String telephone, @RequestParam String healthcareNr, @RequestParam boolean allowTreatment,
+                     @RequestParam Contact contact, @RequestParam boolean allowHomeAlone, @RequestParam boolean allowRiding,
+                     @RequestParam boolean allowSwimming, @RequestParam Doctor doctor, @RequestParam List&lt;Project&gt; projects,
+                     @RequestParam List&lt;Limitation&gt; limits) {
+
+<span class="nc" id="L102">        Date registerDate = new Date();</span>
+<span class="nc" id="L103">        User user = new User(firstName, lastName, birthDate, registerDate, street, city,</span>
+                postcode, telephone, healthcareNr, allowTreatment,  contact,
+                allowHomeAlone, allowRiding, allowSwimming, doctor, projects, limits);
+<span class="nc" id="L106">        userRepository.save(user);</span>
+
+<span class="nc" id="L108">        LOG.info(user.toString() + &quot; successfully saved into DB&quot;);</span>
+
+<span class="nc" id="L110">        return user.getId();</span>
     }
 
     @GetMapping(path=&quot;/user/{id}&quot;)
     public @ResponseBody User getUserById(@PathVariable(&quot;id&quot;) long id) {
-<span class="fc" id="L67">        return userRepository.findOne(id);</span>
+<span class="nc" id="L115">        return userRepository.findOne(id);</span>
     }
 
 }
