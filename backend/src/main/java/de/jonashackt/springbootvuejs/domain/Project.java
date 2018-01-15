@@ -1,13 +1,9 @@
 package de.jonashackt.springbootvuejs.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Project {
@@ -23,10 +19,16 @@ public class Project {
     private int slots;
     private int slotsReserved;
     private String weblink;
+    @ManyToMany(cascade= CascadeType.ALL)
+    @JoinTable(name="project_user",
+            joinColumns = @JoinColumn(name="project_id"),
+            inverseJoinColumns = @JoinColumn(name="id")
+    )
+    private List<User> users = new ArrayList<>();
 
     protected Project() {}
 
-    public Project(String name, Date date, int age, int price, int slots, int slotsReserved, String weblink) {
+    public Project(String name, Date date, int age, int price, int slots, int slotsReserved, String weblink, List<User> users) {
         this.name = name;
         this.date = date;
         this.age = age;
@@ -34,6 +36,7 @@ public class Project {
         this.slots = slots;
         this.slotsReserved = slotsReserved;
         this.weblink = weblink;
+        this.users = users;
     }
 
     @Override
@@ -106,5 +109,13 @@ public class Project {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 }

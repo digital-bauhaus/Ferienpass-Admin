@@ -56,7 +56,20 @@ public class BackendController {
         return userRepository.findProjectsByFirstNameAndLastName(firstName,lastName);
     }
 
-    @RequestMapping(path = "/sample")
+    @RequestMapping(path = "/sampleproject")
+    @ResponseStatus(HttpStatus.CREATED)
+    public @ResponseBody
+    Long addNewProject () {
+        // EXAMPLE Project
+        Project project = new Project("Ball Werfen", new Date(), 10, 20,2,1,"www.google.com",new ArrayList<>());
+        projectRepository.save(project);
+
+        LOG.info(project.toString() + " successfully saved into DB");
+
+        return project.getProject_id();
+    }
+
+    @RequestMapping(path = "/sampleuser")
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
     Long addNewUser () {
@@ -66,11 +79,10 @@ public class BackendController {
         Doctor doctor = new Doctor("Eich", "Route", 1, "Alabastia", "39829",
                 "555-6891");
         Contact contact = new Contact("Igor Eich", "Route 4 Neuborkia  96825", "555-2532");
-        Project project1 = new Project("Ball werfen", registerDate, 10, 20, 3, 1, "www.google.com");
+        Project project1 = new Project("Ball werfen", registerDate, 10, 20, 3, 1, "www.google.com", new ArrayList<>());
         FoodLimit limit1 = new FoodLimit("Laktoseintoleranz","");
         Illness limit2 = new Illness("Was ganz dolle schlimmes", "Macht immer richtig komische Sachen","Honigmelone");
         List<Project> projects = new ArrayList<>();
-        projects.add(project1);
         projects.add(project1);
         List<Limitation> limits = new ArrayList<>();
         limits.add(limit1);
@@ -80,6 +92,7 @@ public class BackendController {
                 "96826", "555-5262", "437647298", false,  contact,
                 true, true, true, doctor,
                 projects, limits);
+        project1.getUsers().add(user);
         userRepository.save(user);
 
         LOG.info(user.toString() + " successfully saved into DB");

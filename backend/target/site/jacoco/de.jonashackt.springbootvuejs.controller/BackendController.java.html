@@ -56,35 +56,48 @@ import java.util.List;
 <span class="nc" id="L56">        return userRepository.findProjectsByFirstNameAndLastName(firstName,lastName);</span>
     }
 
-    @RequestMapping(path = &quot;/sample&quot;)
+    @RequestMapping(path = &quot;/sampleproject&quot;)
+    @ResponseStatus(HttpStatus.CREATED)
+    public @ResponseBody
+    Long addNewProject () {
+        // EXAMPLE Project
+<span class="nc" id="L64">        Project project = new Project(&quot;Ball Werfen&quot;, new Date(), 10, 20,2,1,&quot;www.google.com&quot;,new ArrayList&lt;&gt;());</span>
+<span class="nc" id="L65">        projectRepository.save(project);</span>
+
+<span class="nc" id="L67">        LOG.info(project.toString() + &quot; successfully saved into DB&quot;);</span>
+
+<span class="nc" id="L69">        return project.getProject_id();</span>
+    }
+
+    @RequestMapping(path = &quot;/sampleuser&quot;)
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
     Long addNewUser () {
         // EXAMPLE USER
-<span class="nc" id="L64">        Date registerDate = new Date();</span>
-<span class="nc" id="L65">        Date birthDate = new Date();</span>
-<span class="nc" id="L66">        Doctor doctor = new Doctor(&quot;Eich&quot;, &quot;Route&quot;, 1, &quot;Alabastia&quot;, &quot;39829&quot;,</span>
+<span class="nc" id="L77">        Date registerDate = new Date();</span>
+<span class="nc" id="L78">        Date birthDate = new Date();</span>
+<span class="nc" id="L79">        Doctor doctor = new Doctor(&quot;Eich&quot;, &quot;Route&quot;, 1, &quot;Alabastia&quot;, &quot;39829&quot;,</span>
                 &quot;555-6891&quot;);
-<span class="nc" id="L68">        Contact contact = new Contact(&quot;Igor Eich&quot;, &quot;Route 4 Neuborkia  96825&quot;, &quot;555-2532&quot;);</span>
-<span class="nc" id="L69">        Project project1 = new Project(&quot;Ball werfen&quot;, registerDate, 10, 20, 3, 1, &quot;www.google.com&quot;);</span>
-<span class="nc" id="L70">        FoodLimit limit1 = new FoodLimit(&quot;Laktoseintoleranz&quot;,&quot;&quot;);</span>
-<span class="nc" id="L71">        Illness limit2 = new Illness(&quot;Was ganz dolle schlimmes&quot;, &quot;Macht immer richtig komische Sachen&quot;,&quot;Honigmelone&quot;);</span>
-<span class="nc" id="L72">        List&lt;Project&gt; projects = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L73">        projects.add(project1);</span>
-<span class="nc" id="L74">        projects.add(project1);</span>
-<span class="nc" id="L75">        List&lt;Limitation&gt; limits = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L76">        limits.add(limit1);</span>
-<span class="nc" id="L77">        limits.add(limit2);</span>
-<span class="nc" id="L78">        User user = new User(&quot;Gary&quot;, &quot;Eich&quot;, birthDate, registerDate, &quot;Route 1&quot;,</span>
+<span class="nc" id="L81">        Contact contact = new Contact(&quot;Igor Eich&quot;, &quot;Route 4 Neuborkia  96825&quot;, &quot;555-2532&quot;);</span>
+<span class="nc" id="L82">        Project project1 = new Project(&quot;Ball werfen&quot;, registerDate, 10, 20, 3, 1, &quot;www.google.com&quot;, new ArrayList&lt;&gt;());</span>
+<span class="nc" id="L83">        FoodLimit limit1 = new FoodLimit(&quot;Laktoseintoleranz&quot;,&quot;&quot;);</span>
+<span class="nc" id="L84">        Illness limit2 = new Illness(&quot;Was ganz dolle schlimmes&quot;, &quot;Macht immer richtig komische Sachen&quot;,&quot;Honigmelone&quot;);</span>
+<span class="nc" id="L85">        List&lt;Project&gt; projects = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L86">        projects.add(project1);</span>
+<span class="nc" id="L87">        List&lt;Limitation&gt; limits = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L88">        limits.add(limit1);</span>
+<span class="nc" id="L89">        limits.add(limit2);</span>
+<span class="nc" id="L90">        User user = new User(&quot;Gary&quot;, &quot;Eich&quot;, birthDate, registerDate, &quot;Route 1&quot;,</span>
                 &quot;Neuborkia&quot;,
                 &quot;96826&quot;, &quot;555-5262&quot;, &quot;437647298&quot;, false,  contact,
                 true, true, true, doctor,
                 projects, limits);
-<span class="nc" id="L83">        userRepository.save(user);</span>
+<span class="nc" id="L95">        project1.getUsers().add(user);</span>
+<span class="nc" id="L96">        userRepository.save(user);</span>
 
-<span class="nc" id="L85">        LOG.info(user.toString() + &quot; successfully saved into DB&quot;);</span>
+<span class="nc" id="L98">        LOG.info(user.toString() + &quot; successfully saved into DB&quot;);</span>
 
-<span class="nc" id="L87">        return user.getId();</span>
+<span class="nc" id="L100">        return user.getId();</span>
     }
 
 
@@ -99,20 +112,20 @@ import java.util.List;
                      @RequestParam boolean allowSwimming, @RequestParam Doctor doctor, @RequestParam List&lt;Project&gt; projects,
                      @RequestParam List&lt;Limitation&gt; limits) {
 
-<span class="nc" id="L102">        Date registerDate = new Date();</span>
-<span class="nc" id="L103">        User user = new User(firstName, lastName, birthDate, registerDate, street, city,</span>
+<span class="nc" id="L115">        Date registerDate = new Date();</span>
+<span class="nc" id="L116">        User user = new User(firstName, lastName, birthDate, registerDate, street, city,</span>
                 postcode, telephone, healthcareNr, allowTreatment,  contact,
                 allowHomeAlone, allowRiding, allowSwimming, doctor, projects, limits);
-<span class="nc" id="L106">        userRepository.save(user);</span>
+<span class="nc" id="L119">        userRepository.save(user);</span>
 
-<span class="nc" id="L108">        LOG.info(user.toString() + &quot; successfully saved into DB&quot;);</span>
+<span class="nc" id="L121">        LOG.info(user.toString() + &quot; successfully saved into DB&quot;);</span>
 
-<span class="nc" id="L110">        return user.getId();</span>
+<span class="nc" id="L123">        return user.getId();</span>
     }
 
     @GetMapping(path=&quot;/user/{id}&quot;)
     public @ResponseBody User getUserById(@PathVariable(&quot;id&quot;) long id) {
-<span class="nc" id="L115">        return userRepository.findOne(id);</span>
+<span class="nc" id="L128">        return userRepository.findOne(id);</span>
     }
 
 }

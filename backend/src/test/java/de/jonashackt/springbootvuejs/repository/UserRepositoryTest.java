@@ -35,7 +35,7 @@ public class UserRepositoryTest {
     Doctor doctor = new Doctor("Eich", "Route", 1, "Alabastia", "39829",
             "555-6891");
     Contact contact = new Contact("Igor Eich", "Route 4 Neuborkia  96825", "555-2532");
-    Project project1 = new Project("Ball werfen", registerDate, 10, 20, 3, 1, "www.google.com");
+    Project project1 = new Project("Ball werfen", registerDate, 10, 20, 3, 1, "www.google.com", new ArrayList<>());
     List<Project> projects = new ArrayList<>(Arrays.asList(project1));
     List<Limitation> limits = new ArrayList<>();
     User user = new User("Gary", "Eich", birthDate, registerDate, "Route 1",
