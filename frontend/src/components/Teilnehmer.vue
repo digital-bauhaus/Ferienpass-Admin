@@ -35,6 +35,15 @@
         </tr>
       </table>
     </form>
+    <!-- The Modal -->
+    <div id="delete" class="modal">
+
+      <!-- Modal content -->
+      <div class="modal-content">
+        <p>Sind sie sicher das Sie den Teilnehmer stornieren wollen?</p>
+        <button>Bestätigen</button><button v-on:click="closeModal()">Abbrechen</button>
+      </div>
+    </div>
 
     <footer>
       <a href="/#/Test/" >Zurück zur Übersicht</a>
@@ -43,6 +52,7 @@
   </div>
 </template>
 
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script>
 
 import axios from 'axios';
@@ -66,7 +76,14 @@ export default {
   },
   methods: {
     kill (event) {
-      event.target.parentElement.parentElement.remove();
+      var modal = document.getElementById('delete');
+      modal.style.display = 'block';
+    /* event.target.parentElement.parentElement.parentElement.remove(); */
+    },
+
+    closeModal () {
+      var modal = document.getElementById('delete');
+      modal.style.display = 'none';
     }
   }
 }
@@ -116,5 +133,31 @@ footer {
     position: fixed;
     bottom: 0px;
     width: 100%;
+}
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+.button {
+display: inline-block;
+float: left;
 }
 </style>
