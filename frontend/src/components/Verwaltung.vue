@@ -4,126 +4,40 @@
     <br/>
     <input type="text" name="label" placeholder="Suchen"> <br/>
     <br/>
-    <form v-if="formDataLoaded" class="form">
+    <form v-if="allprojects && allprojects.length" class="form">
       <br/>
         <table id='myTable'>
         <tr>
           <th v-on:click="sortTable(0)">Veranstaltung</th>
           <th v-on:click="sortTable(1)">Datum</th>
-          <th>Veranstalter</th>
           <th> belegt / gesamt Plätze</th>
           <th>Bearbeiten</th>
 
           <br/>
         </tr>
-          <tr v-for="entry in formData.sections[1].components[0].params.components">
-            <td v-on:click="teil($event)">{{ entry.params.label }}</td>
-            <td>{{ entry.params.date }}</td>
-            <td>{{ entry.params.org }}</td>
-            <td>{{ entry.params.full }} / </nobr> {{ entry.params.space }}</td>
+          <tr v-for="allproject of allprojects">
+            <!--<td v-on:click="teil($event)">{{allproject.name}}</td>-->
+            <td>{{allproject.name}}</td>
+            <td>{{allproject.date}}</td>
+            <td>belegt / </nobr> {{allproject.slots}}</td>
             <td><nobr><button v-on:click="kill($event)">löschen</button>
               <button>bearbeiten</button>
               <button>PDF exportieren</button></nobr>
             </td>
           </tr>
       </table>
-      <!--
-      <table id='myTable'>
-        <tr>
-          <th v-on:click="sortTable(0)">Name</th>
-          <th v-on:click="sortTable(1)">Country</th>
-        </tr>
-        <tr>
-          <td>Berglunds snabbkop</td>
-          <td>Schweden</td>
-        </tr>
-        <tr>
-          <td>North/South</td>
-          <td>UK</td>
-        </tr>
-        <tr>
-          <td>Alfreds Futterkiste</td>
-          <td>Germany</td>
-        </tr>
-        <tr>
-          <td>Koniglich Essen</td>
-          <td>Germany</td>
-        </tr>
-        <tr>
-          <td>Magazzini Alimentari</td>
-          <td>Italy</td>
-        </tr>
-      </table>
-      <table class="tbl-general tbl-orders">
-        <thead>
-          <tr>
-            <th class="c1 first-col activesort" onclick="sortByDate()">
-              <a href="#">Date</a>
-            </th>
-            <th class="c2">
-              <a href="#">Order Number</a>
-            </th>
-            <th class="c3">
-              <a href="#">Type</a>
-            </th>
-            <th class="c4 isPriceCell">
-              <a href="#">Order Total</a>
-            </th>
-            <th class="c5">
-              <a href="#">Status</a>
-            </th>
-            <th class="c6">
-              <a href="#">Reorder</a>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="date_elements_class">07-12-2014</td>
-            <td>
-              <a title="view order" class="actLnk" href=""/pcam/account/orders/5475003998">5475003998</a>
-            </td>
-            <td>ONLINE2</td>
-            <td class="isPriceCell">
-              <span$50.75</span>
-            </td>
-            <td>Waiting for Credit Approval</td>
-            <td class="isButtonCell">
-              <a class="button single" href="ezroh/5475003998">Reorder Items</a>
-            </td>
-          </tr>
-          <tr>
-            <td class="date_elements_class">06-12-2014</td>
-            <td>
-              <a title="view order" class="actLnk" href="/pcam/account/orders/5475003998">5475003998</a>
-            </td>
-            <td>ONLINE </td>
-            <td class="isPriceCell">
-              <span>$50.75</span>
-            </td>
-            <td>Waiting for Credit Approval </td>
-            <td class="isButtonCell">
-              <a class="button single" href="ezroh/5475003998">Reorder Items</a>
-            </td>
-          </tr>
-          <tr>
-            <td class="date_elements_class">08-12-2014</td>
-            <td>
-              <a title="view order" class="actLnk" href="/pcam/account/orders/5475003998">5475003998</a>
-            </td>
-            <td>ONLINE1 </td>
-            <td class="isPriceCell">
-              <span>$50.75</span>
-            </td>
-            <td>Waiting for Credit Approval </td>
-            <td class="isButtonCell">
-              <a class="button single" href="ezroh/5475003998">Reorder Items</a>
-            </td>
-          </tr>
-        </tbody>
-
-      </table>-->
     </form>
+
+    <!-- The Modal -->
+    <div id="delete" class="modal">
+
+      <!-- Modal content -->
+      <div class="modal-content">
+        <p>Sind sie sicher das Sie die Veranstaltung löschen wollen?</p>
+        <button>Bestätigen</button><button v-on:click="closeModal()">Abbrechen</button>
+      </div>
+
+    </div>
 
     <footer>
       <a href="/#/Test/" >Zurück zur Übersicht</a>
@@ -134,36 +48,26 @@
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script>
+import axios from 'axios';
+
 export default {
   name: 'Verwaltung',
   data () {
     return {
-      formDataLoaded: false,
-      formData: null
+      allprojects: [],
+      errors: []
     };
   },
   created () {
-    this.fetchData();
+    axios.get('http://localhost:8088/api/allprojects')
+    .then(response => {
+      this.allprojects = response.data
+    })
+    .catch(e => {
+      this.errors.push(e)
+    })
   },
   methods: {
-    fetchData () {
-      fetch('/static/form-data.json')
-        .then(response => {
-          return response.json();
-        })
-        .then(json => {
-          this.formData = json;
-          this.formDataLoaded = true;
-        });
-      fetch('/static/form-data.json')
-        .then(response => {
-          return response.json();
-        })
-        .then(json => {
-          this.dummy = json;
-          this.dummyLoaded = true;
-        });
-    },
     sortTable (n) {
       var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount;
       switchcount = 0;
@@ -203,44 +107,20 @@ export default {
         }
       }
     },
-    /* sortByDate () {
-      var sortOrder = 'desc';
-      var dateArray = [];
-      var dateMap = {};
-      var dateElements = $jQuery('.date_elements_class');
-
-      $jQuery(dateElements).each(function() {
-        dateMap[$(this).text().replace(/^\s+|\s+$/g, '')] = $(this).parent();
-        dateArray.push($(this).text().replace(/^\s+|$/g, ''));
-      });
-
-      dateArray.sort();
-      dateArray.sort(function(a, b) {
-        a = new Date(a);
-        b = new Date(b);
-        return a>b;
-      });
-
-      if(sortOrder === 'desc') {
-        sortOrder = 'asc';
-      } else {
-        dateArray.reverse();
-        sortOrder = 'desc';
-      }
-
-      jQuery(jQuery("table.tbl-general").find("tbody")[0]).html("");
-
-      for (var i = 0; i < dateArray.length; i++) {
-        jQuery(jQuery("table.tbl-general").find("tbody")[0]).append(dateMap[dateArray[i]]);
-      }
-    }, */
     kill (event) {
-      event.target.parentElement.parentElement.parentElement.remove();
+      var modal = document.getElementById('delete');
+      modal.style.display = 'block';
+      /* event.target.parentElement.parentElement.parentElement.remove(); */
     },
-    teil (event) {
+    /* teil (event) {
+      var span = document.getElementsByClassName('close')[0];
       event.target.parentElement.insertAdjacentHTML('afterend', '</table> <table><tr><th>Thorsten Koenig</th><th><button onclick="this.parentElement.parentElement.remove()">stornieren</button><th><button>als PDF exportieren</button></th></tr> </table>');
       event.target.parentElement.insertAdjacentHTML('afterend', '</table> <table><tr><th>Marie Kohler</th><th><button onclick="this.parentElement.parentElement.remove()">stornieren</button><th><button>als PDF exportieren</button></th></tr> </table>');
       event.target.parentElement.insertAdjacentHTML('afterend', '</table> <table><tr><th>Florian Keller</th><th><button onclick="this.parentElement.parentElement.remove()">stornieren</button><th><button>als PDF exportieren</button></th></tr> </table>');
+    }, */
+    closeModal () {
+      var modal = document.getElementById('delete');
+      modal.style.display = 'none';
     }
   }
 
@@ -292,6 +172,32 @@ footer {
     position: fixed;
     bottom: 0px;
     width: 100%;
+}
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+.button {
+display: inline-block;
+float: left;
 }
 </style>
 
