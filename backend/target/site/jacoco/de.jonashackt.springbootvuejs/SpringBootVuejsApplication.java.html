@@ -3,6 +3,7 @@
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -16,20 +17,18 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @EnableAutoConfiguration
 @ComponentScan
 @SpringBootApplication
-<span class="fc" id="L19">public class SpringBootVuejsApplication {</span>
-
+<span class="fc" id="L20">public class SpringBootVuejsApplication {</span>
 	public static void main(String[] args) {
-<span class="nc" id="L22">		SpringApplication.run(SpringBootVuejsApplication.class, args);</span>
+<span class="nc" id="L22">		final ApplicationContext ctx = SpringApplication.run(SpringBootVuejsApplication.class, args);</span>
 <span class="nc" id="L23">	}</span>
 
-	// Enable CORS globally
 	@Bean
 	public WebMvcConfigurer corsConfigurer() {
-<span class="fc" id="L28">		return new WebMvcConfigurerAdapter() {</span>
+<span class="fc" id="L27">		return new WebMvcConfigurerAdapter() {</span>
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-<span class="fc" id="L31">				registry.addMapping(&quot;/api/*&quot;).allowedOrigins(&quot;http://localhost:8080&quot;);</span>
-<span class="fc" id="L32">			}</span>
+<span class="fc" id="L30">				registry.addMapping(&quot;/**&quot;).allowedOrigins(&quot;http://localhost:8080&quot;);</span>
+<span class="fc" id="L31">			}</span>
 		};
 	}
 }

@@ -168,26 +168,14 @@ import java.util.List;
     //Project getProjectById(long project_id) {return projectRepository.findById(project_id);}
     //project.setSlotsReserved(slots);
 
-    @GetMapping(path = &quot;/user/{lastName}&quot;)
-    public @ResponseBody
-    List&lt;User&gt; getUserById(@PathVariable(&quot;lastName&quot;) String lastName) {
-<span class="nc" id="L174">        return userRepository.findByLastName(lastName);</span>
-    }
-
-    @GetMapping(path = &quot;/user/{firstName}&quot;)
-    public @ResponseBody
-    List&lt;User&gt; getUserByid(@PathVariable(&quot;firstName&quot;) String firstName) {
-<span class="nc" id="L180">        return userRepository.findByFirstName(firstName);</span>
-    }
-
     @RequestMapping(path = &quot;/projectsofuser&quot;)
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
     List&lt;Project&gt; getProjectsOfUser(@RequestParam long id) {
 
-<span class="nc" id="L188">        User user = userRepository.findOne(id);</span>
-<span class="nc" id="L189">        LOG.info(&quot;Returned all Projects of: &quot; + user.toString());</span>
-<span class="nc" id="L190">        return user.getProjects();</span>
+<span class="nc" id="L176">        User user = userRepository.findOne(id);</span>
+<span class="nc" id="L177">        LOG.info(&quot;Returned all Projects of: &quot; + user.toString());</span>
+<span class="nc" id="L178">        return user.getProjects();</span>
     }
 
     @RequestMapping(path = &quot;/addcancellation&quot;)
@@ -195,10 +183,10 @@ import java.util.List;
     public @ResponseBody
     List&lt;Project&gt; addProjectToCancelled(@RequestParam long id, @RequestParam Project cancelledProject) {
 
-<span class="nc" id="L198">        User user = userRepository.findOne(id);</span>
-<span class="nc" id="L199">        user.getCancellations().add(cancelledProject);</span>
-<span class="nc" id="L200">        LOG.info(&quot;Added Projects to List of Cancellations of: &quot; + user.toString());</span>
-<span class="nc" id="L201">        return user.getCancellations();</span>
+<span class="nc" id="L186">        User user = userRepository.findOne(id);</span>
+<span class="nc" id="L187">        user.getCancellations().add(cancelledProject);</span>
+<span class="nc" id="L188">        LOG.info(&quot;Added Projects to List of Cancellations of: &quot; + user.toString());</span>
+<span class="nc" id="L189">        return user.getCancellations();</span>
     }
 
 

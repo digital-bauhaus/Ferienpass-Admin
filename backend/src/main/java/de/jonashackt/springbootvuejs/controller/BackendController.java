@@ -168,18 +168,6 @@ public class BackendController {
     //Project getProjectById(long project_id) {return projectRepository.findById(project_id);}
     //project.setSlotsReserved(slots);
 
-    @GetMapping(path = "/user/{lastName}")
-    public @ResponseBody
-    List<User> getUserById(@PathVariable("lastName") String lastName) {
-        return userRepository.findByLastName(lastName);
-    }
-
-    @GetMapping(path = "/user/{firstName}")
-    public @ResponseBody
-    List<User> getUserByid(@PathVariable("firstName") String firstName) {
-        return userRepository.findByFirstName(firstName);
-    }
-
     @RequestMapping(path = "/projectsofuser")
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
