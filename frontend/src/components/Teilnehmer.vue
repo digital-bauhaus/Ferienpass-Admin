@@ -2,6 +2,7 @@
   <div>
     <h1>Teilnehmer</h1>
     <br/>
+    <!--
     <form action="#">
       <p>
         <input type="search" placeholder="Suchen" list="Teilnehmer">
@@ -15,23 +16,21 @@
         </datalist>
         <button>finden</button>
       </p>
-    </form>
-    <form v-if="formDataLoaded" class="form">
+    </form>-->
+    <form v-if="allusers && allusers.length" class="form">
       <br/>
       <table>
-        <!--<li>{{ formData.sections[2].title }}</li>-->
-        <tr v-for="entry in formData.sections[2].components[0].params.components">
-          <th>{{ entry.params.lastname }},
-
-            {{ entry.params.firstname }}
+       <tr v-for="alluser of allusers">
+          <th>{{alluser.lastName}}, {{alluser.firstName}}
           </th>
-          <th>{{ entry.params.date }}</th>
-          <th>{{ entry.params.street }}</th>
-          <th>{{ entry.params.location }}</th>
-          <th>{{ entry.params.phone }}</th>
+          <th>{{alluser.birthDate}}</th>
+          <th>{{alluser.street}}</th>
+          <th>{{alluser.city}}</th>
+          <th>{{alluser.telephone}}</th>
 
           <th><button v-on:click="kill($event)">stornieren</button>
-          <button>bearbeiten</button>
+          <!--<button onclick="window.location.href='/#/TeilnehmerEdit?id='+alluser.id">bearbeiten</button>-->
+            <router-link :to="{path: '../TeilnehmerEdit', query: {id: alluser.id }}">Bearbeiten</router-link>
             <button>als PDF exportieren</button></th>
         </tr>
       </table>
@@ -46,28 +45,26 @@
 
 <script>
 
+import axios from 'axios';
+
 export default {
   name: 'Teilnehmer',
   data () {
     return {
-      formDataLoaded: false,
-      formData: null
+      allusers: [],
+      errors: []
     };
   },
   created () {
-    this.fetchData();
+    axios.get('http://localhost:8088/api/allusers')
+    .then(response => {
+      this.allusers = response.data
+    })
+    .catch(e => {
+      this.errors.push(e)
+    })
   },
   methods: {
-    fetchData () {
-      fetch('/static/form-data.json')
-        .then(response => {
-          return response.json();
-        })
-        .then(json => {
-          this.formData = json;
-          this.formDataLoaded = true;
-        });
-    },
     kill (event) {
       event.target.parentElement.parentElement.remove();
     }

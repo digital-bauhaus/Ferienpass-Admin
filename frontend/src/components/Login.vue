@@ -2,7 +2,7 @@
   <div>
     <h2>{{title}}</h2>
     <br/>
-    <form>
+    <form id="login">
       <input type="text" name="Admin-Name" value="" placeholder="Admin"> <br/>
       <input type="password" name="Passwort" value="" placeholder="Passwort"><br/>
       <button onclick="window.location.href='/#/Test'">einloggen</button>
@@ -18,7 +18,7 @@ export default {
 
   data () {
     return {
-      title: 'Admin Login'
+      title: 'Ferienpass Weimar: Administration'
     }
   }
 }
@@ -41,17 +41,24 @@ li {
   margin: 0 10px;
 }
 
+#login {
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  width: 320px;
+  height: 320px;
+}
+
+
 input[type=text] {
-    width: 15%;
-    padding: 12px 18px;
-    margin: 8px 0;
+    padding: 10px 12px;
+    margin: 4px 0;
     box-sizing: border-box;
 }
 
 input[type=password] {
-    width: 15%;
-    padding: 12px 18px;
-    margin: 8px 0;
+    padding: 10px 12px;
+    margin: 4px 0;
     box-sizing: border-box;
 }
 
@@ -60,6 +67,7 @@ button {
     border: none;
     color: white;
     padding: 10px 24px;
+    margin-top: 10px;
     border-radius: 8px;
     text-align: center;
     text-decoration: none;
