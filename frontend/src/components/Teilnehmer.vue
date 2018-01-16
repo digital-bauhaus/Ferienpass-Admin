@@ -1,9 +1,16 @@
 <template>
-  <div>
-    <h1>Teilnehmer</h1>
-    <br/>
+  <html>
+    <nav>
+      <input type="text" class="searchbar" placeholder="Suche ...">
+      <a href="/#/Veranstaltung/" >Veranstaltung erstellen</a>
+      <a href="/#/Verwaltung/" >Veranstaltungen verwalten</a>
+      <a href="/#/Teilnehmer/" >Teilnehmer</a>
+      <a href="/#/Reservierung/" >Reservierungen</a>
+    </nav>
+    <main>
+    <h1>Teilnehmerübersicht</h1>
+
     <!--
-    <form action="#">
       <p>
         <input type="search" placeholder="Suchen" list="Teilnehmer">
         <datalist id="Teilnehmer">
@@ -17,24 +24,28 @@
         <button>finden</button>
       </p>
     </form>-->
-    <form v-if="allusers && allusers.length" class="form">
-      <br/>
-      <table>
-       <tr v-for="alluser of allusers" :id ="alluser.hasPayed">
-          <th>{{alluser.lastName}}, {{alluser.firstName}}
-          </th>
-          <th>{{alluser.birthDate}}</th>
-          <th>{{alluser.street}}</th>
-          <th>{{alluser.city}}</th>
-          <th>{{alluser.telephone}}</th>
 
-          <th><button v-on:click="kill($event)">stornieren</button>
-          <!--<button onclick="window.location.href='/#/TeilnehmerEdit?id='+alluser.id">bearbeiten</button>-->
-            <router-link :to="{path: '../TeilnehmerEdit', query: {id: alluser.id }}">Bearbeiten</router-link>
-            <button>als PDF exportieren</button></th>
-        </tr>
-      </table>
-    </form>
+       <table v-if="allusers && allusers.length">
+       <tr>
+         <th>Name</th>
+         <th>Geburtstag</th>
+         <th>Addresse</th>
+         <th>Telefon</th>
+         <th>Bearbeiten</th>
+       </tr>
+       <tr v-for="alluser of allusers" :id="alluser.hasPayed">
+         <td>{{alluser.lastName}}, {{alluser.firstName}}</td>
+         <td>{{alluser.birthDate}}</td>
+         <td>{{alluser.street}}, {{alluser.city}}</td>
+         <td>{{alluser.telephone}}</th>
+
+         <td><button v-on:click="kill($event)">stornieren</button>
+           <router-link :to="{path: '../TeilnehmerEdit', query: {id: alluser.id }}">Bearbeiten</router-link>
+           <button>als PDF exportieren</button>
+         </td>
+       </tr>
+     </table>
+    </main>
     <!-- The Modal -->
     <div id="delete" class="modal">
 
@@ -45,11 +56,7 @@
       </div>
     </div>
 
-    <footer>
-      <a href="/#/Test/" >Zurück zur Übersicht</a>
-    </footer>
-
-  </div>
+  </html>
 </template>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -92,52 +99,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-}
 
-td, th {
-    border: 1px solid #000000;
-    text-align: left;
-    padding: 8px;
-    background-color: #efe813;
-}
-
-#true > th {
+#true {
     background-color: #9aeaa0;
 }
-tr {
-    bgcolor: #19ff4b;
-}
-h1, h2 {
-  font-weight: normal;
-}
 
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}
-footer {
-    clear: both;
-    padding: 0;
-    text-align: center;
-    vertical-align: middle;
-    line-height: normal;
-    margin: 0;
-    position: fixed;
-    bottom: 0px;
-    width: 100%;
-}
 /* The Modal (background) */
 .modal {
     display: none; /* Hidden by default */

@@ -1,33 +1,33 @@
 <template>
-	<div>
-    <h1>Veranstaltungen verwalten</h1>
-    <br/>
-    <input type="text" name="label" placeholder="Suchen"> <br/>
-    <br/>
-    <form v-if="allprojects && allprojects.length" class="form">
-      <br/>
-        <table id='myTable'>
-        <tr>
-          <th v-on:click="sortTable(0)">Veranstaltung</th>
-          <th v-on:click="sortTable(1)">Datum</th>
-          <th> belegt / gesamt Plätze</th>
-          <th>Bearbeiten</th>
-
-          <br/>
-        </tr>
-          <tr v-for="allproject of allprojects">
-            <!--<td v-on:click="teil($event)">{{allproject.name}}</td>-->
-            <td>{{allproject.name}}</td>
-            <td>{{allproject.date}}</td>
-            <td>belegt / </nobr> {{allproject.slots}}</td>
-            <td><nobr><button v-on:click="kill($event)">löschen</button>
-              <button>bearbeiten</button>
-              <button>PDF exportieren</button></nobr>
-            </td>
-          </tr>
-      </table>
-    </form>
-
+	<html>
+      <nav>
+        <input type="text" class="searchbar" placeholder="Suche ...">
+        <a href="/#/Veranstaltung/" >Veranstaltung erstellen</a>
+        <a href="/#/Verwaltung/" >Veranstaltungen verwalten</a>
+        <a href="/#/Teilnehmer/" >Teilnehmer</a>
+        <a href="/#/Reservierung/" >Reservierungen</a>
+      </nav>
+      <main>
+        <h1>Veranstaltungsübersicht</h1>
+              <table v-if="allprojects && allprojects.length" id="myTable">
+                <tr>
+                  <th v-on:click="sortTable(0)">Veranstaltung</th>
+                  <th v-on:click="sortTable(1)">Datum</th>
+                  <th> belegt / gesamt Plätze</th>
+                  <th>Bearbeiten</th>
+                 </tr>
+                 <tr v-for="allproject of allprojects">
+                 <!--<td v-on:click="teil($event)">{{allproject.name}}</td>-->
+                   <td>{{allproject.name}}</td>
+                   <td>{{allproject.date}}</td>
+                   <td>belegt / </nobr> {{allproject.slots}}</td>
+                   <td><nobr><button v-on:click="kill($event)">löschen</button>
+                     <button>bearbeiten</button>
+                     <button>PDF exportieren</button></nobr>
+                   </td>
+                 </tr>
+               </table>
+      </main>
     <!-- The Modal -->
     <div id="delete" class="modal">
 
@@ -39,11 +39,8 @@
 
     </div>
 
-    <footer>
-      <a href="/#/Test/" >Zurück zur Übersicht</a>
-    </footer>
 
-	</div>
+	</html>
 </template>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -130,71 +127,13 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
+main {
+  width: 75%;
+  position: absolute;
+  right: 0px;
+  height: 100%;
 }
 
-td, th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-}
-
-tr:nth-child(even) {
-    background-color: #dddddd;
-}
-h1, h2 {
-  font-weight: normal;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}
-footer {
-    clear: both;
-    background: White;
-    padding: 0;
-    text-align: center;
-    vertical-align: middle;
-    line-height: normal;
-    margin: 0;
-    position: fixed;
-    bottom: 0px;
-    width: 100%;
-}
-/* The Modal (background) */
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-
-/* Modal Content/Box */
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
-}
 .button {
 display: inline-block;
 float: left;
