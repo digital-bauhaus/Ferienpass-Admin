@@ -9,6 +9,7 @@
 /home/arturo/Studium/microservice/Ferienpass-Admin/backend/src/main/java/de/jonashackt/springbootvuejs/repository/LimitationRepository.java
 /home/arturo/Studium/microservice/Ferienpass-Admin/backend/src/main/java/de/jonashackt/springbootvuejs/SpringBootVuejsApplication.java
 /home/arturo/Studium/microservice/Ferienpass-Admin/backend/src/main/java/de/jonashackt/springbootvuejs/domain/Contact.java
+/home/arturo/Studium/microservice/Ferienpass-Admin/backend/src/main/java/de/jonashackt/springbootvuejs/WebConfig.java
 /home/arturo/Studium/microservice/Ferienpass-Admin/backend/src/main/java/de/jonashackt/springbootvuejs/domain/Illness.java
 /home/arturo/Studium/microservice/Ferienpass-Admin/backend/src/main/java/de/jonashackt/springbootvuejs/domain/DisabilityCode.java
 /home/arturo/Studium/microservice/Ferienpass-Admin/backend/src/main/java/de/jonashackt/springbootvuejs/domain/FoodLimit.java

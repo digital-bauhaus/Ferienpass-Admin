@@ -130,10 +130,10 @@ public class BackendController {
         return userRepository.findOne(id);
     }
 
-    @GetMapping(path = "/project/{id}")
+    @GetMapping(path = "/project/{project_id}")
     public @ResponseBody
-    Project getProjectById(@PathVariable("id") Long id) {
-        return projectRepository.findOne(id);
+    Project getProjectById(@PathVariable("project_id") Long project_id) {
+        return projectRepository.findOne(project_id);
     }
 
     @RequestMapping(path = "/createproject")
@@ -180,24 +180,23 @@ public class BackendController {
         return userRepository.findByFirstName(firstName);
     }
 
-    @RequestMapping(path = "/getProjectsOfUser")
+    @RequestMapping(path = "/projectsofuser")
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
     List<Project> getProjectsOfUser(@RequestParam long id) {
 
         User user = userRepository.findOne(id);
-        userRepository.findOne(id);
         LOG.info("Returned all Projects of: " + user.toString());
         return user.getProjects();
     }
 
-    @RequestMapping(path = "/addProjectToCancelled")
+    @RequestMapping(path = "/addcancellation")
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
-    List<Project> addProjectToCancelled(@RequestParam long id, @RequestParam List<Project> cancellations) {
+    List<Project> addProjectToCancelled(@RequestParam long id, @RequestParam Project cancelledProject) {
 
         User user = userRepository.findOne(id);
-        user.setCancellations(cancellations);
+        user.getCancellations().add(cancelledProject);
         LOG.info("Added Projects to List of Cancellations of: " + user.toString());
         return user.getCancellations();
     }
