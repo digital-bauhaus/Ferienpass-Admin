@@ -20,7 +20,7 @@
     <form v-if="allusers && allusers.length" class="form">
       <br/>
       <table>
-       <tr v-for="alluser of allusers">
+       <tr v-for="alluser of allusers" :id ="alluser.hasPayed">
           <th>{{alluser.lastName}}, {{alluser.firstName}}
           </th>
           <th>{{alluser.birthDate}}</th>
@@ -99,13 +99,17 @@ table {
 }
 
 td, th {
-    border: 1px solid #dddddd;
+    border: 1px solid #000000;
     text-align: left;
     padding: 8px;
+    background-color: #efe813;
 }
 
-tr:nth-child(even) {
-    background-color: #dddddd;
+#true > th {
+    background-color: #9aeaa0;
+}
+tr {
+    bgcolor: #19ff4b;
 }
 h1, h2 {
   font-weight: normal;
