@@ -146,50 +146,51 @@ public class BackendController {
     @RequestMapping(path = "/deleteproject")
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
-    String deleteProject(@RequestParam long project_id) {
+    String deleteProject(@RequestParam Long project_id) {
 
-        Project theproj = projectRepository.findById(project_id);
+        Project theproj = projectRepository.findOne(project_id);
         projectRepository.delete(project_id);
         LOG.info(theproj.toString() + "deleted from DB");
 
-        return theproj.getProject_id();
+        return theproj.toString();
     }
 
-    @RequestMapping(path = "/reserveplace")
-    @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody
+    //@RequestMapping(path = "/reserveplace")
+    //@ResponseStatus(HttpStatus.CREATED)
+    //public @ResponseBody
     //Long reserving(@RequestParam long project_id, @RequestParam int slots);
     //Project getProjectById(long project_id) {return projectRepository.findById(project_id);}
     //project.setSlotsReserved(slots);
 
     @GetMapping(path = "/user/{lastName}")
     public @ResponseBody
-    User getUserById(@PathVariable("lastName") String lastName) {
+    List<User> getUserById(@PathVariable("lastName") String lastName) {
         return userRepository.findByLastName(lastName);
     }
 
     @GetMapping(path = "/user/{firstName}")
     public @ResponseBody
-    User getUserById(@PathVariable("firstName") String firstName) {
+    List<User> getUserByid(@PathVariable("firstName") String firstName) {
         return userRepository.findByFirstName(firstName);
     }
 
     @RequestMapping(path = "/getProjectsOfUser")
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
-    String getProjectsOfUser(@RequestParam int id) {
+    List<Project> getProjectsOfUser(@RequestParam long id) {
 
-        User user = userRepository.findById(id);
+        User user = userRepository.findOne(id);
+        userRepository.findOne(id);
         LOG.info("Returned all Projects of: " + user.toString());
-        return user.getProjects();;
+        return user.getProjects();
     }
 
     @RequestMapping(path = "/addProjectToCancelled")
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
-    String addProjectToCancelled(@RequestParam int id, @RequestParam List<Project> cancellations) {
+    List<Project> addProjectToCancelled(@RequestParam long id, @RequestParam List<Project> cancellations) {
 
-        User user = userRepository.findById(id);
+        User user = userRepository.findOne(id);
         user.setCancellations(cancellations);
         LOG.info("Added Projects to List of Cancellations of: " + user.toString());
         return user.getCancellations();
