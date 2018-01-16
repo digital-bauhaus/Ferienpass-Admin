@@ -130,6 +130,12 @@ public class BackendController {
         return userRepository.findOne(id);
     }
 
+    @GetMapping(path = "/project/{id}")
+    public @ResponseBody
+    Project getProjectById(@PathVariable("id") Long id) {
+        return projectRepository.findOne(id);
+    }
+
     @RequestMapping(path = "/createproject")
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
