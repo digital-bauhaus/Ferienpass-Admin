@@ -34,6 +34,7 @@ public class User {
     private boolean allowHomeAlone;
     private boolean allowRiding;
     private boolean allowSwimming;
+    private boolean hasPayed;
 
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="doctor_id")
@@ -47,12 +48,20 @@ public class User {
     )
     private List<Project> projects = new ArrayList<>();
 
+
     @ManyToMany(cascade=CascadeType.ALL)
     @JoinTable(name="user_limitation",
             joinColumns = @JoinColumn(name="id"),
             inverseJoinColumns = @JoinColumn(name="limitation_id")
     )
     private List<Limitation> limits = new ArrayList<>();
+
+    @ManyToMany(cascade=CascadeType.ALL)
+    @JoinTable(name="cancellation",
+            joinColumns = @JoinColumn(name="id"),
+            inverseJoinColumns = @JoinColumn(name="project_id")
+    )
+    private List<Project> cancellations = new ArrayList<>();
 
 
     @Override
@@ -73,9 +82,11 @@ public class User {
                 ", allowHomeAlone=" + allowHomeAlone +
                 ", allowRiding=" + allowRiding +
                 ", allowSwimming=" + allowSwimming +
+                ", hasPayed=" + hasPayed +
                 ", doctor=" + doctor +
                 ", projects=" + projects +
                 ", limits=" + limits +
+                ", cancellations=" + cancellations +
                 '}';
     }
 
@@ -84,7 +95,8 @@ public class User {
     public User(String firstName, String lastName, Date birthDate, Date registerDate, String street,
                 String city, String postcode, String telephone, String healthcareNr, boolean allowTreatment,
                 Contact emergencyContact, boolean allowHomeAlone, boolean allowRiding,
-                boolean allowSwimming, Doctor doctor, List<Project> projects, List<Limitation> limits) {
+                boolean allowSwimming, boolean hasPayed, Doctor doctor, List<Project> projects, List<Limitation> limits,
+                List<Project> cancellations) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
@@ -99,9 +111,11 @@ public class User {
         this.allowHomeAlone = allowHomeAlone;
         this.allowRiding = allowRiding;
         this.allowSwimming = allowSwimming;
+        this.hasPayed = hasPayed;
         this.doctor = doctor;
         this.projects = projects;
         this.limits = limits;
+        this.cancellations = cancellations;
     }
 
 
@@ -244,4 +258,20 @@ public class User {
     public boolean isAllowTreatment() {return allowTreatment;}
 
     public void setAllowTreatment(boolean allowTreatment) {this.allowTreatment = allowTreatment; }
+
+    public List<Project> getCancellations() {
+        return cancellations;
+    }
+
+    public void setCancellations(List<Project> cancellations) {
+        this.cancellations = cancellations;
+    }
+
+    public boolean isHasPayed() {
+        return hasPayed;
+    }
+
+    public void setHasPayed(boolean hasPayed) {
+        this.hasPayed = hasPayed;
+    }
 }

@@ -19,4 +19,6 @@ public interface ProjectRepository extends CrudRepository<Project, Long> {
     @Query(value="SELECT users FROM Project p WHERE p.name in :name")
     List<User> findUsersByProjectName();
 
+
+
 }

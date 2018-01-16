@@ -41,8 +41,8 @@ public class UserRepositoryTest {
     User user = new User("Gary", "Eich", birthDate, registerDate, "Route 1",
             "Neuborkia",
             "96826", "555-5262", "437647298", false,  contact,
-            true, true, true, doctor,
-            projects, limits);
+            true, true, true, true, doctor,
+            projects, limits, null);
 
     @Before
     public void fillSomeDataIntoOurDb() {

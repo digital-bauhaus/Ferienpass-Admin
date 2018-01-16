@@ -92,12 +92,11 @@ import java.util.List;
                 &quot;96826&quot;, &quot;555-5262&quot;, &quot;437647298&quot;, false,  contact,
                 true, true, true, doctor,
                 projects, limits);
-<span class="nc" id="L95">        project1.getUsers().add(user);</span>
-<span class="nc" id="L96">        userRepository.save(user);</span>
+<span class="nc" id="L95">        userRepository.save(user);</span>
 
-<span class="nc" id="L98">        LOG.info(user.toString() + &quot; successfully saved into DB&quot;);</span>
+<span class="nc" id="L97">        LOG.info(user.toString() + &quot; successfully saved into DB&quot;);</span>
 
-<span class="nc" id="L100">        return user.getId();</span>
+<span class="nc" id="L99">        return user.getId();</span>
     }
 
 
@@ -112,20 +111,20 @@ import java.util.List;
                      @RequestParam boolean allowSwimming, @RequestParam Doctor doctor, @RequestParam List&lt;Project&gt; projects,
                      @RequestParam List&lt;Limitation&gt; limits) {
 
-<span class="nc" id="L115">        Date registerDate = new Date();</span>
-<span class="nc" id="L116">        User user = new User(firstName, lastName, birthDate, registerDate, street, city,</span>
+<span class="nc" id="L114">        Date registerDate = new Date();</span>
+<span class="nc" id="L115">        User user = new User(firstName, lastName, birthDate, registerDate, street, city,</span>
                 postcode, telephone, healthcareNr, allowTreatment,  contact,
                 allowHomeAlone, allowRiding, allowSwimming, doctor, projects, limits);
-<span class="nc" id="L119">        userRepository.save(user);</span>
+<span class="nc" id="L118">        userRepository.save(user);</span>
 
-<span class="nc" id="L121">        LOG.info(user.toString() + &quot; successfully saved into DB&quot;);</span>
+<span class="nc" id="L120">        LOG.info(user.toString() + &quot; successfully saved into DB&quot;);</span>
 
-<span class="nc" id="L123">        return user.getId();</span>
+<span class="nc" id="L122">        return user.getId();</span>
     }
 
     @GetMapping(path=&quot;/user/{id}&quot;)
     public @ResponseBody User getUserById(@PathVariable(&quot;id&quot;) long id) {
-<span class="nc" id="L128">        return userRepository.findOne(id);</span>
+<span class="nc" id="L127">        return userRepository.findOne(id);</span>
     }
 
 }

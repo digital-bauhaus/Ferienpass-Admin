@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @RestController()
@@ -19,6 +20,7 @@ public class BackendController {
     private static final Logger LOG = LoggerFactory.getLogger(BackendController.class);
 
     public static final String HELLO_TEXT = "Hello from Spring Boot Backend!";
+
 
     @Autowired
     private UserRepository userRepository;
@@ -90,9 +92,8 @@ public class BackendController {
         User user = new User("Gary", "Eich", birthDate, registerDate, "Route 1",
                 "Neuborkia",
                 "96826", "555-5262", "437647298", false,  contact,
-                true, true, true, doctor,
-                projects, limits);
-        project1.getUsers().add(user);
+                true, true, true, true, doctor,
+                projects, limits, null);
         userRepository.save(user);
 
         LOG.info(user.toString() + " successfully saved into DB");
@@ -102,20 +103,20 @@ public class BackendController {
 
 
 
-    @RequestMapping(path = "/add")
+    @RequestMapping(path = "/adduser")
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
     Long addNewUser (@RequestParam String firstName, @RequestParam String lastName, @RequestParam Date birthDate,
                      @RequestParam String street, @RequestParam String city, @RequestParam String postcode,
                      @RequestParam String telephone, @RequestParam String healthcareNr, @RequestParam boolean allowTreatment,
                      @RequestParam Contact contact, @RequestParam boolean allowHomeAlone, @RequestParam boolean allowRiding,
-                     @RequestParam boolean allowSwimming, @RequestParam Doctor doctor, @RequestParam List<Project> projects,
+                     @RequestParam boolean allowSwimming, @RequestParam boolean hasPayed, @RequestParam Doctor doctor, @RequestParam List<Project> projects,
                      @RequestParam List<Limitation> limits) {
 
         Date registerDate = new Date();
         User user = new User(firstName, lastName, birthDate, registerDate, street, city,
                 postcode, telephone, healthcareNr, allowTreatment,  contact,
-                allowHomeAlone, allowRiding, allowSwimming, doctor, projects, limits);
+                allowHomeAlone, allowRiding, allowSwimming, hasPayed, doctor, projects, limits, null);
         userRepository.save(user);
 
         LOG.info(user.toString() + " successfully saved into DB");
