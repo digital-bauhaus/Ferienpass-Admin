@@ -13,6 +13,8 @@ public interface ProjectRepository extends CrudRepository<Project, Long> {
 
     List<Project> findByName(@Param("name") String name);
 
+    List<Project> findById(@Param("project_id") long project_id);
+
     @Query(value="FROM Project")
     List<Project> findAllProjects();
 
