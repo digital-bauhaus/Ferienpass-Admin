@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: de.jonashackt.springbootvuejs.controller.BackendControllerTest
 -------------------------------------------------------------------------------
-Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 42.223 sec - in de.jonashackt.springbootvuejs.controller.BackendControllerTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 46.416 sec - in de.jonashackt.springbootvuejs.controller.BackendControllerTest
