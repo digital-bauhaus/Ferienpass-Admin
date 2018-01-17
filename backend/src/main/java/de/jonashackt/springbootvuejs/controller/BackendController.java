@@ -247,5 +247,17 @@ public class BackendController {
         return user.getCancellations();
     }
 
+    // GET USERS OF PROJECT
+    @RequestMapping(path = "/usersofproject")
+    @ResponseStatus(HttpStatus.CREATED)
+    public @ResponseBody
+    List<User> getUsersOfProject(@RequestParam long id) {
+
+        Project project = projectRepository.findOne(id);
+        LOG.info("Returned all Users of: " + project.toString());
+        return project.getUsers();
+    }
+
+
 
 }

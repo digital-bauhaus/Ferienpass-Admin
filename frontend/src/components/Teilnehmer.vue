@@ -28,13 +28,15 @@
 
        <table v-if="allusers && allusers.length">
        <tr>
+         <th>Status</th>
          <th>Name</th>
          <th>Geburtstag</th>
          <th>Addresse</th>
          <th>Telefon</th>
          <th>Bearbeiten</th>
        </tr>
-       <tr v-for="alluser of allusers" :id="alluser.hasPayed">
+       <tr v-for="alluser of allusers">
+         <td :id="alluser.hasPayed">{{alluser.hasPayed}}</td>
          <td>{{alluser.lastName}}, {{alluser.firstName}}</td>
          <td>{{alluser.birthDate}}</td>
          <td>{{alluser.street}}, {{alluser.city}}</td>
@@ -52,8 +54,8 @@
 
       <!-- Modal content -->
       <div class="modal-content">
-        <p>Sind sie sicher das Sie den Teilnehmer stornieren wollen?</p>
-        <button>Bestätigen</button><button v-on:click="closeModal()">Abbrechen</button>
+        <h4>Sind sie sicher das Sie den Teilnehmer stornieren wollen?</h4>
+        <div class="center"><button>Bestätigen</button><button v-on:click="closeModal()">Abbrechen</button></div>
       </div>
     </div>
 
@@ -101,34 +103,12 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
+td:nth-child(1) {
+    background-color: #e5e22b;
+}
 #true {
-    background-color: #9aeaa0;
+    background-color: #5ed15e;
 }
 
-/* The Modal (background) */
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
 
-/* Modal Content/Box */
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
-}
-.button {
-display: inline-block;
-float: left;
-}
 </style>
