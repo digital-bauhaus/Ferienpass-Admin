@@ -8,17 +8,18 @@
       <a href="/#/Reservierung/" >Reservierungen</a>
     </nav>
     <main>
+      <input type="text" v-model="projectName" @change="postProject()"/>
       <h1>Veranstaltungsformular</h1>
       <form>
             <span class="caption">Veranstaltung hinzufügen:</span> <br/>
-            <input type="text" name="label" placeholder="Veranstaltungsname">
-            <input type="text" name="date" placeholder="Zeitraum"
-            <input type="text" name="org" placeholder="Datum (TT.MM.JJJ)">
-            <input type="text" name="num" placeholder="Plätze">
-            <input type="text" name="num" placeholder="Reservierte Plätze">
-            <input type="text" name="num" placeholder="Altersbegrenzung">
-            <input type="text" name="num" placeholder="Preis">
-            <input type="submit" v-on:click="create()" value="Hinzufügen">
+            <input type="text" name="label" placeholder="Veranstaltungsname" required>
+            <input type="text" name="date" placeholder="Zeitraum" required>
+            <input type="text" name="org" placeholder="Datum (TT.MM.JJJ)" required>
+            <input type="text" name="num" placeholder="Plätze" required>
+            <input type="text" name="num" placeholder="Reservierte Plätze" required>
+            <input type="text" name="num" placeholder="Altersbegrenzung" required>
+            <input type="text" name="num" placeholder="Preis" required>
+            <input type="submit" v-on:click="create()" value="Hinzufügen" required>
           </form>
     </main>
     </html>
@@ -26,13 +27,38 @@
 
 
 <script>
+import axios from 'axios';
 
 export default {
   name: 'Veranstaltung-erstellen',
   data () {
     return {
-      title: 'Veranstaltung erstellen'
+      title: 'Veranstaltung erstellen',
+      projectName: '',
+      projectDate: '',
+      projectAge: '',
+      projectPrice: '',
+      projectSlots: '',
+      projectSlotsfree: '',
+      projectSlotsreserved: '',
+      projectWeblink: '',
+      errors: []
     }
+  },
+  postProject () {
+    axios.post('http://localhost:8088/api/createproject', {
+      name: this.projectName,
+      date: this.projectDate,
+      age: this.projectAge,
+      price: this.projectPrice,
+      slots: this.projectSlots,
+      slotsFree: this.projectsSlotsfree,
+      slotsReserved: this.projectsSlotsreserved
+    })
+    .then(response => {})
+    .catch(e => {
+      this.errors.push(e)
+    })
   },
   methods: {
     create () {
