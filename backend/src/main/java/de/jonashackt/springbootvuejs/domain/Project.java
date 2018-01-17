@@ -13,10 +13,11 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long project_id;
     private String name;
-    private Date date;
+    private String date;
     private int age;
     private int price;
     private int slots;
+    private int slotsFree;
     private int slotsReserved;
     private String weblink;
     @ManyToMany(cascade= CascadeType.ALL)
@@ -28,12 +29,13 @@ public class Project {
 
     protected Project() {}
 
-    public Project(String name, Date date, int age, int price, int slots, int slotsReserved, String weblink, List<User> users) {
+    public Project(String name, String date, int age, int price, int slots, int slotsFree, int slotsReserved, String weblink, List<User> users) {
         this.name = name;
         this.date = date;
         this.age = age;
         this.price = price;
         this.slots = slots;
+        this.slotsFree = slotsFree;
         this.slotsReserved = slotsReserved;
         this.weblink = weblink;
         this.users = users;
@@ -42,8 +44,8 @@ public class Project {
     @Override
     public String toString() {
         return String.format(
-                "Project[project_id=%d, name='%s', date='%tD', age='%d', price='%d' slots='%d', slotsReserved='%d', weblink='%s']",
-                project_id, name, date, age, price, slots, slotsReserved, weblink);
+                "Project[project_id=%d, name='%s', date='%s', age='%d', price='%d' slots='%d', slotsFree='%d', slotsReserved='%d', weblink='%s']",
+                project_id, name, date, age, price, slots, slotsFree, slotsReserved, weblink);
     }
 
 
@@ -63,11 +65,11 @@ public class Project {
         this.name = name;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -117,5 +119,14 @@ public class Project {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+
+    public int getSlotsFree() {
+        return slotsFree;
+    }
+
+    public void setSlotsFree(int slotsFree) {
+        this.slotsFree = slotsFree;
     }
 }

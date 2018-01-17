@@ -11,6 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -30,15 +31,18 @@ public class UserRepositoryTest {
     @Autowired
     private UserRepository users;
 
+    SimpleDateFormat format = new SimpleDateFormat("dd.mm.yyyy");
+
     Date registerDate = new Date();
+    String registerDateString = format.format(registerDate);
     Date birthDate = new Date();
     Doctor doctor = new Doctor("Eich", "Route", 1, "Alabastia", "39829",
             "555-6891");
     Contact contact = new Contact("Igor Eich", "Route 4 Neuborkia  96825", "555-2532");
-    Project project1 = new Project("Ball werfen", registerDate, 10, 20, 3, 1, "www.google.com", new ArrayList<>());
+    Project project1 = new Project("Ball werfen", registerDateString, 10, 20, 3, 3, 1, "www.google.com", new ArrayList<>());
     List<Project> projects = new ArrayList<>(Arrays.asList(project1));
     List<Limitation> limits = new ArrayList<>();
-    User user = new User("Gary", "Eich", birthDate, registerDate, "Route 1",
+    User user = new User("Gary", "Eich", "10.01.1999", registerDateString, "Route 1",
             "Neuborkia",
             "96826", "555-5262", "437647298", false,  contact,
             true, true, true, true, doctor,

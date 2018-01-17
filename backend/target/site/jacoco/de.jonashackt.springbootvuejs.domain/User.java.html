@@ -17,9 +17,9 @@ public class User {
 
     private String firstName;
     private String lastName;
-    private Date birthDate;
+    private String birthDate;
 
-    private Date registerDate;
+    private String registerDate;
 
     private String street;
     private String city;
@@ -92,7 +92,7 @@ public class User {
 
 <span class="fc" id="L93">    public User() {}</span>
 
-    public User(String firstName, String lastName, Date birthDate, Date registerDate, String street,
+    public User(String firstName, String lastName, String birthDate, String registerDate, String street,
                 String city, String postcode, String telephone, String healthcareNr, boolean allowTreatment,
                 Contact emergencyContact, boolean allowHomeAlone, boolean allowRiding,
                 boolean allowSwimming, boolean hasPayed, Doctor doctor, List&lt;Project&gt; projects, List&lt;Limitation&gt; limits,
@@ -127,11 +127,11 @@ public class User {
 <span class="nc" id="L127">        this.limits = limits;</span>
 <span class="nc" id="L128">    }</span>
 
-    public Date getRegisterDate() {
+    public String getRegisterDate() {
 <span class="nc" id="L131">        return registerDate;</span>
     }
 
-    public void setRegisterDate(Date registerDate) {
+    public void setRegisterDate(String registerDate) {
 <span class="nc" id="L135">        this.registerDate = registerDate;</span>
 <span class="nc" id="L136">    }</span>
 
@@ -175,11 +175,11 @@ public class User {
 <span class="nc" id="L175">        this.id = id;</span>
 <span class="nc" id="L176">    }</span>
 
-    public Date getBirthDate() {
+    public String getBirthDate() {
 <span class="nc" id="L179">        return birthDate;</span>
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(String birthDate) {
 <span class="nc" id="L183">        this.birthDate = birthDate;</span>
 <span class="nc" id="L184">    }</span>
 

@@ -17,9 +17,9 @@ public class User {
 
     private String firstName;
     private String lastName;
-    private Date birthDate;
+    private String birthDate;
 
-    private Date registerDate;
+    private String registerDate;
 
     private String street;
     private String city;
@@ -92,7 +92,7 @@ public class User {
 
     public User() {}
 
-    public User(String firstName, String lastName, Date birthDate, Date registerDate, String street,
+    public User(String firstName, String lastName, String birthDate, String registerDate, String street,
                 String city, String postcode, String telephone, String healthcareNr, boolean allowTreatment,
                 Contact emergencyContact, boolean allowHomeAlone, boolean allowRiding,
                 boolean allowSwimming, boolean hasPayed, Doctor doctor, List<Project> projects, List<Limitation> limits,
@@ -127,11 +127,11 @@ public class User {
         this.limits = limits;
     }
 
-    public Date getRegisterDate() {
+    public String getRegisterDate() {
         return registerDate;
     }
 
-    public void setRegisterDate(Date registerDate) {
+    public void setRegisterDate(String registerDate) {
         this.registerDate = registerDate;
     }
 
@@ -175,11 +175,11 @@ public class User {
         this.id = id;
     }
 
-    public Date getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 

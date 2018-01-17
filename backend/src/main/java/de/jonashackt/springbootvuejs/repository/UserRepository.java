@@ -41,6 +41,6 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     int findIdByFirstNameAndLastName(@Param("firstName") String firstName, @Param("lastName") String lastName);
 
-    List<User> findByRegisterDate(@Param("registerDate") Date registerDate);
+    List<User> findByRegisterDate(@Param("registerDate") String registerDate);
 
 }
