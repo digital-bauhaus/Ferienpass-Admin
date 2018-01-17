@@ -34,8 +34,8 @@
 
       <!-- Modal content -->
       <div class="modal-content">
-        <p>Sind sie sicher das Sie die Veranstaltung löschen wollen?</p>
-        <button>Bestätigen</button><button v-on:click="closeModal()">Abbrechen</button>
+        <h4>Sind sie sicher das Sie die Veranstaltung löschen wollen?</h4>
+        <div class="center"><button>Bestätigen</button><button v-on:click="closeModal()">Abbrechen</button></div>
       </div>
 
     </div>
