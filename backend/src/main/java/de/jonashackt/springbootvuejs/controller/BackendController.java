@@ -258,6 +258,33 @@ public class BackendController {
         return project.getUsers();
     }
 
+    // RESERVE SLOTS IN PROJECT
+    @RequestMapping(path = "/reserveslotsinproject")
+    @ResponseStatus(HttpStatus.CREATED)
+    public @ResponseBody
+    int reserve(@RequestParam long id, @RequestParam int slots){
+        Project project = projectRepository.findOne(id);
+        int totalslots = project.getSlots();
+        int reservedslots = project.getSlotsReserved();
+        int allslots = reservedslots + slots;
+        if (reservedslots == 0 && reservedslots <= totalslots)
+        {
+            project.setSlotsReserved(slots);
+            LOG.info("Reserved " + slots + " Slots in " +project.toString());
+            return project.getSlotsReserved();
+        }
+        else if (allslots <= totalslots)
+        {
+            project.setSlotsReserved(allslots);
+            LOG.info("Reserved " + slots + " Slots in " +project.toString());
+            return project.getSlotsReserved();
+        }
+        else {
+            LOG.info("Error");
+            return project.getSlotsReserved();
+        }
+    }
+
 
 
 }
