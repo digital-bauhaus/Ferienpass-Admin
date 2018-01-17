@@ -74,7 +74,7 @@ main form {
   margin: auto;
   position: absolute;
   top: 0; left: 0; bottom: 0; right: 0;
-  width: 480px;
+  width: 450px;
   height: 480px;
 }
 
@@ -85,9 +85,18 @@ main form .caption {
 
 main form input[type=text]{
   font-size: 20px;
-  width: 80%;
+  width: 100%;
   height: 30px;
-  margin-top: 15px;
+  margin-bottom: 15px;
+  clear: left;
+  float: left;
+  display: block;
+}
+
+main form label {
+  margin: 0px;
+  float: left;
+  display: block;
 }
 
 main h1 {
