@@ -183,8 +183,8 @@ public class BackendController {
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
     Long addNewProject(@RequestParam String name, @RequestParam String date, @RequestParam int age, @RequestParam int price, @RequestParam int slots,
-                       @RequestParam int slotsFree, @RequestParam int slotsReserved, @RequestParam String weblink, @RequestParam List<User> users) {
-        Project project = new Project(name, date, age, price, slots, slotsFree , slotsReserved, weblink, users);
+                       @RequestParam int slotsFree, @RequestParam int slotsReserved, @RequestParam String weblink) {
+        Project project = new Project(name, date, age, price, slots, slotsFree , slotsReserved, weblink, new ArrayList<>());
         projectRepository.save(project);
         LOG.info(project.toString() + "successfully saved into DB");
 
