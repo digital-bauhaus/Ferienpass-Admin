@@ -24,7 +24,6 @@ public class BackendController {
 
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private ProjectRepository projectRepository;
 
@@ -51,6 +50,7 @@ public class BackendController {
         return projectRepository.findAllProjects();
     }
 
+    // SHOW ALL PROJECTS OF ONE USER
     @RequestMapping(path = "/projectsof")
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
@@ -59,6 +59,7 @@ public class BackendController {
         return userRepository.findProjectsByFirstNameAndLastName(firstName, lastName);
     }
 
+    // CREATE A SAMPLE PROJECT
     @RequestMapping(path = "/sampleproject")
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
@@ -72,6 +73,7 @@ public class BackendController {
         return project.getProject_id();
     }
 
+    // CREATE A SAMPLE USER
     @RequestMapping(path = "/sampleuser")
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
@@ -103,6 +105,7 @@ public class BackendController {
     }
 
 
+    // ADD NEW USER
     @RequestMapping(path = "/adduser")
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
@@ -124,18 +127,55 @@ public class BackendController {
         return user.getId();
     }
 
+    // UPDATE USER INFORMATION
+    @RequestMapping(path = "/updateuser")
+    @ResponseStatus(HttpStatus.CREATED)
+    public @ResponseBody
+    Long updateUser(@RequestParam long id, @RequestParam String firstName, @RequestParam String lastName, @RequestParam Date birthDate,
+                    @RequestParam String street, @RequestParam String city, @RequestParam String postcode,
+                    @RequestParam String telephone, @RequestParam String healthcareNr, @RequestParam boolean allowTreatment,
+                    @RequestParam Contact contact, @RequestParam boolean allowHomeAlone, @RequestParam boolean allowRiding,
+                    @RequestParam boolean allowSwimming, @RequestParam boolean hasPayed, @RequestParam Doctor doctor) {
+
+        User updatedUser = userRepository.findOne(id);
+        updatedUser.setFirstName(firstName);
+        updatedUser.setLastName((lastName));
+        updatedUser.setBirthDate(birthDate);
+        updatedUser.setPostcode(postcode);
+        updatedUser.setStreet(street);
+        updatedUser.setCity(city);
+        updatedUser.setTelephone(telephone);
+        updatedUser.setHealthcareNr(healthcareNr);
+        updatedUser.setAllowTreatment(allowTreatment);
+        updatedUser.setEmergencyContact(contact);
+        updatedUser.setAllowHomeAlone(allowHomeAlone);
+        updatedUser.setAllowRiding(allowRiding);
+        updatedUser.setAllowSwimming(allowSwimming);
+        updatedUser.setHasPayed(hasPayed);
+        updatedUser.setDoctor(doctor);
+
+        userRepository.save(updatedUser);
+
+        LOG.info(updatedUser.toString() + " successfully saved into DB");
+
+        return updatedUser.getId();
+    }
+
+    // GET USER INFORMATION BY ID
     @GetMapping(path = "/user/{id}")
     public @ResponseBody
     User getUserById(@PathVariable("id") long id) {
         return userRepository.findOne(id);
     }
 
+    // GET PROJECT INFORMATION BY ID
     @GetMapping(path = "/project/{project_id}")
     public @ResponseBody
     Project getProjectById(@PathVariable("project_id") Long project_id) {
         return projectRepository.findOne(project_id);
     }
 
+    // CREATE NEW PROJECT
     @RequestMapping(path = "/createproject")
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
@@ -149,6 +189,27 @@ public class BackendController {
         return project.getProject_id();
     }
 
+    // UPDATE PROJECT INFORMATION
+    @RequestMapping(path = "/updateProject")
+    @ResponseStatus(HttpStatus.CREATED)
+    public @ResponseBody
+    Long updateProject(@RequestParam long id, @RequestParam String name, @RequestParam Date date, @RequestParam int age, @RequestParam int price, @RequestParam int slots,
+                       @RequestParam int slotsReserved, @RequestParam String weblink) {
+        Project updatedProject = projectRepository.findOne(id);
+        updatedProject.setName(name);
+        updatedProject.setDate(date);
+        updatedProject.setAge(age);
+        updatedProject.setPrice(price);
+        updatedProject.setSlots(slots);
+        updatedProject.setSlotsReserved(slotsReserved);
+        updatedProject.setWeblink(weblink);
+        projectRepository.save(updatedProject);
+        LOG.info(updatedProject.toString() + "successfully updated/saved into DB");
+
+        return updatedProject.getProject_id();
+    }
+
+    // DELETE PROJECT
     @RequestMapping(path = "/deleteproject")
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
@@ -161,13 +222,7 @@ public class BackendController {
         return theproj.toString();
     }
 
-    //@RequestMapping(path = "/reserveplace")
-    //@ResponseStatus(HttpStatus.CREATED)
-    //public @ResponseBody
-    //Long reserving(@RequestParam long project_id, @RequestParam int slots);
-    //Project getProjectById(long project_id) {return projectRepository.findById(project_id);}
-    //project.setSlotsReserved(slots);
-
+    // GET ALL PROJECT OF ONE USER
     @RequestMapping(path = "/projectsofuser")
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
@@ -178,6 +233,7 @@ public class BackendController {
         return user.getProjects();
     }
 
+    // ADD NEW CANCELLATION
     @RequestMapping(path = "/addcancellation")
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
