@@ -137,8 +137,8 @@ public class BackendController {
     Long updateUser(@RequestParam long id, @RequestParam String firstName, @RequestParam String lastName, @RequestParam String birthDate,
                     @RequestParam String street, @RequestParam String city, @RequestParam String postcode,
                     @RequestParam String telephone, @RequestParam String healthcareNr, @RequestParam boolean allowTreatment,
-                    @RequestParam Contact contact, @RequestParam boolean allowHomeAlone, @RequestParam boolean allowRiding,
-                    @RequestParam boolean allowSwimming, @RequestParam boolean hasPayed, @RequestParam Doctor doctor) {
+                    @RequestParam boolean allowHomeAlone, @RequestParam boolean allowRiding,
+                    @RequestParam boolean allowSwimming, @RequestParam boolean hasPayed) {
 
         User updatedUser = userRepository.findOne(id);
         updatedUser.setFirstName(firstName);
@@ -150,13 +150,10 @@ public class BackendController {
         updatedUser.setTelephone(telephone);
         updatedUser.setHealthcareNr(healthcareNr);
         updatedUser.setAllowTreatment(allowTreatment);
-        updatedUser.setEmergencyContact(contact);
         updatedUser.setAllowHomeAlone(allowHomeAlone);
         updatedUser.setAllowRiding(allowRiding);
         updatedUser.setAllowSwimming(allowSwimming);
         updatedUser.setHasPayed(hasPayed);
-        updatedUser.setDoctor(doctor);
-
         userRepository.save(updatedUser);
 
         LOG.info(updatedUser.toString() + " successfully saved into DB");
