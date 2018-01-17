@@ -24,33 +24,33 @@ import java.util.List;
 
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private ProjectRepository projectRepository;
 
     @RequestMapping(path = &quot;/hello&quot;)
     public @ResponseBody
     String sayHello() {
-<span class="fc" id="L34">        LOG.info(&quot;GET called on /hello resource&quot;);</span>
-<span class="fc" id="L35">        return HELLO_TEXT;</span>
+<span class="fc" id="L33">        LOG.info(&quot;GET called on /hello resource&quot;);</span>
+<span class="fc" id="L34">        return HELLO_TEXT;</span>
     }
 
     @RequestMapping(path = &quot;/allusers&quot;)
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
     List&lt;User&gt; showAllUsers() {
-<span class="nc" id="L42">        LOG.info(&quot;GET called on /allusers resource&quot;);</span>
-<span class="nc" id="L43">        return userRepository.findAllUsers();</span>
+<span class="nc" id="L41">        LOG.info(&quot;GET called on /allusers resource&quot;);</span>
+<span class="nc" id="L42">        return userRepository.findAllUsers();</span>
     }
 
     @RequestMapping(path = &quot;/allprojects&quot;)
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
     List&lt;Project&gt; showAllProjects() {
-<span class="nc" id="L50">        LOG.info(&quot;GET called on /allprojects resource&quot;);</span>
-<span class="nc" id="L51">        return projectRepository.findAllProjects();</span>
+<span class="nc" id="L49">        LOG.info(&quot;GET called on /allprojects resource&quot;);</span>
+<span class="nc" id="L50">        return projectRepository.findAllProjects();</span>
     }
 
+    // SHOW ALL PROJECTS OF ONE USER
     @RequestMapping(path = &quot;/projectsof&quot;)
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
@@ -59,50 +59,53 @@ import java.util.List;
 <span class="nc" id="L59">        return userRepository.findProjectsByFirstNameAndLastName(firstName, lastName);</span>
     }
 
+    // CREATE A SAMPLE PROJECT
     @RequestMapping(path = &quot;/sampleproject&quot;)
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
     Long addNewProject() {
         // EXAMPLE Project
-<span class="nc" id="L67">        Project project = new Project(&quot;Ball Werfen&quot;, new Date(), 10, 20, 2, 1, &quot;www.google.com&quot;, new ArrayList&lt;&gt;());</span>
-<span class="nc" id="L68">        projectRepository.save(project);</span>
+<span class="nc" id="L68">        Project project = new Project(&quot;Ball Werfen&quot;, new Date(), 10, 20, 2, 1, &quot;www.google.com&quot;, new ArrayList&lt;&gt;());</span>
+<span class="nc" id="L69">        projectRepository.save(project);</span>
 
-<span class="nc" id="L70">        LOG.info(project.toString() + &quot; successfully saved into DB&quot;);</span>
+<span class="nc" id="L71">        LOG.info(project.toString() + &quot; successfully saved into DB&quot;);</span>
 
-<span class="nc" id="L72">        return project.getProject_id();</span>
+<span class="nc" id="L73">        return project.getProject_id();</span>
     }
 
+    // CREATE A SAMPLE USER
     @RequestMapping(path = &quot;/sampleuser&quot;)
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
     Long addNewUser() {
         // EXAMPLE USER
-<span class="nc" id="L80">        Date registerDate = new Date();</span>
-<span class="nc" id="L81">        Date birthDate = new Date();</span>
-<span class="nc" id="L82">        Doctor doctor = new Doctor(&quot;Eich&quot;, &quot;Route&quot;, 1, &quot;Alabastia&quot;, &quot;39829&quot;,</span>
+<span class="nc" id="L82">        Date registerDate = new Date();</span>
+<span class="nc" id="L83">        Date birthDate = new Date();</span>
+<span class="nc" id="L84">        Doctor doctor = new Doctor(&quot;Eich&quot;, &quot;Route&quot;, 1, &quot;Alabastia&quot;, &quot;39829&quot;,</span>
                 &quot;555-6891&quot;);
-<span class="nc" id="L84">        Contact contact = new Contact(&quot;Igor Eich&quot;, &quot;Route 4 Neuborkia  96825&quot;, &quot;555-2532&quot;);</span>
-<span class="nc" id="L85">        Project project1 = new Project(&quot;Ball werfen&quot;, registerDate, 10, 20, 3, 1, &quot;www.google.com&quot;, new ArrayList&lt;&gt;());</span>
-<span class="nc" id="L86">        FoodLimit limit1 = new FoodLimit(&quot;Laktoseintoleranz&quot;, &quot;&quot;);</span>
-<span class="nc" id="L87">        Illness limit2 = new Illness(&quot;Was ganz dolle schlimmes&quot;, &quot;Macht immer richtig komische Sachen&quot;, &quot;Honigmelone&quot;);</span>
-<span class="nc" id="L88">        List&lt;Project&gt; projects = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L89">        projects.add(project1);</span>
-<span class="nc" id="L90">        List&lt;Limitation&gt; limits = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L91">        limits.add(limit1);</span>
-<span class="nc" id="L92">        limits.add(limit2);</span>
-<span class="nc" id="L93">        User user = new User(&quot;Gary&quot;, &quot;Eich&quot;, birthDate, registerDate, &quot;Route 1&quot;,</span>
+<span class="nc" id="L86">        Contact contact = new Contact(&quot;Igor Eich&quot;, &quot;Route 4 Neuborkia  96825&quot;, &quot;555-2532&quot;);</span>
+<span class="nc" id="L87">        Project project1 = new Project(&quot;Ball werfen&quot;, registerDate, 10, 20, 3, 1, &quot;www.google.com&quot;, new ArrayList&lt;&gt;());</span>
+<span class="nc" id="L88">        FoodLimit limit1 = new FoodLimit(&quot;Laktoseintoleranz&quot;, &quot;&quot;);</span>
+<span class="nc" id="L89">        Illness limit2 = new Illness(&quot;Was ganz dolle schlimmes&quot;, &quot;Macht immer richtig komische Sachen&quot;, &quot;Honigmelone&quot;);</span>
+<span class="nc" id="L90">        List&lt;Project&gt; projects = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L91">        projects.add(project1);</span>
+<span class="nc" id="L92">        List&lt;Limitation&gt; limits = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L93">        limits.add(limit1);</span>
+<span class="nc" id="L94">        limits.add(limit2);</span>
+<span class="nc" id="L95">        User user = new User(&quot;Gary&quot;, &quot;Eich&quot;, birthDate, registerDate, &quot;Route 1&quot;,</span>
                 &quot;Neuborkia&quot;,
                 &quot;96826&quot;, &quot;555-5262&quot;, &quot;437647298&quot;, false, contact,
                 true, true, true, true, doctor,
                 projects, limits, null);
-<span class="nc" id="L98">        userRepository.save(user);</span>
+<span class="nc" id="L100">        userRepository.save(user);</span>
 
-<span class="nc" id="L100">        LOG.info(user.toString() + &quot; successfully saved into DB&quot;);</span>
+<span class="nc" id="L102">        LOG.info(user.toString() + &quot; successfully saved into DB&quot;);</span>
 
-<span class="nc" id="L102">        return user.getId();</span>
+<span class="nc" id="L104">        return user.getId();</span>
     }
 
 
+    // ADD NEW USER
     @RequestMapping(path = &quot;/adduser&quot;)
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
@@ -113,80 +116,133 @@ import java.util.List;
                     @RequestParam boolean allowSwimming, @RequestParam boolean hasPayed, @RequestParam Doctor doctor, @RequestParam List&lt;Project&gt; projects,
                     @RequestParam List&lt;Limitation&gt; limits) {
 
-<span class="nc" id="L116">        Date registerDate = new Date();</span>
-<span class="nc" id="L117">        User user = new User(firstName, lastName, birthDate, registerDate, street, city,</span>
+<span class="nc" id="L119">        Date registerDate = new Date();</span>
+<span class="nc" id="L120">        User user = new User(firstName, lastName, birthDate, registerDate, street, city,</span>
                 postcode, telephone, healthcareNr, allowTreatment, contact,
                 allowHomeAlone, allowRiding, allowSwimming, hasPayed, doctor, projects, limits, null);
-<span class="nc" id="L120">        userRepository.save(user);</span>
+<span class="nc" id="L123">        userRepository.save(user);</span>
 
-<span class="nc" id="L122">        LOG.info(user.toString() + &quot; successfully saved into DB&quot;);</span>
+<span class="nc" id="L125">        LOG.info(user.toString() + &quot; successfully saved into DB&quot;);</span>
 
-<span class="nc" id="L124">        return user.getId();</span>
+<span class="nc" id="L127">        return user.getId();</span>
     }
 
+    // UPDATE USER INFORMATION
+    @RequestMapping(path = &quot;/updateuser&quot;)
+    @ResponseStatus(HttpStatus.CREATED)
+    public @ResponseBody
+    Long updateUser(@RequestParam long id, @RequestParam String firstName, @RequestParam String lastName, @RequestParam Date birthDate,
+                    @RequestParam String street, @RequestParam String city, @RequestParam String postcode,
+                    @RequestParam String telephone, @RequestParam String healthcareNr, @RequestParam boolean allowTreatment,
+                    @RequestParam Contact contact, @RequestParam boolean allowHomeAlone, @RequestParam boolean allowRiding,
+                    @RequestParam boolean allowSwimming, @RequestParam boolean hasPayed, @RequestParam Doctor doctor) {
+
+<span class="nc" id="L140">        User updatedUser = userRepository.findOne(id);</span>
+<span class="nc" id="L141">        updatedUser.setFirstName(firstName);</span>
+<span class="nc" id="L142">        updatedUser.setLastName((lastName));</span>
+<span class="nc" id="L143">        updatedUser.setBirthDate(birthDate);</span>
+<span class="nc" id="L144">        updatedUser.setPostcode(postcode);</span>
+<span class="nc" id="L145">        updatedUser.setStreet(street);</span>
+<span class="nc" id="L146">        updatedUser.setCity(city);</span>
+<span class="nc" id="L147">        updatedUser.setTelephone(telephone);</span>
+<span class="nc" id="L148">        updatedUser.setHealthcareNr(healthcareNr);</span>
+<span class="nc" id="L149">        updatedUser.setAllowTreatment(allowTreatment);</span>
+<span class="nc" id="L150">        updatedUser.setEmergencyContact(contact);</span>
+<span class="nc" id="L151">        updatedUser.setAllowHomeAlone(allowHomeAlone);</span>
+<span class="nc" id="L152">        updatedUser.setAllowRiding(allowRiding);</span>
+<span class="nc" id="L153">        updatedUser.setAllowSwimming(allowSwimming);</span>
+<span class="nc" id="L154">        updatedUser.setHasPayed(hasPayed);</span>
+<span class="nc" id="L155">        updatedUser.setDoctor(doctor);</span>
+
+<span class="nc" id="L157">        userRepository.save(updatedUser);</span>
+
+<span class="nc" id="L159">        LOG.info(updatedUser.toString() + &quot; successfully saved into DB&quot;);</span>
+
+<span class="nc" id="L161">        return updatedUser.getId();</span>
+    }
+
+    // GET USER INFORMATION BY ID
     @GetMapping(path = &quot;/user/{id}&quot;)
     public @ResponseBody
     User getUserById(@PathVariable(&quot;id&quot;) long id) {
-<span class="nc" id="L130">        return userRepository.findOne(id);</span>
+<span class="nc" id="L168">        return userRepository.findOne(id);</span>
     }
 
+    // GET PROJECT INFORMATION BY ID
     @GetMapping(path = &quot;/project/{project_id}&quot;)
     public @ResponseBody
     Project getProjectById(@PathVariable(&quot;project_id&quot;) Long project_id) {
-<span class="nc" id="L136">        return projectRepository.findOne(project_id);</span>
+<span class="nc" id="L175">        return projectRepository.findOne(project_id);</span>
     }
 
+    // CREATE NEW PROJECT
     @RequestMapping(path = &quot;/createproject&quot;)
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
     Long addNewProject(@RequestParam String name, @RequestParam Date date, @RequestParam int age, @RequestParam int price, @RequestParam int slots,
                        @RequestParam int slotsReserved, @RequestParam String weblink, @RequestParam List&lt;User&gt; users) {
-<span class="nc" id="L144">        Date DateofCreation = new Date();</span>
-<span class="nc" id="L145">        Project project = new Project(name, date, age, price, slots, slotsReserved, weblink, users);</span>
-<span class="nc" id="L146">        projectRepository.save(project);</span>
-<span class="nc" id="L147">        LOG.info(project.toString() + &quot;successfully saved into DB&quot;);</span>
+<span class="nc" id="L184">        Date DateofCreation = new Date();</span>
+<span class="nc" id="L185">        Project project = new Project(name, date, age, price, slots, slotsReserved, weblink, users);</span>
+<span class="nc" id="L186">        projectRepository.save(project);</span>
+<span class="nc" id="L187">        LOG.info(project.toString() + &quot;successfully saved into DB&quot;);</span>
 
-<span class="nc" id="L149">        return project.getProject_id();</span>
+<span class="nc" id="L189">        return project.getProject_id();</span>
     }
 
+    // UPDATE PROJECT INFORMATION
+    @RequestMapping(path = &quot;/updateProject&quot;)
+    @ResponseStatus(HttpStatus.CREATED)
+    public @ResponseBody
+    Long updateProject(@RequestParam long id, @RequestParam String name, @RequestParam Date date, @RequestParam int age, @RequestParam int price, @RequestParam int slots,
+                       @RequestParam int slotsReserved, @RequestParam String weblink) {
+<span class="nc" id="L198">        Project updatedProject = projectRepository.findOne(id);</span>
+<span class="nc" id="L199">        updatedProject.setName(name);</span>
+<span class="nc" id="L200">        updatedProject.setDate(date);</span>
+<span class="nc" id="L201">        updatedProject.setAge(age);</span>
+<span class="nc" id="L202">        updatedProject.setPrice(price);</span>
+<span class="nc" id="L203">        updatedProject.setSlots(slots);</span>
+<span class="nc" id="L204">        updatedProject.setSlotsReserved(slotsReserved);</span>
+<span class="nc" id="L205">        updatedProject.setWeblink(weblink);</span>
+<span class="nc" id="L206">        projectRepository.save(updatedProject);</span>
+<span class="nc" id="L207">        LOG.info(updatedProject.toString() + &quot;successfully updated/saved into DB&quot;);</span>
+
+<span class="nc" id="L209">        return updatedProject.getProject_id();</span>
+    }
+
+    // DELETE PROJECT
     @RequestMapping(path = &quot;/deleteproject&quot;)
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
     String deleteProject(@RequestParam Long project_id) {
 
-<span class="nc" id="L157">        Project theproj = projectRepository.findOne(project_id);</span>
-<span class="nc" id="L158">        projectRepository.delete(project_id);</span>
-<span class="nc" id="L159">        LOG.info(theproj.toString() + &quot;deleted from DB&quot;);</span>
+<span class="nc" id="L218">        Project theproj = projectRepository.findOne(project_id);</span>
+<span class="nc" id="L219">        projectRepository.delete(project_id);</span>
+<span class="nc" id="L220">        LOG.info(theproj.toString() + &quot;deleted from DB&quot;);</span>
 
-<span class="nc" id="L161">        return theproj.toString();</span>
+<span class="nc" id="L222">        return theproj.toString();</span>
     }
 
-    //@RequestMapping(path = &quot;/reserveplace&quot;)
-    //@ResponseStatus(HttpStatus.CREATED)
-    //public @ResponseBody
-    //Long reserving(@RequestParam long project_id, @RequestParam int slots);
-    //Project getProjectById(long project_id) {return projectRepository.findById(project_id);}
-    //project.setSlotsReserved(slots);
-
+    // GET ALL PROJECT OF ONE USER
     @RequestMapping(path = &quot;/projectsofuser&quot;)
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
     List&lt;Project&gt; getProjectsOfUser(@RequestParam long id) {
 
-<span class="nc" id="L176">        User user = userRepository.findOne(id);</span>
-<span class="nc" id="L177">        LOG.info(&quot;Returned all Projects of: &quot; + user.toString());</span>
-<span class="nc" id="L178">        return user.getProjects();</span>
+<span class="nc" id="L231">        User user = userRepository.findOne(id);</span>
+<span class="nc" id="L232">        LOG.info(&quot;Returned all Projects of: &quot; + user.toString());</span>
+<span class="nc" id="L233">        return user.getProjects();</span>
     }
 
+    // ADD NEW CANCELLATION
     @RequestMapping(path = &quot;/addcancellation&quot;)
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
     List&lt;Project&gt; addProjectToCancelled(@RequestParam long id, @RequestParam Project cancelledProject) {
 
-<span class="nc" id="L186">        User user = userRepository.findOne(id);</span>
-<span class="nc" id="L187">        user.getCancellations().add(cancelledProject);</span>
-<span class="nc" id="L188">        LOG.info(&quot;Added Projects to List of Cancellations of: &quot; + user.toString());</span>
-<span class="nc" id="L189">        return user.getCancellations();</span>
+<span class="nc" id="L242">        User user = userRepository.findOne(id);</span>
+<span class="nc" id="L243">        user.getCancellations().add(cancelledProject);</span>
+<span class="nc" id="L244">        LOG.info(&quot;Added Projects to List of Cancellations of: &quot; + user.toString());</span>
+<span class="nc" id="L245">        return user.getCancellations();</span>
     }
 
 
