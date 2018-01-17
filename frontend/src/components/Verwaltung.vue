@@ -5,6 +5,7 @@
         <a href="/#/Veranstaltung/" >Veranstaltung erstellen</a>
         <a href="/#/Verwaltung/" >Veranstaltungen verwalten</a>
         <a href="/#/Teilnehmer/" >Teilnehmer</a>
+        <a href="/#/TeilnehmerAdd/" >Teilnehmer erstellen</a>
         <a href="/#/Reservierung/" >Reservierungen</a>
       </nav>
       <main>
@@ -22,7 +23,7 @@
                    <td>{{allproject.date}}</td>
                    <td>belegt / </nobr> {{allproject.slots}}</td>
                    <td><nobr><button v-on:click="kill($event)">löschen</button>
-                     <button>bearbeiten</button>
+                     <router-link :to="{path: '../VeranstaltungEdit', query: {id: allproject.project_id }}">Bearbeiten</router-link>
                      <button>PDF exportieren</button></nobr>
                    </td>
                  </tr>
