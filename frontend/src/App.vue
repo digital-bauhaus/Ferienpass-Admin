@@ -103,6 +103,13 @@ main h1 {
   margin: 20px;
 }
 
+fieldset {
+	padding-left: 0;
+	margin: 0;
+	display: block;
+	float: left;
+}
+
 input[type=submit] {
   margin: 20px;
   background-color: #84845e;

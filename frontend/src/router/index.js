@@ -11,6 +11,7 @@ import Reservierung from '@/components/Reservierung'
 import Veranstaltung from '@/components/Veranstaltung'
 import VeranstaltungEdit from '@/components/VeranstaltungEdit'
 import TeilnehmerEdit from '@/components/TeilnehmerEdit'
+import TeilnehmerAdd from '@/components/TeilnehmerAdd'
 
 Vue.use(Router)
 
@@ -66,6 +67,11 @@ export default new Router({
       path: '/TeilnehmerEdit',
       name: 'TeilnehmerEdit',
       component: TeilnehmerEdit
+    },
+    {
+      path: '/TeilnehmerAdd',
+      name: 'TeilnehmerAdd',
+      component: TeilnehmerAdd
     },
     {
       path: '/bootstrap',

@@ -4,6 +4,7 @@
       <a href="/#/Veranstaltung/" >Veranstaltung erstellen</a>
       <a href="/#/Verwaltung/" >Veranstaltungen verwalten</a>
       <a href="/#/Teilnehmer/" >Teilnehmer</a>
+      <a href="/#/TeilnehmerAdd/" >Teilnehmer erstellen</a>
       <a href="/#/Reservierung/" >Reservierungen</a>
     </nav>
     <main>
