@@ -1,4 +1,3 @@
-</template>
 <template xmlns:v-on="http://www.w3.org/1999/xhtml">
     <html>
     <nav>
@@ -11,16 +10,22 @@
       <h1>Veranstaltungsformular</h1>
       <form method="post" v-on:submit.prevent="postProject">
             <span class="caption">Veranstaltung hinzufügen:</span> <br/>
+            <label for ="label">Veranstaltungsname: </label>
             <input type="text" name="label" v-model="projectName" placeholder="Veranstaltungsname" required>
+            <label for ="date">Datum: </label>
             <input type="text" name="org" v-model="projectDate" placeholder="Datum (TT.MM.JJJ)" required>
+            <label for ="num">Plätze (gesamt): </label>
             <input type="text" name="num" v-model="projectSlots" placeholder="Plätze" required>
+            <label for ="reserve">Plätze (reserviert): </label>
             <input type="text" name="num" v-model="projectSlotsreserved" placeholder="Reservierte Plätze" required>
+            <label for ="age">Alter: </label>
             <input type="text" name="num" v-model="projectAge" placeholder="Altersbegrenzung" required>
+            <label for ="price">Preis: </label>
             <input type="text" name="num" v-model="projectPrice" placeholder="Preis" required>
         <input type="text" name="num" v-model="projectSlotsfree" placeholder="Plätze frei" required>
-        <input type="text" name="num" v-model="projectWeblink" placeholder="Weblink" required>
-
-        <input type="submit" value="Hinzufügen">
+            <label for ="weblink">Weblink: </label>
+            <input type="text" name="num" v-model="projectWeblink" placeholder="Weblink" required>
+            <input type="submit" v-on:click="create()" value="Hinzufügen">
           </form>
     </main>
     </html>
