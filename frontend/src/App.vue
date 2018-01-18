@@ -111,9 +111,14 @@ main form label {
   display: block;
 }
 
+main h2 {
+  margin: 20px;
+}
+
 main h1 {
   margin: 20px;
 }
+
 
 fieldset label {
   position: relative;
@@ -256,16 +261,24 @@ table {
   margin-left: auto;
   margin-right: auto;
   width: 80%;
+  border-radius: 15px;
 }
 
 th {
-  background:  #181819;
+  background:  #333435;
   color: white;
   font-weight: bold;
 }
 
 .clickable {
   cursor: pointer;
+}
+
+.clickable:after {
+  font-weight: normal;
+  position: relative;
+  left: 5px;
+  content: '▼';
 }
 
 td, th {
