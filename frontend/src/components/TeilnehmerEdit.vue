@@ -10,7 +10,7 @@
     <main>
       <h1>Teilnehmerbearbeitung</h1>
       <form method="post" v-on:submit.prevent="postProject">
-        <span class="caption">Teilnehmer bearbeiten:</span> <br/>
+        <h2>Allgemeine Informationen</h2>
         <label for ="lastName">Nachname: </label>
         <input type="text" id ="lastName" placeholder="Nachname" v-model="userLastname" :value="user.lastName">
         <label for ="firstName">Vorname: </label>
@@ -27,6 +27,7 @@
         <input type="text" id="telephone" placeholder="Telefonnummer" v-model="userTelephone" :value="user.telephone">
         <label for ="healthcare">Krankenversicherungsnummer: </label>
         <input type="text" id="healthcare" placeholder="Krankenversicherungsnummer" v-model="userHealthcarenr" :value="user.healthcareNr">
+
           <fieldset>
               <label><input v-model="userAllowtreatment" type="checkbox" id="check">Darf behandelt werden</label><br/>
               <label><input v-model="userAllowhomealone" type="checkbox" id="check">Darf schwimmen</label><br/>
@@ -34,10 +35,46 @@
               <label><input v-model="userAllowswim" type="checkbox" id="check">Darf alleine nach Hause gehen</label><br/>
               <label><input v-model="userHaspayed" type="checkbox" id="check">Hat bezahlt</label><br/>
           </fieldset>
+
+        <h2>Notfallkontaktdaten</h2>
+        <label for ="contactname">Name, Vorname:</label>
+        <input type="text" id="contactname" placeholder="Name" :value="user.emergencyContact.name">
+        <label for ="contactaddress">Addresse:</label>
+        <input type="text" id="contactaddress" placeholder="Name" :value="user.emergencyContact.address">
+        <label for ="contacttelephone">Telefon:</label>
+        <input type="text" id="contacttelephone" placeholder="Name" :value="user.emergencyContact.telephone">
+
+        <h2>Arztdaten</h2>
+        <label for ="doctorname">Name, Vorname:</label>
+        <input type="text" id="doctorname" placeholder="Name" :value="user.doctor.name">
+        <label for ="doctoraddress">Addresse:</label>
+        <input type="text" id="doctoraddress" placeholder="Name" :value="user.doctor.address">
+        <label for ="doctortelephone">Telefon:</label>
+        <input type="text" id="doctortelephone" placeholder="Name" :value="user.doctor.telephone">
+
+        <h2>Einschränkungen</h2>
+        <div v-if="user.limits">
+        <span class="limit" v-for="limit of user.limits">
+          {{limit.name}}
+          <span v-if="limit.information" :title="limit.information">
+            ?
+          </span>
+        </span>
+        </div>
+
+        <h2>Projekte</h2>
+        <div v-if="user.projects">
+        <div class="project" v-for="project of user.projects">
+        {{project.name}}
+        </div>
+
+        </div>
+
         <input type="submit" value="Bearbeiten">
       </form>
+
     </main>
-      <div :class="popupClass">✔ Erfolgreich bearbeitet!</div>
+      <div :class="popupClass">✔ Erfolgreich!</div>
     </html>
 </template>
 
@@ -128,8 +165,17 @@ export default {
 
 </script>
 
-
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+
+.limit {
+  display: -block;
+  background-color: #e5d8ae;
+  padding: 5px;
+  border-radius: 5px;
+  margin: 2px;
+  font-size: 15px;
+}
 </style>
 
