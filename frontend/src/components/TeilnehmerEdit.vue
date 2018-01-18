@@ -38,19 +38,19 @@
 
         <h2>Notfallkontaktdaten</h2>
         <label for ="contactname">Name, Vorname:</label>
-        <input type="text" id="contactname" placeholder="Name" :value="user.emergencyContact.name">
+        <input type="text" id="contactname" v-model="userContactname" placeholder="Name" :value="user.emergencyContact.name">
         <label for ="contactaddress">Addresse:</label>
-        <input type="text" id="contactaddress" placeholder="Name" :value="user.emergencyContact.address">
+        <input type="text" id="contactaddress" v-model="userContactaddress" placeholder="Addresse" :value="user.emergencyContact.address">
         <label for ="contacttelephone">Telefon:</label>
-        <input type="text" id="contacttelephone" placeholder="Name" :value="user.emergencyContact.telephone">
+        <input type="text" id="contacttelephone" v-model="userContacttelephone" placeholder="Telefon" :value="user.emergencyContact.telephone">
 
         <h2>Arztdaten</h2>
         <label for ="doctorname">Name, Vorname:</label>
-        <input type="text" id="doctorname" placeholder="Name" :value="user.doctor.name">
+        <input type="text" id="doctorname" placeholder="Name" v-model="userDoctorname" :value="user.doctor.name">
         <label for ="doctoraddress">Addresse:</label>
-        <input type="text" id="doctoraddress" placeholder="Name" :value="user.doctor.address">
+        <input type="text" id="doctoraddress" v-model="userDoctoraddress" placeholder="Addresse" :value="user.doctor.address">
         <label for ="doctortelephone">Telefon:</label>
-        <input type="text" id="doctortelephone" placeholder="Name" :value="user.doctor.telephone">
+        <input type="text" id="doctortelephone" v-model="userDoctortelephone" placeholder="Telefon" :value="user.doctor.telephone">
 
         <h2>Einschränkungen</h2>
         <div v-if="user.limits">
@@ -99,6 +99,13 @@ export default {
       userAllowride: '',
       userAllowswim: '',
       userHaspayed: '',
+      userContactname: '',
+      userContactaddress: '',
+      userContacttelephone: '',
+      userDoctorname: '',
+      userDoctoraddress: '',
+      userDoctortelephone: '',
+      userLimits: [],
       popupClass: 'fadeOut',
       errors: []
     };
@@ -121,6 +128,13 @@ export default {
       this.userAllowride = this.user.allowRiding
       this.userAllowswim = this.user.allowSwimming
       this.userHaspayed = this.user.hasPayed
+      this.userContactname = this.user.emergencyContact.name
+      this.userContactaddress = this.user.emergencyContact.address
+      this.userContacttelephone = this.user.emergencyContact.telephone
+      this.userDoctorname = this.user.doctor.name
+      this.userDoctoraddress = this.user.doctor.address
+      this.userDoctortelephone = this.user.doctor.telephone
+      this.userLimits = this.user.limits
     })
     .catch(e => {
       this.errors.push(e)
@@ -149,16 +163,23 @@ export default {
       params.append('allowRiding', riding);
       params.append('allowSwimming', swimming);
       params.append('hasPayed', payed);
+      params.append('contactName', this.userContactname);
+      params.append('contactAddress', this.userContactaddress);
+      params.append('contactTelephone', this.userContacttelephone);
+      params.append('doctorName', this.userDoctorname);
+      params.append('doctorAddress', this.userDoctoraddress);
+      params.append('doctorTelephone', this.userDoctortelephone);
       axios.post('http://localhost:8088/api/updateuser', params)
-      .then(response => {})
+      .then(response => {
+        this.popupClass = 'fadeIn'
+        var self = this;
+        setTimeout(function () {
+          self.popupClass = 'fadeOut';
+        }, 2000);
+      })
       .catch(e => {
         this.errors.push(e)
       })
-      this.popupClass = 'fadeIn'
-      var self = this;
-      setTimeout(function () {
-        self.popupClass = 'fadeOut';
-      }, 2000);
     }
   }
 }

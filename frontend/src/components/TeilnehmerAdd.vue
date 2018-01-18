@@ -8,50 +8,8 @@
       <a href="/#/Reservierung/" >Reservierungen</a>
     </nav>
     <main>
-      <div>
-        <h1>Teilnehmer erstellen</h1>
-        <br/>
-        <form>
-          <input type="text" placeholder="Nachname"> <br/>
-          &nbsp <br/>
-          <input type="text" placeholder="Vorname"> <br/>
-          &nbsp <br/>
-          <input type="text" placeholder="Geburtstag"><br/>
-          &nbsp <br/>
-          <input type="text" placeholder="Straße"><br/>
-          &nbsp <br/>
-          <input type="text" placeholder="Postleitzahl"><br/>
-          &nbsp <br/>
-          <input type="text" placeholder="Stadt"> <br/>
-          &nbsp <br/>
-          <input type="text" placeholder="Telefonnummer"><br/>
-          &nbsp <br/>
-          <input type="text" placeholder="Krankenversicherungsnummer"><br/>
-          &nbsp <br/>
-          <input type="text" placeholder="Behandlung"><br/>
-          &nbsp <br/>
-          <fieldset>
-            <label>
-              <input type="checkbox" value="behandeln" id="check">Darf behandelt werden
-            </label>
-            <label>
-              <input type="checkbox" value="schwimmen" id="check">Darf schwimmen
-            </label>
-            <label>
-              <input type="checkbox" value="reiten" id="check">Darf reiten
-            </label>
-            <label>
-              <input type="checkbox" value="hause" id="check">Darf alleine nach Hause gehen
-            </label>
-          </fieldset>
-          &nbsp <br/>
-          <input type="submit" v-on:click="create()" value="Hinzufügen">
-        </form>
-      </div>
+    <h1> Microservice 1 :)</h1>
     </main>
-    <footer>
-      <a href="/#/Test/" >Zurück zur Übersicht</a>
-    </footer>
   </html>
 </template>
 
