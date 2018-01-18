@@ -1,12 +1,12 @@
 <template>
   <html>
     <nav>
-      <a href="/#/Veranstaltung/" >Veranstaltung erstellen</a>
-      <a href="/#/Verwaltung/" >Veranstaltungen verwalten</a>
-      <a href="/#/Teilnehmer/" >Teilnehmer</a>
-      <a href="/#/TeilnehmerAdd/" >Teilnehmer erstellen</a>
-      <a href="/#/Reservierung/" >Reservierungen</a>
-    </nav>
+          <input type="text" class="searchbar" placeholder="Suche ...">
+          <a href="/#/Verwaltung/" >Alle Veranstaltungen</a>
+          <a href="/#/Veranstaltung/" >Veranstaltung erstellen </a>
+          <a href="/#/Teilnehmer/" >Alle Teilnehmer</a>
+          <a href="/#/TeilnehmerAdd/" class="selected">Teilnehmer erstellen</a>
+        </nav>
     <main>
     <h1> Microservice 1 :)</h1>
     </main>

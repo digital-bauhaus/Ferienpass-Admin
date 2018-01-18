@@ -5,7 +5,6 @@
       <a href="/#/Veranstaltung/">Veranstaltung erstellen </a>
       <a href="/#/Teilnehmer/" class="selected" >Alle Teilnehmer</a>
       <a href="/#/TeilnehmerAdd/" >Teilnehmer erstellen</a>
-      <a href="/#/Reservierung/" >Reservierungen</a>
     </nav>
     <main>
       <h1>Teilnehmerbearbeitung</h1>

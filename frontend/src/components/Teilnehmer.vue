@@ -6,7 +6,6 @@
       <a href="/#/Veranstaltung/" >Veranstaltung erstellen </a>
       <a href="/#/Teilnehmer/"  class="selected">Alle Teilnehmer</a>
       <a href="/#/TeilnehmerAdd/" >Teilnehmer erstellen</a>
-      <a href="/#/Reservierung/" >Reservierungen</a>
     </nav>
     <main>
     <h1>Teilnehmerübersicht</h1>
@@ -21,7 +20,7 @@
          <th>Bearbeiten</th>
        </tr>
        <tr v-for="alluser of allusers">
-         <td :id="alluser.hasPayed">{{alluser.hasPayed}}</td>
+         <td :id="alluser.hasPayed"><span :id="alluser.hasPayed">{{alluser.hasPayed}}</span></td>
          <td>{{alluser.lastName}}, {{alluser.firstName}}</td>
          <td>{{alluser.birthDate}}</td>
          <td>{{alluser.street}}, {{alluser.city}}</td>
@@ -175,10 +174,14 @@ export default {
 <style scoped>
 
 td:nth-child(1) {
-    background-color: #e5e22b;
+    background-color: #fce553;
+    color: #fce553;
+    cursor: default;
 }
 #true {
-    background-color: #5ed15e;
+    background-color: #8eef8b;
+    color: #8eef8b;
+    cursor: default;
 }
 
 
