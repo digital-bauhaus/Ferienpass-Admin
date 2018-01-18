@@ -285,6 +285,17 @@ public class BackendController {
         }
     }
 
+    // GET USER FROM USERLIST BY FIRST- AND LASTNAME
+    @RequestMapping(path = "/userbyfirstandlastname")
+    @ResponseStatus(HttpStatus.CREATED)
+    public @ResponseBody
+    long getUserbyfirstandlast(@RequestParam String firstname, @RequestParam String lastname) {
+        long id = userRepository.findIdByFirstNameAndLastName(firstname, lastname);
+        User user = userRepository.findOne(id);
+        LOG.info("Returned ID of User");
+        return id;
+    }
+
 
 
 }
