@@ -13,7 +13,7 @@
               <table v-if="allprojects && allprojects.length" id="myTable">
                 <tr>
                   <th v-on:click="sortTable(0)">Veranstaltung</th>
-                  <th v-on:click="sortTable(1)">Datum</th>
+                  <th v-on:click="sortDate()">Datum</th>
                   <th> belegt / gesamt Plätze</th>
                   <th>Bearbeiten</th>
                  </tr>
@@ -44,7 +44,6 @@
 	</html>
 </template>
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script>
 import axios from 'axios';
 
@@ -105,6 +104,91 @@ export default {
         }
       }
     },
+    /* sortDate () {
+      var table, rows, switching, i, x, y, shouldSwitch;
+      table = document.getElementById('myTable');
+      switching = true;
+      console.log(rows[i].getElementsByTagName('TD')[1]);
+
+      while (switching) {
+        switching = false;
+        rows = table.getElementsByTagName('TR');
+
+        for (i = 1; i < (rows.length - 1); i++) {
+          shouldSwitch = false;
+
+          // var st = "26.04.2013";
+          var tmpx = rows[i].getElementsByTagName('TD')[1];
+          x = tmpx.toString();
+          var datex = Date.parse(x);
+          // var patternx = /(\d{2})\.(\d{2})\.(\d{4})/;
+          // var dx = new Date(x.replace(patternx, '$3-$2-$1'));
+
+          var tmpy = rows[i + 1].getElementsByTagName('TD')[1];
+          y = tmpy.toString();
+          var datey = Date.parse(y);
+          // var patterny = /(\d{2})\.(\d{2})\.(\d{4})/;
+          // var dy = new Date(y.replace(patterny, '$3-$2-$1'));
+
+          if (datex > datey) {
+            shouldSwitch = true;
+            console.log(shouldSwitch);
+            break;
+          }
+        }
+        if (shouldSwitch) {
+          rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+          switching = true;
+        }
+      }
+    }, */
+    sortDate () {
+      var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount;
+      switchcount = 0;
+      table = document.getElementById('myTable');
+      switching = true;
+      dir = 'asc';
+      while (switching) {
+        switching = false;
+        rows = table.getElementsByTagName('TR');
+
+        for (i = 1; i < (rows.length - 1); i++) {
+          shouldSwitch = false;
+
+          var tmpx = rows[i].getElementsByTagName('TD')[1].innerHTML;
+          x = tmpx.toString();
+          var patternx = /(\d{2})\.(\d{2})\.(\d{4})/;
+          var dx = new Date(x.replace(patternx, '$3-$2-$1'));
+
+          var tmpy = rows[i + 1].getElementsByTagName('TD')[1].innerHTML;
+          y = tmpy.toString();
+          var patterny = /(\d{2})\.(\d{2})\.(\d{4})/;
+          var dy = new Date(y.replace(patterny, '$3-$2-$1'));
+
+          if (dir === 'asc') {
+            if (dx > dy) {
+              shouldSwitch = true;
+              break;
+            }
+          } else if (dir === 'desc') {
+            if (dx < dy) {
+              shouldSwitch = true;
+              break;
+            }
+          }
+        }
+        if (shouldSwitch) {
+          rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+          switching = true;
+          switchcount++;
+        } else {
+          if (switchcount === 0 && dir === 'asc') {
+            dir = 'desc';
+            switching = true;
+          }
+        }
+      }
+    },
     kill (event) {
       var modal = document.getElementById('delete');
       modal.style.display = 'block';
@@ -124,6 +208,7 @@ export default {
 
 }
 </script>
+<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>-->
 
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
