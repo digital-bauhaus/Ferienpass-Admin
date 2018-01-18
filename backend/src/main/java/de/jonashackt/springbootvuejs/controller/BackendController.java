@@ -91,6 +91,7 @@ public class BackendController {
         Illness limit2 = new Illness("Was ganz dolle schlimmes", "Macht immer richtig komische Sachen", "Honigmelone");
         List<Project> projects = new ArrayList<>();
         projects.add(project1);
+        projectRepository.save(project1);
         List<Limitation> limits = new ArrayList<>();
         limits.add(limit1);
         limits.add(limit2);
