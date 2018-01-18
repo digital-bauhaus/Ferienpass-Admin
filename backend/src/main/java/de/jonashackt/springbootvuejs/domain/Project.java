@@ -29,13 +29,13 @@ public class Project {
 
     protected Project() {}
 
-    public Project(String name, String date, int age, int price, int slots, int slotsFree, int slotsReserved, String weblink, List<User> users) {
+    public Project(String name, String date, int age, int price, int slots, int slotsReserved, String weblink, List<User> users) {
         this.name = name;
         this.date = date;
         this.age = age;
         this.price = price;
         this.slots = slots;
-        this.slotsFree = slotsFree;
+        this.slotsFree = users.size();
         this.slotsReserved = slotsReserved;
         this.weblink = weblink;
         this.users = users;

@@ -67,7 +67,7 @@ import java.util.List;
     public @ResponseBody
     Long addNewProject() {
         // EXAMPLE Project
-<span class="nc" id="L70">        Project project = new Project(&quot;Ball Werfen&quot;, &quot;10.05.2018&quot;, 10, 20, 2, 2, 1, &quot;www.google.com&quot;, new ArrayList&lt;&gt;());</span>
+<span class="nc" id="L70">        Project project = new Project(&quot;Ball Werfen&quot;, &quot;10.05.2018&quot;, 10, 20, 2, 1, &quot;www.google.com&quot;, new ArrayList&lt;&gt;());</span>
 <span class="nc" id="L71">        projectRepository.save(project);</span>
 
 <span class="nc" id="L73">        LOG.info(project.toString() + &quot; successfully saved into DB&quot;);</span>
@@ -86,7 +86,7 @@ import java.util.List;
 <span class="nc" id="L86">        Doctor doctor = new Doctor(&quot;Eich&quot;, &quot;Route&quot;, 1, &quot;Alabastia&quot;, &quot;39829&quot;,</span>
                 &quot;555-6891&quot;);
 <span class="nc" id="L88">        Contact contact = new Contact(&quot;Igor Eich&quot;, &quot;Route 4 Neuborkia  96825&quot;, &quot;555-2532&quot;);</span>
-<span class="nc" id="L89">        Project project1 = new Project(&quot;Ball werfen&quot;, registerDateString, 10, 20, 3, 3, 1,&quot;www.google.com&quot;, new ArrayList&lt;&gt;());</span>
+<span class="nc" id="L89">        Project project1 = new Project(&quot;Ball werfen&quot;, registerDateString, 10, 20, 3, 1,&quot;www.google.com&quot;, new ArrayList&lt;&gt;());</span>
 <span class="nc" id="L90">        FoodLimit limit1 = new FoodLimit(&quot;Laktoseintoleranz&quot;, &quot;&quot;);</span>
 <span class="nc" id="L91">        Illness limit2 = new Illness(&quot;Was ganz dolle schlimmes&quot;, &quot;Macht immer richtig komische Sachen&quot;, &quot;Honigmelone&quot;);</span>
 <span class="nc" id="L92">        List&lt;Project&gt; projects = new ArrayList&lt;&gt;();</span>
@@ -137,8 +137,8 @@ import java.util.List;
     Long updateUser(@RequestParam long id, @RequestParam String firstName, @RequestParam String lastName, @RequestParam String birthDate,
                     @RequestParam String street, @RequestParam String city, @RequestParam String postcode,
                     @RequestParam String telephone, @RequestParam String healthcareNr, @RequestParam boolean allowTreatment,
-                    @RequestParam Contact contact, @RequestParam boolean allowHomeAlone, @RequestParam boolean allowRiding,
-                    @RequestParam boolean allowSwimming, @RequestParam boolean hasPayed, @RequestParam Doctor doctor) {
+                    @RequestParam boolean allowHomeAlone, @RequestParam boolean allowRiding,
+                    @RequestParam boolean allowSwimming, @RequestParam boolean hasPayed) {
 
 <span class="nc" id="L143">        User updatedUser = userRepository.findOne(id);</span>
 <span class="nc" id="L144">        updatedUser.setFirstName(firstName);</span>
@@ -150,32 +150,29 @@ import java.util.List;
 <span class="nc" id="L150">        updatedUser.setTelephone(telephone);</span>
 <span class="nc" id="L151">        updatedUser.setHealthcareNr(healthcareNr);</span>
 <span class="nc" id="L152">        updatedUser.setAllowTreatment(allowTreatment);</span>
-<span class="nc" id="L153">        updatedUser.setEmergencyContact(contact);</span>
-<span class="nc" id="L154">        updatedUser.setAllowHomeAlone(allowHomeAlone);</span>
-<span class="nc" id="L155">        updatedUser.setAllowRiding(allowRiding);</span>
-<span class="nc" id="L156">        updatedUser.setAllowSwimming(allowSwimming);</span>
-<span class="nc" id="L157">        updatedUser.setHasPayed(hasPayed);</span>
-<span class="nc" id="L158">        updatedUser.setDoctor(doctor);</span>
+<span class="nc" id="L153">        updatedUser.setAllowHomeAlone(allowHomeAlone);</span>
+<span class="nc" id="L154">        updatedUser.setAllowRiding(allowRiding);</span>
+<span class="nc" id="L155">        updatedUser.setAllowSwimming(allowSwimming);</span>
+<span class="nc" id="L156">        updatedUser.setHasPayed(hasPayed);</span>
+<span class="nc" id="L157">        userRepository.save(updatedUser);</span>
 
-<span class="nc" id="L160">        userRepository.save(updatedUser);</span>
+<span class="nc" id="L159">        LOG.info(updatedUser.toString() + &quot; successfully saved into DB&quot;);</span>
 
-<span class="nc" id="L162">        LOG.info(updatedUser.toString() + &quot; successfully saved into DB&quot;);</span>
-
-<span class="nc" id="L164">        return updatedUser.getId();</span>
+<span class="nc" id="L161">        return updatedUser.getId();</span>
     }
 
     // GET USER INFORMATION BY ID
     @GetMapping(path = &quot;/user/{id}&quot;)
     public @ResponseBody
     User getUserById(@PathVariable(&quot;id&quot;) long id) {
-<span class="nc" id="L171">        return userRepository.findOne(id);</span>
+<span class="nc" id="L168">        return userRepository.findOne(id);</span>
     }
 
     // GET PROJECT INFORMATION BY ID
     @GetMapping(path = &quot;/project/{project_id}&quot;)
     public @ResponseBody
     Project getProjectById(@PathVariable(&quot;project_id&quot;) Long project_id) {
-<span class="nc" id="L178">        return projectRepository.findOne(project_id);</span>
+<span class="nc" id="L175">        return projectRepository.findOne(project_id);</span>
     }
 
     // CREATE NEW PROJECT
@@ -183,12 +180,12 @@ import java.util.List;
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
     Long addNewProject(@RequestParam String name, @RequestParam String date, @RequestParam int age, @RequestParam int price, @RequestParam int slots,
-                       @RequestParam int slotsFree, @RequestParam int slotsReserved, @RequestParam String weblink) {
-<span class="nc" id="L187">        Project project = new Project(name, date, age, price, slots, slotsFree , slotsReserved, weblink, new ArrayList&lt;&gt;());</span>
-<span class="nc" id="L188">        projectRepository.save(project);</span>
-<span class="nc" id="L189">        LOG.info(project.toString() + &quot;successfully saved into DB&quot;);</span>
+                       @RequestParam int slotsReserved, @RequestParam String weblink) {
+<span class="nc" id="L184">        Project project = new Project(name, date, age, price, slots, slotsReserved, weblink, new ArrayList&lt;&gt;());</span>
+<span class="nc" id="L185">        projectRepository.save(project);</span>
+<span class="nc" id="L186">        LOG.info(project.toString() + &quot;successfully saved into DB&quot;);</span>
 
-<span class="nc" id="L191">        return project.getProject_id();</span>
+<span class="nc" id="L188">        return project.getProject_id();</span>
     }
 
     // UPDATE PROJECT INFORMATION
@@ -197,18 +194,18 @@ import java.util.List;
     public @ResponseBody
     Long updateProject(@RequestParam long id, @RequestParam String name, @RequestParam String date, @RequestParam int age, @RequestParam int price, @RequestParam int slots,
                        @RequestParam int slotsReserved, @RequestParam String weblink) {
-<span class="nc" id="L200">        Project updatedProject = projectRepository.findOne(id);</span>
-<span class="nc" id="L201">        updatedProject.setName(name);</span>
-<span class="nc" id="L202">        updatedProject.setDate(date);</span>
-<span class="nc" id="L203">        updatedProject.setAge(age);</span>
-<span class="nc" id="L204">        updatedProject.setPrice(price);</span>
-<span class="nc" id="L205">        updatedProject.setSlots(slots);</span>
-<span class="nc" id="L206">        updatedProject.setSlotsReserved(slotsReserved);</span>
-<span class="nc" id="L207">        updatedProject.setWeblink(weblink);</span>
-<span class="nc" id="L208">        projectRepository.save(updatedProject);</span>
-<span class="nc" id="L209">        LOG.info(updatedProject.toString() + &quot;successfully updated/saved into DB&quot;);</span>
+<span class="nc" id="L197">        Project updatedProject = projectRepository.findOne(id);</span>
+<span class="nc" id="L198">        updatedProject.setName(name);</span>
+<span class="nc" id="L199">        updatedProject.setDate(date);</span>
+<span class="nc" id="L200">        updatedProject.setAge(age);</span>
+<span class="nc" id="L201">        updatedProject.setPrice(price);</span>
+<span class="nc" id="L202">        updatedProject.setSlots(slots);</span>
+<span class="nc" id="L203">        updatedProject.setSlotsReserved(slotsReserved);</span>
+<span class="nc" id="L204">        updatedProject.setWeblink(weblink);</span>
+<span class="nc" id="L205">        projectRepository.save(updatedProject);</span>
+<span class="nc" id="L206">        LOG.info(updatedProject.toString() + &quot;successfully updated/saved into DB&quot;);</span>
 
-<span class="nc" id="L211">        return updatedProject.getProject_id();</span>
+<span class="nc" id="L208">        return updatedProject.getProject_id();</span>
     }
 
     // DELETE PROJECT
@@ -217,11 +214,11 @@ import java.util.List;
     public @ResponseBody
     String deleteProject(@RequestParam Long project_id) {
 
-<span class="nc" id="L220">        Project theproj = projectRepository.findOne(project_id);</span>
-<span class="nc" id="L221">        projectRepository.delete(project_id);</span>
-<span class="nc" id="L222">        LOG.info(theproj.toString() + &quot;deleted from DB&quot;);</span>
+<span class="nc" id="L217">        Project theproj = projectRepository.findOne(project_id);</span>
+<span class="nc" id="L218">        projectRepository.delete(project_id);</span>
+<span class="nc" id="L219">        LOG.info(theproj.toString() + &quot;deleted from DB&quot;);</span>
 
-<span class="nc" id="L224">        return theproj.toString();</span>
+<span class="nc" id="L221">        return theproj.toString();</span>
     }
 
     // GET ALL PROJECT OF ONE USER
@@ -230,9 +227,9 @@ import java.util.List;
     public @ResponseBody
     List&lt;Project&gt; getProjectsOfUser(@RequestParam long id) {
 
-<span class="nc" id="L233">        User user = userRepository.findOne(id);</span>
-<span class="nc" id="L234">        LOG.info(&quot;Returned all Projects of: &quot; + user.toString());</span>
-<span class="nc" id="L235">        return user.getProjects();</span>
+<span class="nc" id="L230">        User user = userRepository.findOne(id);</span>
+<span class="nc" id="L231">        LOG.info(&quot;Returned all Projects of: &quot; + user.toString());</span>
+<span class="nc" id="L232">        return user.getProjects();</span>
     }
 
     // ADD NEW CANCELLATION
@@ -241,11 +238,50 @@ import java.util.List;
     public @ResponseBody
     List&lt;Project&gt; addProjectToCancelled(@RequestParam long id, @RequestParam Project cancelledProject) {
 
-<span class="nc" id="L244">        User user = userRepository.findOne(id);</span>
-<span class="nc" id="L245">        user.getCancellations().add(cancelledProject);</span>
-<span class="nc" id="L246">        LOG.info(&quot;Added Projects to List of Cancellations of: &quot; + user.toString());</span>
-<span class="nc" id="L247">        return user.getCancellations();</span>
+<span class="nc" id="L241">        User user = userRepository.findOne(id);</span>
+<span class="nc" id="L242">        user.getCancellations().add(cancelledProject);</span>
+<span class="nc" id="L243">        LOG.info(&quot;Added Projects to List of Cancellations of: &quot; + user.toString());</span>
+<span class="nc" id="L244">        return user.getCancellations();</span>
     }
+
+    // GET USERS OF PROJECT
+    @RequestMapping(path = &quot;/usersofproject&quot;)
+    @ResponseStatus(HttpStatus.CREATED)
+    public @ResponseBody
+    List&lt;User&gt; getUsersOfProject(@RequestParam long id) {
+
+<span class="nc" id="L253">        Project project = projectRepository.findOne(id);</span>
+<span class="nc" id="L254">        LOG.info(&quot;Returned all Users of: &quot; + project.toString());</span>
+<span class="nc" id="L255">        return project.getUsers();</span>
+    }
+
+    // RESERVE SLOTS IN PROJECT
+    @RequestMapping(path = &quot;/reserveslotsinproject&quot;)
+    @ResponseStatus(HttpStatus.CREATED)
+    public @ResponseBody
+    int reserve(@RequestParam long id, @RequestParam int slots){
+<span class="nc" id="L263">        Project project = projectRepository.findOne(id);</span>
+<span class="nc" id="L264">        int totalslots = project.getSlots();</span>
+<span class="nc" id="L265">        int reservedslots = project.getSlotsReserved();</span>
+<span class="nc" id="L266">        int allslots = reservedslots + slots;</span>
+<span class="nc bnc" id="L267" title="All 4 branches missed.">        if (reservedslots == 0 &amp;&amp; reservedslots &lt;= totalslots)</span>
+        {
+<span class="nc" id="L269">            project.setSlotsReserved(slots);</span>
+<span class="nc" id="L270">            LOG.info(&quot;Reserved &quot; + slots + &quot; Slots in &quot; +project.toString());</span>
+<span class="nc" id="L271">            return project.getSlotsReserved();</span>
+        }
+<span class="nc bnc" id="L273" title="All 2 branches missed.">        else if (allslots &lt;= totalslots)</span>
+        {
+<span class="nc" id="L275">            project.setSlotsReserved(allslots);</span>
+<span class="nc" id="L276">            LOG.info(&quot;Reserved &quot; + slots + &quot; Slots in &quot; +project.toString());</span>
+<span class="nc" id="L277">            return project.getSlotsReserved();</span>
+        }
+        else {
+<span class="nc" id="L280">            LOG.info(&quot;Error&quot;);</span>
+<span class="nc" id="L281">            return project.getSlotsReserved();</span>
+        }
+    }
+
 
 
 }

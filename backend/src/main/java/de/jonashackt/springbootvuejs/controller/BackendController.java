@@ -67,7 +67,7 @@ public class BackendController {
     public @ResponseBody
     Long addNewProject() {
         // EXAMPLE Project
-        Project project = new Project("Ball Werfen", "10.05.2018", 10, 20, 2, 2, 1, "www.google.com", new ArrayList<>());
+        Project project = new Project("Ball Werfen", "10.05.2018", 10, 20, 2, 1, "www.google.com", new ArrayList<>());
         projectRepository.save(project);
 
         LOG.info(project.toString() + " successfully saved into DB");
@@ -86,7 +86,7 @@ public class BackendController {
         Doctor doctor = new Doctor("Eich", "Route", 1, "Alabastia", "39829",
                 "555-6891");
         Contact contact = new Contact("Igor Eich", "Route 4 Neuborkia  96825", "555-2532");
-        Project project1 = new Project("Ball werfen", registerDateString, 10, 20, 3, 3, 1,"www.google.com", new ArrayList<>());
+        Project project1 = new Project("Ball werfen", registerDateString, 10, 20, 3, 1,"www.google.com", new ArrayList<>());
         FoodLimit limit1 = new FoodLimit("Laktoseintoleranz", "");
         Illness limit2 = new Illness("Was ganz dolle schlimmes", "Macht immer richtig komische Sachen", "Honigmelone");
         List<Project> projects = new ArrayList<>();
@@ -180,8 +180,8 @@ public class BackendController {
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
     Long addNewProject(@RequestParam String name, @RequestParam String date, @RequestParam int age, @RequestParam int price, @RequestParam int slots,
-                       @RequestParam int slotsFree, @RequestParam int slotsReserved, @RequestParam String weblink) {
-        Project project = new Project(name, date, age, price, slots, slotsFree , slotsReserved, weblink, new ArrayList<>());
+                       @RequestParam int slotsReserved, @RequestParam String weblink) {
+        Project project = new Project(name, date, age, price, slots, slotsReserved, weblink, new ArrayList<>());
         projectRepository.save(project);
         LOG.info(project.toString() + "successfully saved into DB");
 
