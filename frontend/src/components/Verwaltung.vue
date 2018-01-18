@@ -12,8 +12,8 @@
         <h1>Veranstaltungsübersicht</h1>
               <table v-if="allprojects && allprojects.length" id="myTable">
                 <tr>
-                  <th v-on:click="sortTable(0)">Veranstaltung</th>
-                  <th v-on:click="sortDate()">Datum</th>
+                  <th v-on:click="sortTable(0)" class="clickable">Veranstaltung</th>
+                  <th v-on:click="sortDate()" class="clickable">Datum</th>
                   <th> belegt / gesamt Plätze</th>
                   <th>Bearbeiten</th>
                  </tr>
@@ -104,44 +104,6 @@ export default {
         }
       }
     },
-    /* sortDate () {
-      var table, rows, switching, i, x, y, shouldSwitch;
-      table = document.getElementById('myTable');
-      switching = true;
-      console.log(rows[i].getElementsByTagName('TD')[1]);
-
-      while (switching) {
-        switching = false;
-        rows = table.getElementsByTagName('TR');
-
-        for (i = 1; i < (rows.length - 1); i++) {
-          shouldSwitch = false;
-
-          // var st = "26.04.2013";
-          var tmpx = rows[i].getElementsByTagName('TD')[1];
-          x = tmpx.toString();
-          var datex = Date.parse(x);
-          // var patternx = /(\d{2})\.(\d{2})\.(\d{4})/;
-          // var dx = new Date(x.replace(patternx, '$3-$2-$1'));
-
-          var tmpy = rows[i + 1].getElementsByTagName('TD')[1];
-          y = tmpy.toString();
-          var datey = Date.parse(y);
-          // var patterny = /(\d{2})\.(\d{2})\.(\d{4})/;
-          // var dy = new Date(y.replace(patterny, '$3-$2-$1'));
-
-          if (datex > datey) {
-            shouldSwitch = true;
-            console.log(shouldSwitch);
-            break;
-          }
-        }
-        if (shouldSwitch) {
-          rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-          switching = true;
-        }
-      }
-    }, */
     sortDate () {
       var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount;
       switchcount = 0;

@@ -264,6 +264,10 @@ th {
   font-weight: bold;
 }
 
+.clickable {
+  cursor: pointer;
+}
+
 td, th {
   padding: 6px;
   border: 1px solid #ccc;
