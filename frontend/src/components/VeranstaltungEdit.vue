@@ -1,15 +1,16 @@
 <template>
     <html>
     <nav>
-      <a href="/#/Veranstaltung/" >Veranstaltung erstellen</a>
-      <a href="/#/Verwaltung/" >Veranstaltungen verwalten</a>
-      <a href="/#/Teilnehmer/" >Teilnehmer</a>
+      <a href="/#/Verwaltung/" >Alle Veranstaltungen</a>
+      <a href="/#/Veranstaltung/" class="selected" >Veranstaltung erstellen </a>
+      <a href="/#/Teilnehmer/" >Alle Teilnehmer</a>
       <a href="/#/TeilnehmerAdd/" >Teilnehmer erstellen</a>
       <a href="/#/Reservierung/" >Reservierungen</a>
     </nav>
     <main>
+    <h1>Veranstaltungsbearbeitung</h1>
       <form method="post" v-on:submit.prevent="postProject">
-        <span class="caption">Veranstaltung hinzufügen:</span> <br/>
+        <span class="caption">Veranstaltung bearbeiten:</span> <br/>
         <label for ="label">Veranstaltungsname: </label>
         <input type="text" id="label" placeholder="Veranstaltungsname" v-model="projectName" :value="project.name">
         <label for ="date">Datum: </label>
@@ -24,9 +25,10 @@
         <input type="text" id="price" placeholder="Preis" v-model="projectPrice" :value="project.price">
         <label for ="weblink">Weblink: </label>
         <input type="text" id="weblink" placeholder="Weblink" v-model="projectWeblink" :value="project.weblink">
-        <input type="submit" v-on:click="create()" value="Hinzufügen">
+        <input type="submit" v-on:click="create()" value="Bearbeiten">
       </form>
     </main>
+    <div :class="popupClass">✔ Erfolgreich bearbeitet!</div>
     </html>
 </template>
 
@@ -46,7 +48,8 @@ export default {
       projectSlotsfree: '',
       projectSlotsreserved: '',
       projectWeblink: '',
-      errors: []
+      errors: [],
+      popupClass: 'fadeOut'
     };
   },
   created () {
@@ -85,6 +88,12 @@ export default {
       .catch(e => {
         this.errors.push(e)
       })
+
+      this.popupClass = 'fadeIn'
+      var self = this;
+      setTimeout(function () {
+        self.popupClass = 'fadeOut';
+      }, 2000);
     },
     kill (event) {
       event.target.parentElement.parentElement.remove();

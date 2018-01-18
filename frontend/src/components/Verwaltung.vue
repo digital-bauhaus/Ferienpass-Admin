@@ -2,9 +2,9 @@
 	<html>
       <nav>
         <input type="text" class="searchbar" placeholder="Suche ...">
-        <a href="/#/Veranstaltung/" >Veranstaltung erstellen</a>
-        <a href="/#/Verwaltung/" >Veranstaltungen verwalten</a>
-        <a href="/#/Teilnehmer/" >Teilnehmer</a>
+        <a href="/#/Verwaltung/" class="selected">Alle Veranstaltungen</a>
+        <a href="/#/Veranstaltung/" >Veranstaltung erstellen </a>
+        <a href="/#/Teilnehmer/" >Alle Teilnehmer</a>
         <a href="/#/TeilnehmerAdd/" >Teilnehmer erstellen</a>
         <a href="/#/Reservierung/" >Reservierungen</a>
       </nav>
@@ -21,7 +21,7 @@
                  <!--<td v-on:click="teil($event)">{{allproject.name}}</td>-->
                    <td>{{allproject.name}}</td>
                    <td>{{allproject.date}}</td>
-                   <td>belegt / </nobr> {{allproject.slots}}</td>
+                   <td>{{allproject.slotsFree}} / </nobr> {{allproject.slots}}</td>
                    <td><nobr><button v-on:click="kill($event)">löschen</button>
                      <router-link :to="{path: '../VeranstaltungEdit', query: {id: allproject.project_id }}">Bearbeiten</router-link>
                      <button>PDF exportieren</button></nobr>
@@ -128,12 +128,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-main {
-  width: 75%;
-  position: absolute;
-  right: 0px;
-  height: 100%;
-}
 
 .button {
 display: inline-block;

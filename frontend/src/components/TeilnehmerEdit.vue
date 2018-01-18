@@ -1,9 +1,9 @@
 <template>
     <html>
     <nav>
-      <a href="/#/Veranstaltung/" >Veranstaltung erstellen</a>
-      <a href="/#/Verwaltung/" >Veranstaltungen verwalten</a>
-      <a href="/#/Teilnehmer/" >Teilnehmer</a>
+      <a href="/#/Verwaltung/" >Alle Veranstaltungen</a>
+      <a href="/#/Veranstaltung/">Veranstaltung erstellen </a>
+      <a href="/#/Teilnehmer/" class="selected" >Alle Teilnehmer</a>
       <a href="/#/TeilnehmerAdd/" >Teilnehmer erstellen</a>
       <a href="/#/Reservierung/" >Reservierungen</a>
     </nav>
@@ -27,11 +27,17 @@
         <input type="text" id="telephone" placeholder="Telefonnummer" v-model="userTelephone" :value="user.telephone">
         <label for ="healthcare">Krankenversicherungsnummer: </label>
         <input type="text" id="healthcare" placeholder="Krankenversicherungsnummer" v-model="userHealthcarenr" :value="user.healthcareNr">
-        <label for ="treatment">Behandlung: </label>
-        <input type="text" id="treatment" placeholder="Behandlung" v-model="userAllowtreatment" :value="user.allowTreatment">
-        <input type="submit" v-on:click="created()" value="Hinzufügen">
+          <fieldset>
+              <label><input v-model="userAllowtreatment" type="checkbox" id="check">Darf behandelt werden</label><br/>
+              <label><input v-model="userAllowhomealone" type="checkbox" id="check">Darf schwimmen</label><br/>
+              <label><input v-model="userAllowride" type="checkbox" id="check">Darf reiten</label><br/>
+              <label><input v-model="userAllowswim" type="checkbox" id="check">Darf alleine nach Hause gehen</label><br/>
+              <label><input v-model="userHaspayed" type="checkbox" id="check">Hat bezahlt</label><br/>
+          </fieldset>
+        <input type="submit" value="Bearbeiten">
       </form>
     </main>
+      <div :class="popupClass">✔ Erfolgreich bearbeitet!</div>
     </html>
 </template>
 
@@ -56,6 +62,7 @@ export default {
       userAllowride: '',
       userAllowswim: '',
       userHaspayed: '',
+      popupClass: 'fadeOut',
       errors: []
     };
   },
@@ -75,7 +82,7 @@ export default {
       this.userAllowtreatment = this.user.allowTreatment
       this.userAllowhomealone = this.user.allowHomeAlone
       this.userAllowride = this.user.allowRiding
-      this.userAllowswim = this.user.allowSwim
+      this.userAllowswim = this.user.allowSwimming
       this.userHaspayed = this.user.hasPayed
     })
     .catch(e => {
@@ -95,11 +102,11 @@ export default {
       params.append('postcode', this.userPostcode);
       params.append('telephone', this.userTelephone);
       params.append('healthcareNr', this.userHealthcarenr);
-      var treatment = (this.userAllowtreatment === 'true');
-      var homealone = (this.userAllowhomealone === 'true');
-      var riding = (this.userAllowride === 'true');
-      var swimming = (this.userAllowswim === 'true');
-      var payed = (this.userHaspayed === 'true');
+      var treatment = (this.userAllowtreatment === true);
+      var homealone = (this.userAllowhomealone === true);
+      var riding = (this.userAllowride === true);
+      var swimming = (this.userAllowswim === true);
+      var payed = (this.userHaspayed === true);
       params.append('allowTreatment', treatment);
       params.append('allowHomeAlone', homealone);
       params.append('allowRiding', riding);
@@ -110,9 +117,11 @@ export default {
       .catch(e => {
         this.errors.push(e)
       })
-    },
-    kill (event) {
-      event.target.parentElement.parentElement.remove();
+      this.popupClass = 'fadeIn'
+      var self = this;
+      setTimeout(function () {
+        self.popupClass = 'fadeOut';
+      }, 2000);
     }
   }
 }

@@ -1,9 +1,10 @@
 <template xmlns:v-on="http://www.w3.org/1999/xhtml">
     <html>
     <nav>
-      <a href="/#/Veranstaltung/" >Veranstaltung erstellen</a>
-      <a href="/#/Verwaltung/" >Veranstaltungen verwalten</a>
-      <a href="/#/Teilnehmer/" >Teilnehmer</a>
+      <a href="/#/Verwaltung/" >Alle Veranstaltungen</a>
+      <a href="/#/Veranstaltung/" class="selected" >Veranstaltung erstellen </a>
+      <a href="/#/Teilnehmer/" >Alle Teilnehmer</a>
+      <a href="/#/TeilnehmerAdd/" >Teilnehmer erstellen</a>
       <a href="/#/Reservierung/" >Reservierungen</a>
     </nav>
     <main>
@@ -22,12 +23,12 @@
             <input type="text" name="num" v-model="projectAge" placeholder="Altersbegrenzung" required>
             <label for ="price">Preis: </label>
             <input type="text" name="num" v-model="projectPrice" placeholder="Preis" required>
-        <input type="text" name="num" v-model="projectSlotsfree" placeholder="Plätze frei" required>
             <label for ="weblink">Weblink: </label>
             <input type="text" name="num" v-model="projectWeblink" placeholder="Weblink" required>
-            <input type="submit" v-on:click="create()" value="Hinzufügen">
+            <input type="submit" v-on:click="" value="Hinzufügen">
           </form>
     </main>
+    <div :class="popupClass">✔ Erfolgreich</div>
     </html>
 </template>
 
@@ -45,10 +46,10 @@ export default {
       projectAge: '',
       projectPrice: '',
       projectSlots: '',
-      projectSlotsfree: '',
       projectSlotsreserved: '',
       projectWeblink: '',
-      errors: []
+      errors: [],
+      popupClass: 'fadeOut'
     }
   },
   methods: {
@@ -59,7 +60,6 @@ export default {
       params.append('age', parseInt(this.projectAge));
       params.append('price', parseInt(this.projectPrice));
       params.append('slots', parseInt(this.projectSlots));
-      params.append('slotsFree', parseInt(this.projectSlotsfree));
       params.append('slotsReserved', parseInt(this.projectSlotsreserved));
       params.append('weblink', this.projectWeblink);
       axios.post('http://localhost:8088/api/createproject', params)
@@ -67,6 +67,11 @@ export default {
       .catch(e => {
         this.errors.push(e)
       })
+      this.popupClass = 'fadeIn'
+      var self = this;
+      setTimeout(function () {
+        self.popupClass = 'fadeOut';
+      }, 2000);
     },
     create () {
       alert('Sie haben das Event erstellt');

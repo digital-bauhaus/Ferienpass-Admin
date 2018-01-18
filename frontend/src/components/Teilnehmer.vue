@@ -2,35 +2,19 @@
   <html>
     <nav>
       <input type="text" class="searchbar" placeholder="Suche ...">
-      <a href="/#/Veranstaltung/" >Veranstaltung erstellen</a>
-      <a href="/#/Verwaltung/" >Veranstaltungen verwalten</a>
-      <a href="/#/Teilnehmer/" >Teilnehmer</a>
+      <a href="/#/Verwaltung/" >Alle Veranstaltungen</a>
+      <a href="/#/Veranstaltung/" >Veranstaltung erstellen </a>
+      <a href="/#/Teilnehmer/"  class="selected">Alle Teilnehmer</a>
       <a href="/#/TeilnehmerAdd/" >Teilnehmer erstellen</a>
       <a href="/#/Reservierung/" >Reservierungen</a>
     </nav>
     <main>
     <h1>Teilnehmerübersicht</h1>
 
-    <!--
-      <p>
-        <input type="search" placeholder="Suchen" list="Teilnehmer">
-        <datalist id="Teilnehmer">
-          <option value="Koenig,Thorsten"></option>
-          <option value="Kohler, Marie"></option>
-          <option value="Keller, Florian"></option>
-          <option value="Wirtz, Felix"></option>
-          <option value="Steinbrecher, Jonas"></option>
-          <option value="Durr, Tina"></option>
-        </datalist>
-        <button>finden</button>
-      </p>
-    </form>-->
-
        <table v-if="allusers && allusers.length">
        <tr>
          <th>Status</th>
          <th>Name</th>
-         <th>Geburtstag</th>
          <th>Addresse</th>
          <th>Telefon</th>
          <th>Bearbeiten</th>
@@ -38,7 +22,6 @@
        <tr v-for="alluser of allusers">
          <td :id="alluser.hasPayed">{{alluser.hasPayed}}</td>
          <td>{{alluser.lastName}}, {{alluser.firstName}}</td>
-         <td>{{alluser.birthDate}}</td>
          <td>{{alluser.street}}, {{alluser.city}}</td>
          <td>{{alluser.telephone}}</th>
 

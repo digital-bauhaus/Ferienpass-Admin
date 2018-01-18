@@ -1,13 +1,14 @@
 <template>
-  <div>
-    <h2>{{title}}</h2>
-    <br/>
-    <form id="login">
+<html>
+    <div id="login">
+    <h1>{{title}}</h1>
+    <form >
       <input type="text" name="Admin-Name" value="" placeholder="Admin"> <br/>
       <input type="password" name="Passwort" value="" placeholder="Passwort"><br/>
       <button onclick="window.location.href='/#/Test'">einloggen</button>
     </form>
-  </div>
+    </div>
+</html>
 </template>
 
 
@@ -27,56 +28,49 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
-}
 
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
+h1 {
+  text-align: center;
 }
 
 #login {
-  margin: auto;
   position: absolute;
+  width: 450px;
+  height: 400px;
+  margin: auto;
+  padding: 30px;
   top: 0; left: 0; bottom: 0; right: 0;
-  width: 320px;
-  height: 320px;
+  border: 2px solid #383754;
+  border-radius: 10px;
+
 }
 
-
-input[type=text] {
-    padding: 10px 12px;
-    margin: 4px 0;
-    box-sizing: border-box;
+#login form label {
+margin: 0px;
+  float: left;
+  display: block;
 }
 
-input[type=password] {
-    padding: 10px 12px;
-    margin: 4px 0;
-    box-sizing: border-box;
-}
-
-button {
-    background-color: #4CAF50; /* Green */
+#login form button {
+background-color: #383754;
     border: none;
     color: white;
-    padding: 10px 24px;
-    margin-top: 10px;
-    border-radius: 8px;
+    padding: 15px 32px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
+    display: block;
     font-size: 16px;
+    margin: auto;
 }
 
-a {
-  color: #42b983;
+#login form input{
+  font-size: 20px;
+  width: 60%;
+  margin: auto;
+  height: 30px;
+  margin-bottom: 5px;
+  display: block;
 }
+
 </style>
 
