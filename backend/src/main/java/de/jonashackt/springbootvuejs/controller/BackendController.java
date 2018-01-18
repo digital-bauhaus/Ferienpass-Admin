@@ -226,7 +226,8 @@ public class BackendController {
     String deleteProject(@RequestParam Long project_id) {
 
         Project theproj = projectRepository.findOne(project_id);
-        projectRepository.delete(project_id);
+        theproj.setAlive(false);
+        projectRepository.save(theproj);
         LOG.info(theproj.toString() + "deleted from DB");
 
         return theproj.toString();

@@ -226,10 +226,11 @@ import java.util.List;
     String deleteProject(@RequestParam Long project_id) {
 
 <span class="nc" id="L228">        Project theproj = projectRepository.findOne(project_id);</span>
-<span class="nc" id="L229">        projectRepository.delete(project_id);</span>
-<span class="nc" id="L230">        LOG.info(theproj.toString() + &quot;deleted from DB&quot;);</span>
+<span class="nc" id="L229">        theproj.setAlive(false);</span>
+<span class="nc" id="L230">        projectRepository.save(theproj);</span>
+<span class="nc" id="L231">        LOG.info(theproj.toString() + &quot;deleted from DB&quot;);</span>
 
-<span class="nc" id="L232">        return theproj.toString();</span>
+<span class="nc" id="L233">        return theproj.toString();</span>
     }
 
     // GET ALL PROJECT OF ONE USER
@@ -238,9 +239,9 @@ import java.util.List;
     public @ResponseBody
     List&lt;Project&gt; getProjectsOfUser(@RequestParam long id) {
 
-<span class="nc" id="L241">        User user = userRepository.findOne(id);</span>
-<span class="nc" id="L242">        LOG.info(&quot;Returned all Projects of: &quot; + user.toString());</span>
-<span class="nc" id="L243">        return user.getProjects();</span>
+<span class="nc" id="L242">        User user = userRepository.findOne(id);</span>
+<span class="nc" id="L243">        LOG.info(&quot;Returned all Projects of: &quot; + user.toString());</span>
+<span class="nc" id="L244">        return user.getProjects();</span>
     }
 
     // ADD NEW CANCELLATION
@@ -249,10 +250,10 @@ import java.util.List;
     public @ResponseBody
     List&lt;Project&gt; addProjectToCancelled(@RequestParam long id, @RequestParam Project cancelledProject) {
 
-<span class="nc" id="L252">        User user = userRepository.findOne(id);</span>
-<span class="nc" id="L253">        user.getCancellations().add(cancelledProject);</span>
-<span class="nc" id="L254">        LOG.info(&quot;Added Projects to List of Cancellations of: &quot; + user.toString());</span>
-<span class="nc" id="L255">        return user.getCancellations();</span>
+<span class="nc" id="L253">        User user = userRepository.findOne(id);</span>
+<span class="nc" id="L254">        user.getCancellations().add(cancelledProject);</span>
+<span class="nc" id="L255">        LOG.info(&quot;Added Projects to List of Cancellations of: &quot; + user.toString());</span>
+<span class="nc" id="L256">        return user.getCancellations();</span>
     }
 
     // GET USERS OF PROJECT
@@ -261,9 +262,9 @@ import java.util.List;
     public @ResponseBody
     List&lt;User&gt; getUsersOfProject(@RequestParam long id) {
 
-<span class="nc" id="L264">        Project project = projectRepository.findOne(id);</span>
-<span class="nc" id="L265">        LOG.info(&quot;Returned all Users of: &quot; + project.toString());</span>
-<span class="nc" id="L266">        return project.getUsers();</span>
+<span class="nc" id="L265">        Project project = projectRepository.findOne(id);</span>
+<span class="nc" id="L266">        LOG.info(&quot;Returned all Users of: &quot; + project.toString());</span>
+<span class="nc" id="L267">        return project.getUsers();</span>
     }
 
     // RESERVE SLOTS IN PROJECT
@@ -271,25 +272,25 @@ import java.util.List;
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
     int reserve(@RequestParam long id, @RequestParam int slots){
-<span class="nc" id="L274">        Project project = projectRepository.findOne(id);</span>
-<span class="nc" id="L275">        int totalslots = project.getSlots();</span>
-<span class="nc" id="L276">        int reservedslots = project.getSlotsReserved();</span>
-<span class="nc" id="L277">        int allslots = reservedslots + slots;</span>
-<span class="nc bnc" id="L278" title="All 4 branches missed.">        if (reservedslots == 0 &amp;&amp; reservedslots &lt;= totalslots)</span>
+<span class="nc" id="L275">        Project project = projectRepository.findOne(id);</span>
+<span class="nc" id="L276">        int totalslots = project.getSlots();</span>
+<span class="nc" id="L277">        int reservedslots = project.getSlotsReserved();</span>
+<span class="nc" id="L278">        int allslots = reservedslots + slots;</span>
+<span class="nc bnc" id="L279" title="All 4 branches missed.">        if (reservedslots == 0 &amp;&amp; reservedslots &lt;= totalslots)</span>
         {
-<span class="nc" id="L280">            project.setSlotsReserved(slots);</span>
-<span class="nc" id="L281">            LOG.info(&quot;Reserved &quot; + slots + &quot; Slots in &quot; +project.toString());</span>
-<span class="nc" id="L282">            return project.getSlotsReserved();</span>
+<span class="nc" id="L281">            project.setSlotsReserved(slots);</span>
+<span class="nc" id="L282">            LOG.info(&quot;Reserved &quot; + slots + &quot; Slots in &quot; +project.toString());</span>
+<span class="nc" id="L283">            return project.getSlotsReserved();</span>
         }
-<span class="nc bnc" id="L284" title="All 2 branches missed.">        else if (allslots &lt;= totalslots)</span>
+<span class="nc bnc" id="L285" title="All 2 branches missed.">        else if (allslots &lt;= totalslots)</span>
         {
-<span class="nc" id="L286">            project.setSlotsReserved(allslots);</span>
-<span class="nc" id="L287">            LOG.info(&quot;Reserved &quot; + slots + &quot; Slots in &quot; +project.toString());</span>
-<span class="nc" id="L288">            return project.getSlotsReserved();</span>
+<span class="nc" id="L287">            project.setSlotsReserved(allslots);</span>
+<span class="nc" id="L288">            LOG.info(&quot;Reserved &quot; + slots + &quot; Slots in &quot; +project.toString());</span>
+<span class="nc" id="L289">            return project.getSlotsReserved();</span>
         }
         else {
-<span class="nc" id="L291">            LOG.info(&quot;Error&quot;);</span>
-<span class="nc" id="L292">            return project.getSlotsReserved();</span>
+<span class="nc" id="L292">            LOG.info(&quot;Error&quot;);</span>
+<span class="nc" id="L293">            return project.getSlotsReserved();</span>
         }
     }
 

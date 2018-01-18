@@ -15,7 +15,7 @@ public interface ProjectRepository extends CrudRepository<Project, Long> {
 
     //List<Project> findByProject_id(@Param("project_id") long project_id);
 
-    @Query(value="FROM Project")
+    @Query(value="FROM Project p WHERE p.alive=true")
     List<Project> findAllProjects();
 
     @Query(value="SELECT p.users FROM Project p WHERE p.name in :name")

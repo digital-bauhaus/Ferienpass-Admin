@@ -20,6 +20,7 @@ public class Project {
     private int slotsFree;
     private int slotsReserved;
     private String weblink;
+    private boolean alive;
     @ManyToMany(cascade= CascadeType.ALL)
     @JoinTable(name="project_user",
             joinColumns = @JoinColumn(name="project_id"),
@@ -39,6 +40,7 @@ public class Project {
         this.slotsReserved = slotsReserved;
         this.weblink = weblink;
         this.users = users;
+        this.alive = true;
     }
 
     @Override
@@ -128,5 +130,13 @@ public class Project {
 
     public void setSlotsFree(int slotsFree) {
         this.slotsFree = slotsFree;
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public void setAlive(boolean alive) {
+        this.alive = alive;
     }
 }
