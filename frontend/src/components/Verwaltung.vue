@@ -22,9 +22,9 @@
                    <td>{{allproject.name}}</td>
                    <td>{{allproject.date}}</td>
                    <td>{{allproject.slotsFree}} / </nobr> {{allproject.slots}} / </nobr> [{{allproject.slotsReserved}}]</td>
-                   <td><nobr><button v-on:click="kill($event)">löschen</button>
-                     <router-link :to="{path: '../VeranstaltungEdit', query: {id: allproject.project_id }}">Bearbeiten</router-link>
-                     <button>PDF exportieren</button></nobr>
+                   <td><nobr><span v-on:click="kill($event)" class="fakebutton"><a>löschen</a></span>
+                     <router-link :to="{path: '../VeranstaltungEdit', query: {id: allproject.project_id }}" class="fakebutton">Bearbeiten</router-link>
+                     <span class="fakebutton"><a>PDF exportieren</a></span></nobr>
                    </td>
                  </tr>
                </table>

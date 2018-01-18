@@ -27,9 +27,9 @@
          <td>{{alluser.street}}, {{alluser.city}}</td>
          <td>{{alluser.telephone}}</th>
 
-         <td><button v-on:click="kill($event)">stornieren</button>
-           <router-link :to="{path: '../TeilnehmerEdit', query: {id: alluser.id }}">Bearbeiten</router-link>
-           <button>als PDF exportieren</button>
+         <td><span v-on:click="kill($event)" class="fakebutton"><a>stornieren</a></span>
+           <router-link :to="{path: '../TeilnehmerEdit', query: {id: alluser.id }}" class="fakebutton">Bearbeiten</router-link>
+           <span class="fakebutton"><a>als PDF exportieren</a></span>
          </td>
        </tr>
      </table>

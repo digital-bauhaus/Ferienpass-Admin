@@ -97,7 +97,7 @@ main form .caption {
 }
 
 main form input[type=text]{
-  font-size: 20px;
+  font-size: 16px;
   width: 100%;
   height: 30px;
   margin-bottom: 15px;
@@ -276,6 +276,21 @@ td, th {
 
 tr:nth-child(even) {
   background: #eee;
+}
+
+.fakebutton {
+  color: black;
+  background: lightgrey;
+  border-radius: 7px;
+  padding: 4px;
+  cursor: pointer;
+}
+
+.fakebutton:hover {
+  text-decoration: none;
+  background: #3a4372;
+  color: white;
+  transition: .10s;
 }
 
 
