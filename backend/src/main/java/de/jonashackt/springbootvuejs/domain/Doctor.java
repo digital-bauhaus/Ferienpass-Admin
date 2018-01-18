@@ -22,7 +22,7 @@ public class Doctor {
 
     protected Doctor() {}
 
-    public Doctor(String name, String street, int streetNr, String city, String postcode, String telephone) {
+    public Doctor(String name, String address, String telephone) {
         this.name = name;
         this.address = address;
         this.telephone = telephone;

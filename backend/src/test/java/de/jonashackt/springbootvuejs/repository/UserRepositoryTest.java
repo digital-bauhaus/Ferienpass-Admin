@@ -36,7 +36,7 @@ public class UserRepositoryTest {
     Date registerDate = new Date();
     String registerDateString = format.format(registerDate);
     Date birthDate = new Date();
-    Doctor doctor = new Doctor("Eich", "Route", 1, "Alabastia", "39829",
+    Doctor doctor = new Doctor("Eich", "Route1 Alabastia 39829",
             "555-6891");
     Contact contact = new Contact("Igor Eich", "Route 4 Neuborkia  96825", "555-2532");
     Project project1 = new Project("Ball werfen", registerDateString, 10, 20,  3, 1, "www.google.com", new ArrayList<>());

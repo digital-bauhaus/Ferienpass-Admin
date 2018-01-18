@@ -83,7 +83,7 @@ public class BackendController {
         // EXAMPLE USER
         Date registerDate = new Date();
         String registerDateString = format.format(registerDate);
-        Doctor doctor = new Doctor("Eich", "Route", 1, "Alabastia", "39829",
+        Doctor doctor = new Doctor("Eich", "Route 1 Alabastia, 39829",
                 "555-6891");
         Contact contact = new Contact("Igor Eich", "Route 4 Neuborkia  96825", "555-2532");
         Project project1 = new Project("Ball werfen", registerDateString, 10, 20, 3, 1,"www.google.com", new ArrayList<>());
@@ -140,8 +140,10 @@ public class BackendController {
     Long updateUser(@RequestParam long id, @RequestParam String firstName, @RequestParam String lastName, @RequestParam String birthDate,
                     @RequestParam String street, @RequestParam String city, @RequestParam String postcode,
                     @RequestParam String telephone, @RequestParam String healthcareNr, @RequestParam boolean allowTreatment,
+                    @RequestParam String contactName, @RequestParam String contactAddress, @RequestParam String contactTelephone,
                     @RequestParam boolean allowHomeAlone, @RequestParam boolean allowRiding,
-                    @RequestParam boolean allowSwimming, @RequestParam boolean hasPayed) {
+                    @RequestParam boolean allowSwimming, @RequestParam boolean hasPayed, @RequestParam String doctorName,
+                    @RequestParam String doctorAddress, @RequestParam String doctorTelephone) {
 
         User updatedUser = userRepository.findOne(id);
         updatedUser.setFirstName(firstName);
@@ -153,10 +155,16 @@ public class BackendController {
         updatedUser.setTelephone(telephone);
         updatedUser.setHealthcareNr(healthcareNr);
         updatedUser.setAllowTreatment(allowTreatment);
+        updatedUser.getEmergencyContact().setName(contactName);
+        updatedUser.getEmergencyContact().setAddress(contactAddress);
+        updatedUser.getEmergencyContact().setTelephone(contactTelephone);
         updatedUser.setAllowHomeAlone(allowHomeAlone);
         updatedUser.setAllowRiding(allowRiding);
         updatedUser.setAllowSwimming(allowSwimming);
         updatedUser.setHasPayed(hasPayed);
+        updatedUser.getDoctor().setName(doctorName);
+        updatedUser.getDoctor().setAddress(doctorAddress);
+        updatedUser.getDoctor().setTelephone(doctorTelephone);
         userRepository.save(updatedUser);
 
         LOG.info(updatedUser.toString() + " successfully saved into DB");
@@ -283,17 +291,6 @@ public class BackendController {
             LOG.info("Error");
             return project.getSlotsReserved();
         }
-    }
-
-    // GET USER FROM USERLIST BY FIRST- AND LASTNAME
-    @RequestMapping(path = "/userbyfirstandlastname")
-    @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody
-    long getUserbyfirstandlast(@RequestParam String firstname, @RequestParam String lastname) {
-        long id = userRepository.findIdByFirstNameAndLastName(firstname, lastname);
-        User user = userRepository.findOne(id);
-        LOG.info("Returned ID of User");
-        return id;
     }
 
 
