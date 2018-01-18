@@ -35,6 +35,9 @@ public interface UserRepository extends CrudRepository<User, Long> {
     @Query(value="SELECT projects FROM User u WHERE u.firstName in :firstName AND u.lastName in :lastName")
     List<Project> findProjectsByFirstNameAndLastName(@Param("firstName") String firstName,@Param("lastName") String lastName);
 
+    @Query(value="FROM User u WHERE u.firstName LIKE CONCAT('%',:firstName,'%') or u.firstName LIKE CONCAT('%',:lastName,'%') or u.lastName LIKE CONCAT('%',:firstName,'%') or u.lastName LIKE CONCAT('%',:lastName,'%')")
+    List<User> findByName(@Param("firstName") String firstName, @Param("lastName") String lastName);
+
     List<User> findByLastName(@Param("lastName") String lastName);
 
     List<User> findByFirstName(@Param("firstName") String firstName);
