@@ -14,14 +14,14 @@
                 <tr>
                   <th v-on:click="sortTable(0)" class="clickable">Veranstaltung</th>
                   <th v-on:click="sortDate()" class="clickable">Datum</th>
-                  <th> belegt / gesamt Plätze</th>
+                  <th> belegt / gesamt Plätze / [Reserviert] </th>
                   <th>Bearbeiten</th>
                  </tr>
                  <tr v-for="allproject of allprojects">
                  <!--<td v-on:click="teil($event)">{{allproject.name}}</td>-->
                    <td>{{allproject.name}}</td>
                    <td>{{allproject.date}}</td>
-                   <td>{{allproject.slotsFree}} / </nobr> {{allproject.slots}}</td>
+                   <td>{{allproject.slotsFree}} / </nobr> {{allproject.slots}} / </nobr> [{{allproject.slotsReserved}}]</td>
                    <td><nobr><button v-on:click="kill($event)">löschen</button>
                      <router-link :to="{path: '../VeranstaltungEdit', query: {id: allproject.project_id }}">Bearbeiten</router-link>
                      <button>PDF exportieren</button></nobr>
