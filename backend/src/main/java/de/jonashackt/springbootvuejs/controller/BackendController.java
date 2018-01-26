@@ -111,21 +111,11 @@ public class BackendController {
 
 
     // ADD NEW USER
-    @RequestMapping(path = "/adduser")
+    @RequestMapping(path = "/adduser", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
-    Long addNewUser(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String birthDate,
-                    @RequestParam String street, @RequestParam String city, @RequestParam String postcode,
-                    @RequestParam String telephone, @RequestParam String healthcareNr, @RequestParam boolean allowTreatment,
-                    @RequestParam Contact contact, @RequestParam boolean allowHomeAlone, @RequestParam boolean allowRiding,
-                    @RequestParam boolean allowSwimming, @RequestParam boolean hasPayed, @RequestParam Doctor doctor, @RequestParam List<Project> projects,
-                    @RequestParam List<Limitation> limits) {
+    Long addNewUser(@RequestBody User user) {
 
-        Date registerDate = new Date();
-        String registerDateString = format.format(registerDate);
-        User user = new User(firstName, lastName, birthDate, registerDateString, street, city,
-                postcode, telephone, healthcareNr, allowTreatment, contact,
-                allowHomeAlone, allowRiding, allowSwimming, hasPayed, doctor, projects, limits, null);
         userRepository.save(user);
 
         LOG.info(user.toString() + " successfully saved into DB");

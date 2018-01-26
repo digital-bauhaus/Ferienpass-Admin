@@ -2,6 +2,8 @@ package de.jonashackt.springbootvuejs.controller;
 
 import de.jonashackt.springbootvuejs.SpringBootVuejsApplication;
 import de.jonashackt.springbootvuejs.domain.*;
+import de.jonashackt.springbootvuejs.repository.UserRepositoryTest;
+import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,34 +42,15 @@ public class BackendControllerTest {
 	}
 
 	@Test
-    public void addNewUserAndRetrieveItBack() {/*
-        Date birthDate = new Date();
-        Doctor doctor = new Doctor("Eich", "Route", 1, "Alabastia", "39829",
-                "555-6891");
-        Contact contact = new Contact("Igor Eich", "Route 4 Neuborkia  96825", "555-2532");
-        List<Project> projects = new ArrayList<>();
-        List<Limitation> limits = new ArrayList<>();
+    public void addNewUserAndRetrieveItBack() {
+		User user = UserRepositoryTest.createUser();
+
         Long userId =
             given()
-                    .queryParam("firstName", "Gary")
-                    .queryParam("lastName", "Eich")
-                    .queryParam("birthDate", birthDate)
-                    .queryParam("street", "Route 1")
-                    .queryParam("city", "Neuborkia")
-                    .queryParam("postcode", "96826")
-                    .queryParam("telephone", "555-5262")
-                    .queryParam("healthcareNr", "437647298")
-                    .queryParam("allowTreatment", false)
-                    .queryParam("contact", contact)
-                    .queryParam("allowHomeAlone", true)
-                    .queryParam("allowRiding", false)
-                    .queryParam("allowSwimming", true)
-                    .queryParam("doctor", doctor)
-                    .queryParam("projects", projects)
-                    .queryParam("limits", limits)
-
+                    .body(user)
+					.contentType(ContentType.JSON)
             .when()
-                .post(BASE_URL + "/add")
+                .post(BASE_URL + "/adduser")
             .then()
                 .statusCode(is(HttpStatus.SC_CREATED))
                 .extract()
@@ -84,7 +67,7 @@ public class BackendControllerTest {
                         .extract().as(User.class);
 
         assertThat(responseUser.getFirstName(), is("Gary"));
-        assertThat(responseUser.getLastName(), is("Eich"));*/
+        assertThat(responseUser.getLastName(), is("Eich"));
     }
 
 }

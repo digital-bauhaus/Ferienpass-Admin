@@ -31,22 +31,30 @@ public class UserRepositoryTest {
     @Autowired
     private UserRepository users;
 
-    SimpleDateFormat format = new SimpleDateFormat("dd.mm.yyyy");
 
-    Date registerDate = new Date();
-    String registerDateString = format.format(registerDate);
-    Date birthDate = new Date();
-    Doctor doctor = new Doctor("Eich", "Route1 Alabastia 39829",
-            "555-6891");
-    Contact contact = new Contact("Igor Eich", "Route 4 Neuborkia  96825", "555-2532");
-    Project project1 = new Project("Ball werfen", registerDateString, 10, 20,  3, 1, "www.google.com", new ArrayList<>());
-    List<Project> projects = new ArrayList<>(Arrays.asList(project1));
-    List<Limitation> limits = new ArrayList<>();
-    User user = new User("Gary", "Eich", "10.01.1999", registerDateString, "Route 1",
-            "Neuborkia",
-            "96826", "555-5262", "437647298", false,  contact,
-            true, true, true, true, doctor,
-            projects, limits, null);
+    User user = createUser();
+
+    public static User createUser() {
+        List<Limitation> limits = new ArrayList<>();
+
+        Doctor doctor = new Doctor("Eich", "Route1 Alabastia 39829",
+                "555-6891");
+        Contact contact = new Contact("Igor Eich", "Route 4 Neuborkia  96825", "555-2532");
+
+        return new User("Gary", "Eich", "10.01.1999", createDateString(), "Route 1",
+                "Neuborkia",
+                "96826", "555-5262", "437647298", false,  contact,
+                true, true, true, true, doctor,
+                createProjects(), limits, null);    }
+
+    private static List<Project> createProjects() {
+        Project project1 = new Project("Ball werfen", createDateString(), 10, 20,  3, 1, "www.google.com", new ArrayList<>());
+        return new ArrayList<>(Arrays.asList(project1));
+    }
+
+    private static String createDateString() {
+        return new SimpleDateFormat("dd.mm.yyyy").format(new Date());
+    }
 
     @Before
     public void fillSomeDataIntoOurDb() {
@@ -64,7 +72,7 @@ public class UserRepositoryTest {
     @Test
     public void testFindProjectsByFirstNameAndLastName() throws Exception {
         List<Project> projectsByFirstNameAndLastName = users.findProjectsByFirstNameAndLastName("Gary","Eich");
-        assertEquals(projectsByFirstNameAndLastName, projects);
+        assertEquals(projectsByFirstNameAndLastName, createProjects());
     }
 
 
