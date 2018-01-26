@@ -72,7 +72,8 @@ public class UserRepositoryTest {
     @Test
     public void testFindProjectsByFirstNameAndLastName() throws Exception {
         List<Project> projectsByFirstNameAndLastName = users.findProjectsByFirstNameAndLastName("Gary","Eich");
-        assertEquals(projectsByFirstNameAndLastName, createProjects());
+        String projectName = createProjects().get(0).getName();
+        assertEquals(projectsByFirstNameAndLastName.get(0).getName(), projectName);
     }
 
 
