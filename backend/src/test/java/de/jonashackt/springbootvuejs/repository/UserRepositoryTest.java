@@ -21,7 +21,6 @@ import static org.hamcrest.Matchers.contains;
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class)
 @DataJpaTest
 public class UserRepositoryTest {
 

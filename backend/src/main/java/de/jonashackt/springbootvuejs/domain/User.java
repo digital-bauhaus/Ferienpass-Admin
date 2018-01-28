@@ -35,6 +35,7 @@ public class User {
     private boolean allowRiding;
     private boolean allowSwimming;
     private boolean hasPayed;
+    private boolean alive;
 
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="doctor_id")
@@ -116,6 +117,7 @@ public class User {
         this.projects = projects;
         this.limits = limits;
         this.cancellations = cancellations;
+        this.alive = true;
     }
 
 
@@ -273,5 +275,13 @@ public class User {
 
     public void setHasPayed(boolean hasPayed) {
         this.hasPayed = hasPayed;
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public void setAlive(boolean alive) {
+        this.alive = alive;
     }
 }
