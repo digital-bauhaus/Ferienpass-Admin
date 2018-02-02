@@ -29,6 +29,101 @@ public class BackendController {
     @Autowired
     private ProjectRepository projectRepository;
 
+    //INITIAL REQUEST FOR FORM OBJECT
+    @RequestMapping(path = "/form")
+    public @ResponseBody
+    /*Form!*/String sendinitialForm() {
+
+        //!!!
+        //Return Type of function is <String> only for debugging, final return type is a Form object
+
+        //Section List of Form object
+        List<Section> sections= new ArrayList<>();
+
+        //Building structure of form-data.json
+        Form form = new Form("Ferienpass Weimar – Anmeldung",sections);
+        //frage: wovon wird id bestimmt?
+        form.setForm_id(1);
+
+        //Form Object holds 7 sections
+        //SECTION 1 GRUNDDATEN
+        //All Params of every TextField
+        Param textfield1 = new Param("Familienname",true);
+        Param textfield2 = new Param("Vorname meines Kindes",true);
+        Param textfield3 = new Param("Geburtsdatum meines Kindes",true);
+        Param textfield4 = new Param("Straße",true);
+        Param textfield5 = new Param("Wohnort",true);
+        Param textfield6 = new Param("Telefon",true,"tel");
+
+        //Param Lists of every Components(TextFields) in Grunddaten
+        List<Param> params_component_param1 = new ArrayList<>();
+        List<Param> params_component_param2 = new ArrayList<>();
+        List<Param> params_component_param3 = new ArrayList<>();
+        List<Param> params_component_param4 = new ArrayList<>();
+        List<Param> params_component_param5 = new ArrayList<>();
+        List<Param> params_component_param6 = new ArrayList<>();
+
+        //adding all parameter to List of components of Grunddaten
+        params_component_param1.add(textfield1);
+        params_component_param2.add(textfield2);
+        params_component_param3.add(textfield3);
+        params_component_param4.add(textfield4);
+        params_component_param5.add(textfield5);
+        params_component_param6.add(textfield6);
+
+        //creating all Components in Grunddaten
+        Component component_param1 = new Component("TextField", params_component_param1);
+        Component component_param2 = new Component("TextField", params_component_param2);
+        Component component_param3 = new Component("TextField", params_component_param3);
+        Component component_param4 = new Component("TextField", params_component_param4);
+        Component component_param5 = new Component("TextField", params_component_param5);
+        Component component_param6 = new Component("TextField", params_component_param6);
+
+        List<Component> components_param1 = new ArrayList<>();
+    //adding all Components to Grunddaten Component List
+        components_param1.add(component_param1);
+        components_param1.add(component_param2);
+        components_param1.add(component_param3);
+        components_param1.add(component_param4);
+        components_param1.add(component_param5);
+        components_param1.add(component_param6);
+
+
+        Param param1 = new Param("Grunddaten",true, components_param1);
+        List<Param> params_s1 = new ArrayList<>();
+        Component c_s1 = new Component("Group", params_s1);
+        List<Component> components_sec1 = new ArrayList<>();
+        components_sec1.add(c_s1);
+        //Section 1
+        Section s1_grunddaten = new Section("Grunddaten",components_sec1);
+        sections.add(s1_grunddaten);
+
+
+        //OTHER SECTIONS FOLLOWING
+
+        /*Section s2_angebote = new Section("Angebote",components);
+        Section s3_teilnehmer = new Section("Teilnehmer",components);
+        Section s4_allerg_krank = new Section("Allergien, Krankheiten, …",components);
+        Section s5_behinderung = new Section("Angaben bei Behinderung",components);
+        Section s6_erklaerung = new Section("Erklärung",components);
+        Section s7_datenschutz = new Section("Datenschutzerklärung",components);
+        sections.add(s2_angebote);
+        sections.add(s3_teilnehmer);
+        sections.add(s4_allerg_krank);
+        sections.add(s5_behinderung);
+        sections.add(s6_erklaerung);
+        sections.add(s7_datenschutz);*/
+        //form.getSections();
+
+
+        //only for testing if Form was createt
+        long form_id_check = form.getForm_id();
+        //output & return statement
+        LOG.info("GET called on /form resource || For debugging purpose: Form ID= " + form_id_check);
+        //will return the Form object holding the structure of form-data.json soon
+        return "Called api/form... Will return a Form Object soon!";
+    }
+
     @RequestMapping(path = "/hello")
     public @ResponseBody
     String sayHello() {
