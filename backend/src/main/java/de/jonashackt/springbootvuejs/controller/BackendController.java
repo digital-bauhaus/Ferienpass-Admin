@@ -2,6 +2,7 @@ package de.jonashackt.springbootvuejs.controller;
 
 import de.jonashackt.springbootvuejs.domain.*;
 import de.jonashackt.springbootvuejs.repository.*;
+import org.hibernate.annotations.Check;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class BackendController {
     //INITIAL REQUEST FOR FORM OBJECT
     @RequestMapping(path = "/form")
     public @ResponseBody
-    /*Form!*/String sendinitialForm() {
+    Form sendinitialForm() {
 
         //!!!
         //Return Type of function is <String> only for debugging, final return type is a Form object
@@ -42,8 +43,6 @@ public class BackendController {
 
         //Building structure of form-data.json
         Form form = new Form("Ferienpass Weimar – Anmeldung",sections);
-        //frage: wovon wird id bestimmt?
-        form.setForm_id(1);
 
         //Form Object holds 7 sections
         //SECTION 1 GRUNDDATEN
@@ -91,37 +90,377 @@ public class BackendController {
 
         Param param1 = new Param("Grunddaten",true, components_param1);
         List<Param> params_s1 = new ArrayList<>();
+        params_s1.add(param1);
         Component c_s1 = new Component("Group", params_s1);
         List<Component> components_sec1 = new ArrayList<>();
         components_sec1.add(c_s1);
         //Section 1
         Section s1_grunddaten = new Section("Grunddaten",components_sec1);
         sections.add(s1_grunddaten);
+        //Section 2
+
+        List<Component> components_param2 = new ArrayList<>();
+        //Checkboxen fuer jede Veranstaltung
+        List<Project> allprojects = projectRepository.findAllProjects();
+        for (Project element : allprojects){
+            List<Param> temp_params_cb1 = new ArrayList<>();
+            Param temp = new Param(element.getName(),element.getDate(),"org",element.getSlotsFree(),element.getSlots());
+            temp_params_cb1.add(temp);
+            Component temp_compo = new Component("Checkbox",temp_params_cb1);
+            components_param2.add(temp_compo);
+        }
 
 
-        //OTHER SECTIONS FOLLOWING
 
-        /*Section s2_angebote = new Section("Angebote",components);
-        Section s3_teilnehmer = new Section("Teilnehmer",components);
-        Section s4_allerg_krank = new Section("Allergien, Krankheiten, …",components);
-        Section s5_behinderung = new Section("Angaben bei Behinderung",components);
-        Section s6_erklaerung = new Section("Erklärung",components);
-        Section s7_datenschutz = new Section("Datenschutzerklärung",components);
+        Param param2 = new Param("Angebote",true, "Mein Kind möchte an folgenden Veranstaltungen teilnehmen:","Hinweis: Die Bestätigung des Platzes erfolgt bei der Anmeldung entsprechend der zur Verfügung stehenden Kapazitäten für die Angebote. Sollte ein Angebot seitens der Veranstalter aus unvorhergesehenen Gründen abgesagt werden, besteht kein Anspruch auf ein Ersatzangebot. Der gezahlte Beitrag für dieses Angebot wird Ihnen komplett zurück erstattet.", components_param2);
+        List<Param> params_s2 = new ArrayList<>();
+        params_s2.add(param2);
+        Component c_s2 = new Component("Group", params_s2);
+        List<Component> components_sec2 = new ArrayList<>();
+        components_sec2.add(c_s2);
+        Section s2_angebote = new Section("Angebote",components_sec2);
         sections.add(s2_angebote);
-        sections.add(s3_teilnehmer);
+
+
+        //SECTION 3 weggelassen, weil sie nicht benötigt wird für die Anmeldung
+
+        //SECTION 4
+        Param textfield4_1_param1 = new Param("Neuen Eintrag hinzufügen","z. B. Heuschnupfen",true);
+        Param textfield4_2_param1 = new Param("Neuen Eintrag hinzufügen","z. B. Epilepsie",true);
+        Param textfield4_3_param1 = new Param("Neuen Eintrag hinzufügen","z. B. Diazepam",true);
+        Param ernaehrung_compo1_params1_param1 = new Param("Vegetarier");
+        Param ernaehrung_compo1_params1_param2 = new Param("Laktose-Unverträglichkeit");
+        Param ernaehrung_compo1_params1_param3 = new Param("Eier-Unverträglichkeit");
+        Param textfield_dyn_list4_param1 = new Param("Neuen Eintrag hinzufügen","z. B. Milchpulver-Unverträglichkeit",true);
+        Param radiobutton1_param1 = new Param("Ja");
+        Param radiobutton2_param1 = new Param("Nein");
+        Param kraka_compo1_param1 = new Param("Name", true);
+        Param notfall_compo1_param1 = new Param("Name",true);
+        Param notfall_compo2_param1 = new Param("Anschrift",true);
+        Param notfall_compo3_param1 = new Param("Telefon",true,"tel");
+        Param arzt_compo1_param1 = new Param("Name", true);
+        Param arzt_compo2_param1 = new Param("Anschrift", true);
+        Param arzt_compo3_param1 = new Param("Telefon", true,"tel");
+
+        List<Param> textfield4_1_params = new ArrayList<>();
+        List<Param> textfield4_2_params = new ArrayList<>();
+        List<Param> textfield4_3_params = new ArrayList<>();
+        List<Param> textfield_dyn_list4_params = new ArrayList<>();
+
+        List<Param> ernaehrung_compo1_params1 = new ArrayList<>();
+        List<Param> ernaehrung_compo1_params2 = new ArrayList<>();
+        List<Param> ernaehrung_compo1_params3 = new ArrayList<>();
+        List<Param> kraka_compo1_params = new ArrayList<>();
+        List<Param> notfall_compo1_params = new ArrayList<>();
+        List<Param> notfall_compo2_params = new ArrayList<>();
+        List<Param> notfall_compo3_params = new ArrayList<>();
+        List<Param> arzt_compo1_params = new ArrayList<>();
+        List<Param> arzt_compo2_params = new ArrayList<>();
+        List<Param> arzt_compo3_params = new ArrayList<>();
+        List<Param> radiobutton1_params = new ArrayList<>();
+        List<Param> radiobutton2_params = new ArrayList<>();
+
+        arzt_compo1_params.add(arzt_compo1_param1);
+        arzt_compo2_params.add(arzt_compo2_param1);
+        arzt_compo3_params.add(arzt_compo3_param1);
+
+        notfall_compo1_params.add(notfall_compo1_param1);
+        notfall_compo2_params.add(notfall_compo2_param1);
+        notfall_compo3_params.add(notfall_compo3_param1);
+
+        kraka_compo1_params.add(kraka_compo1_param1);
+        ernaehrung_compo1_params1.add(ernaehrung_compo1_params1_param1);
+        ernaehrung_compo1_params2.add(ernaehrung_compo1_params1_param2);
+        ernaehrung_compo1_params3.add(ernaehrung_compo1_params1_param3);
+
+        radiobutton1_params.add(radiobutton1_param1);
+        radiobutton2_params.add(radiobutton2_param1);
+
+        textfield4_1_params.add(textfield4_1_param1);
+        textfield4_2_params.add(textfield4_2_param1);
+        textfield4_3_params.add(textfield4_3_param1);
+        textfield_dyn_list4_params.add(textfield_dyn_list4_param1);
+
+        Textfield textfield4_1 = new Textfield("TextField",textfield4_1_params);
+        Textfield textfield4_2 = new Textfield("TextField", textfield4_2_params);
+        Textfield textfield4_3 = new Textfield("TextField", textfield4_3_params);
+        Textfield textfield_dyn_list4 = new Textfield("TextField", textfield_dyn_list4_params);
+
+        Param hitzeempfi_compo1_param1 = new Param("Mein Kind ist hitzeempfindlich.");
+        List<Param> hitzeempfi_compo1_params = new ArrayList<>();
+        hitzeempfi_compo1_params.add(hitzeempfi_compo1_param1);
+        Component hitzeempfi_compo1 = new Component("Checkbox", hitzeempfi_compo1_params);
+        List<Component> hitzeempfi_compos = new ArrayList<>();
+        hitzeempfi_compos.add(hitzeempfi_compo1);
+        Component ernaehrung_compo1 = new Component("Checkbox", ernaehrung_compo1_params1);
+        Component ernaehrung_compo2 = new Component("Checkbox", ernaehrung_compo1_params2);
+        Component ernaehrung_compo3 = new Component("Checkbox", ernaehrung_compo1_params3);
+        Component radiobutton1 = new Component("RadioButton",radiobutton1_params);
+        Component radiobutton2 = new Component("RadioButton",radiobutton2_params);
+        Component kraka_compo1 = new Component("TextField", kraka_compo1_params);
+        Component notfall_compo1 = new Component("TextField", notfall_compo1_params);
+        Component notfall_compo2 = new Component("TextField", notfall_compo2_params);
+        Component notfall_compo3 = new Component("TextField", notfall_compo3_params);
+        Component arzt_compo1 = new Component("TextField", arzt_compo1_params);
+        Component arzt_compo2 = new Component("TextField", arzt_compo2_params);
+        Component arzt_compo3 = new Component("TextField", arzt_compo3_params);
+
+
+        List<Component> ernaehrung_compos = new ArrayList<>();
+        List<Component> behandlung_compos = new ArrayList<>();
+        List<Component> kraka_compos = new ArrayList<>();
+        List<Component> notfall_compos = new ArrayList<>();
+        List<Component> arzt_compos = new ArrayList<>();
+
+        ernaehrung_compos.add(ernaehrung_compo1);
+        ernaehrung_compos.add(ernaehrung_compo2);
+        ernaehrung_compos.add(ernaehrung_compo3);
+        behandlung_compos.add(radiobutton1);
+        behandlung_compos.add(radiobutton2);
+        kraka_compos.add(kraka_compo1);
+        notfall_compos.add(notfall_compo1);
+        notfall_compos.add(notfall_compo2);
+        notfall_compos.add(notfall_compo3);
+        arzt_compos.add(arzt_compo1);
+        arzt_compos.add(arzt_compo2);
+        arzt_compos.add(arzt_compo3);
+
+
+
+        Param allergien = new Param("Allergien","Bei meinem Kind muss auf folgende Allergie(n) geachtet werden.",textfield4_1);
+        Param krankheiten = new Param("Krankheiten","Krankheiten des Kindes bitte hier angeben.",textfield4_2);
+        Param hitzeempfi = new Param("Hitzeempfindlichkeit", hitzeempfi_compos);
+        Param medikamente = new Param("Medikamente","Vom Kind einzunehmende Medikamente hier eintragen.",textfield4_3);
+        Param ernaehrung = new Param("Ernährungsbesonderheiten", ernaehrung_compos);
+        Param weitere = new Param("Weitere Ernährungsbesonderheiten","Bitte beschreiben.",textfield_dyn_list4);
+        Param behandlung = new Param("Behandlungserlaubnis bei Erkrankungen und Unfällen", behandlung_compos);
+        Param krankenkasse = new Param("Krankenkasse", kraka_compos);
+        Param notfall_param = new Param("In Notfällen zu informieren", notfall_compos);
+        Param arzt_param = new Param("Hausarzt", arzt_compos);
+
+        List<Param> dyn_list1_params = new ArrayList<>();
+        dyn_list1_params.add(allergien);
+        List<Param> dyn_list2_params = new ArrayList<>();
+        dyn_list2_params.add(krankheiten);
+        List<Param> group1_params = new ArrayList<>();
+        group1_params.add(hitzeempfi);
+        List<Param> dyn_list3_params = new ArrayList<>();
+        group1_params.add(medikamente);
+        List<Param> group2_params = new ArrayList<>();
+        group1_params.add(ernaehrung);
+        List<Param> dyn_list4_params = new ArrayList<>();
+        dyn_list4_params.add(weitere);
+        List<Param> radio_params = new ArrayList<>();
+        radio_params.add(behandlung);
+        List<Param> kraka_params = new ArrayList<>();
+        kraka_params.add(krankenkasse);
+        List<Param> notfall_params = new ArrayList<>();
+        notfall_params.add(notfall_param);
+        List<Param> arzt_params = new ArrayList<>();
+        arzt_params.add(arzt_param);
+
+        Component dyn_list1 =  new Component("DynamicList",dyn_list1_params);
+        Component dyn_list2 = new Component("DynamicList",dyn_list2_params);
+        Component group1 = new Component("group", group1_params);
+        Component dyn_list3 = new Component("DynamicList", dyn_list3_params);
+        Component group2 = new Component("Group", group2_params);
+        Component dyn_list4 = new Component("DynamicList",dyn_list4_params);
+        Component radiogaga = new Component("RadioGroup", radio_params);
+        Component kraka = new Component("Group", kraka_params);
+        Component notfall = new Component("Group", notfall_params);
+        Component arzt = new Component("Group", arzt_params);
+        List<Component> components_sec4 = new ArrayList<>();
+
+        components_sec4.add(dyn_list1);
+        components_sec4.add(dyn_list2);
+        components_sec4.add(group1);
+        components_sec4.add(dyn_list3);
+        components_sec4.add(group2);
+        components_sec4.add(dyn_list4);
+        components_sec4.add(radiogaga);
+        components_sec4.add(kraka);
+        components_sec4.add(notfall);
+        components_sec4.add(arzt);
+
+        Section s4_allerg_krank = new Section("Allergien, Krankheiten, ...",components_sec4);
         sections.add(s4_allerg_krank);
+
+        //SECTION 5#
+        Param tf_param1= new Param("Neuen Eintrag hinzufügen","z. B. Sicht",true);
+        List<Param> tf_params = new ArrayList<>();
+        tf_params.add(tf_param1);
+        Textfield textfield101 = new Textfield("TextField", tf_params);
+        Param group_1_param1_compo1_param1 = new Param("Pflege");
+        Param group_1_param1_compo2_param2 = new Param("Medizinische Versorgung");
+        Param group_1_param1_compo3_param3 = new Param("Mobilität");
+        Param group_1_param1_compo4_param4 = new Param("Orientierung");
+        Param group_1_param1_compo5_param5 = new Param("Soziale Begleitung");
+        Param group_1_param1_compo5_param6 = new Param("Sinneswahrnehmung", "Beeinträchtigte Sinneswahrnehmungen angeben", textfield101);
+        List<Param> group_1_param1_compo1_params = new ArrayList<>();
+        List<Param> group_1_param1_compo2_params = new ArrayList<>();
+        List<Param> group_1_param1_compo3_params = new ArrayList<>();
+        List<Param> group_1_param1_compo4_params = new ArrayList<>();
+        List<Param> group_1_param1_compo5_params = new ArrayList<>();
+        List<Param> group_1_param1_compo6_params = new ArrayList<>();
+
+        group_1_param1_compo1_params.add(group_1_param1_compo1_param1);
+        group_1_param1_compo2_params.add(group_1_param1_compo2_param2);
+        group_1_param1_compo3_params.add(group_1_param1_compo3_param3);
+        group_1_param1_compo4_params.add(group_1_param1_compo4_param4);
+        group_1_param1_compo5_params.add(group_1_param1_compo5_param5);
+        group_1_param1_compo6_params.add(group_1_param1_compo5_param6);
+
+        Component group_1_param1_compo1 = new Component("Checkbox", group_1_param1_compo1_params);
+        Component group_1_param1_compo2 = new Component("Checkbox", group_1_param1_compo2_params);
+        Component group_1_param1_compo3 = new Component("Checkbox", group_1_param1_compo3_params);
+        Component group_1_param1_compo4 = new Component("Checkbox", group_1_param1_compo4_params);
+        Component group_1_param1_compo5 = new Component("Checkbox", group_1_param1_compo5_params);
+        Component dyn_list_group_1 = new Component("DynamicList", group_1_param1_compo6_params);
+
+        List<Component> group_1_param1_compos = new ArrayList<>();
+
+        group_1_param1_compos.add(group_1_param1_compo1);
+        group_1_param1_compos.add(group_1_param1_compo2);
+        group_1_param1_compos.add(group_1_param1_compo3);
+        group_1_param1_compos.add(group_1_param1_compo4);
+        group_1_param1_compos.add(group_1_param1_compo5);
+        group_1_param1_compos.add(dyn_list_group_1);
+
+        Param checkbox5_1_param1 = new Param("„aG“ (Außergewöhnliche Gehbehinderung)");
+        Param checkbox5_2_param1 = new Param("„H“ (Hilflosigkeit)");
+        Param checkbox5_3_param1 = new Param("„Bl“ (Blind)");
+        Param checkbox5_4_param1 = new Param("„Gl“ (Gehörlos)");
+        Param checkbox5_5_param1 = new Param("„B“ (Berechtigung zur Mitnahme einer Begleitperson)");
+        Param checkbox5_6_param1 = new Param("„G“ (Erhebliche Beeinträchtigung der Bewegungsfähigkeit im Straßenverkehr)");
+        Param checkbox5_7_param1 = new Param("„TBL“ (Taubblind)");
+        Param checkbox5_8_param1 = new Param("Rollstuhlnutzung");
+        Param checkbox5_9_param1 = new Param("Weitere Hilfsmittel beschreiben:");
+        Param checkbox5_10_param1 = new Param("Wertmarke vorhanden");
+        Param checkbox5_11_param1 = new Param("Mein Kind hat im Schulalltag eine Schulbegleitung und benötigt auch während der Ferienfreizeit eine Begleitperson");
+        Param group_1_param1 = new Param("Wofür wird die Begleitperson benötigt?", group_1_param1_compos);
+        Param textarea00_param1 = new Param("Darauf ist im Umgang mit meinem Kind unbedingt zu achten:");
+        Param checkbox11_param1 = new Param("Wir benötigen Unterstützung bei der Organisation der Begleitperson");
+        Param textarea2_param1 = new Param("Welcher Dienst ist in der Regel für die Begleitung/Betreuung zuständig? (Bitte Kontaktdaten des Dienstes/der Dienste angeben):");
+        Param checkbox22_param1 = new Param("Hiermit beantrage ich die Übernahme der Kosten für die Begleitung/Betreuung o.g. Kindes während der Teilnahme an den Ferienfreizeiten gemäß der Anmeldung auf Seite 1. Auf die Förderung einer Begleitperson für Ferienfreizeiten besteht kein Rechtsanspruch. Die  bedürftigkeitsabhängige Prüfung erfolgt am Einzelfall durch das Amt für Familie und Soziales der Stadt Weimar. Voraussetzung hierfür ist, dass das Kind als Hauptwohnsitz in Weimar lebt.");
+
+        List<Param> checkbox5_1_params = new ArrayList<>();
+        List<Param> checkbox5_2_params = new ArrayList<>();
+        List<Param> checkbox5_3_params = new ArrayList<>();
+        List<Param> checkbox5_4_params = new ArrayList<>();
+        List<Param> checkbox5_5_params = new ArrayList<>();
+        List<Param> checkbox5_6_params = new ArrayList<>();
+        List<Param> checkbox5_7_params = new ArrayList<>();
+        List<Param> checkbox5_8_params = new ArrayList<>();
+        List<Param> checkbox5_9_params = new ArrayList<>();
+        List<Param> checkbox5_10_params = new ArrayList<>();
+        List<Param> checkbox5_11_params = new ArrayList<>();
+        List<Param> group_1_params = new ArrayList<>();
+
+        List<Param> textarea00_params = new ArrayList<>();
+        List<Param> checkbox11_params = new ArrayList<>();
+        List<Param> textarea2_params = new ArrayList<>();
+        List<Param> checkbox22_params = new ArrayList<>();
+
+        textarea00_params.add(textarea00_param1);
+        checkbox11_params.add(checkbox11_param1);
+        textarea2_params.add(textarea2_param1);
+        checkbox22_params.add(checkbox22_param1);
+
+        checkbox5_8_params.add(checkbox5_8_param1);
+        checkbox5_9_params.add(checkbox5_9_param1);
+        checkbox5_1_params.add(checkbox5_1_param1);
+        checkbox5_2_params.add(checkbox5_2_param1);
+        checkbox5_3_params.add(checkbox5_3_param1);
+        checkbox5_4_params.add(checkbox5_4_param1);
+        checkbox5_5_params.add(checkbox5_5_param1);
+        checkbox5_6_params.add(checkbox5_6_param1);
+        checkbox5_7_params.add(checkbox5_7_param1);
+        checkbox5_10_params.add(checkbox5_10_param1);
+        checkbox5_11_params.add(checkbox5_11_param1);
+        group_1_params.add(group_1_param1);
+
+        Param checkbox_dep_sec_param1 = new Param("Bei meinem Kind liegt eine Beeinträchtigung vor");
+        Component checkbox5_1 = new Component("Checkbox", checkbox5_1_params );
+        Component checkbox5_2 = new Component("Checkbox", checkbox5_2_params );
+        Component checkbox5_3 = new Component("Checkbox", checkbox5_3_params );
+        Component checkbox5_4 = new Component("Checkbox", checkbox5_4_params );
+        Component checkbox5_5 = new Component("Checkbox", checkbox5_5_params );
+        Component checkbox5_6 = new Component("Checkbox", checkbox5_6_params );
+        Component checkbox5_7 = new Component("Checkbox", checkbox5_7_params );
+        Component hilfsmittel_compo1 = new Component("Checkbox", checkbox5_8_params);
+        Component hilfsmittel_compo2 = new Component("TextArea", checkbox5_9_params);
+        Component checkbox5_10 = new Component("Checkbox", checkbox5_10_params);
+        Checkbox checkbox5_11 = new Checkbox("Checkbox",checkbox5_11_params);
+        Component group_1 = new Component("Group", group_1_params);
+        Component textarea00 = new Component("TextArea", textarea00_params);
+        Component checkbox11 = new Component("TextArea", checkbox11_params);
+        Component textarea2= new Component("TextArea", textarea2_params);
+        Component checkbox22 = new Component("TextArea", checkbox22_params);
+
+        List<Param> checkbox_dep_sec_params = new ArrayList<>();
+        List<Component> merkzeichen_compos = new ArrayList<>();
+        List<Component> hilfsmittel_compos = new ArrayList<>();
+        List<Component> wertmarke_compos = new ArrayList<>();
+        List<Component> dep_sec_2_compos = new ArrayList<>();
+        merkzeichen_compos.add(checkbox5_1);
+        merkzeichen_compos.add(checkbox5_2);
+        merkzeichen_compos.add(checkbox5_3);
+        merkzeichen_compos.add(checkbox5_4);
+        merkzeichen_compos.add(checkbox5_5);
+        merkzeichen_compos.add(checkbox5_6);
+        merkzeichen_compos.add(checkbox5_7);
+        hilfsmittel_compos.add(hilfsmittel_compo1);
+        hilfsmittel_compos.add(hilfsmittel_compo2);
+        wertmarke_compos.add(checkbox5_10);
+        dep_sec_2_compos.add(group_1);
+        dep_sec_2_compos.add(checkbox11);
+        dep_sec_2_compos.add(textarea2);
+        dep_sec_2_compos.add(checkbox22);
+        dep_sec_2_compos.add(textarea00);
+
+
+        checkbox_dep_sec_params.add(checkbox_dep_sec_param1);
+        Checkbox checkbox_dep_sec = new Checkbox("Checkbox", checkbox_dep_sec_params);
+        Param dep_sec_param1 = new Param("Beeinträchtigung", checkbox_dep_sec);
+        Param group1_5_param1 = new Param("Merkzeichen", merkzeichen_compos);
+        Param group2_5_param1 = new Param("Hilfsmittel", hilfsmittel_compos);
+        Param group3_5_param1 = new Param("Wertmarke", wertmarke_compos);
+        Param dep_sec_2_param1 = new Param("Begleitung", checkbox5_11 ,dep_sec_2_compos);
+        List<Param> dep_sec_params = new ArrayList<>();
+        List<Param> group1_5_params = new ArrayList<>();
+        List<Param> group2_5_params = new ArrayList<>();
+        List<Param> group3_5_params = new ArrayList<>();
+        List<Param> dep_sec_2_params = new ArrayList<>();
+        dep_sec_params.add(dep_sec_param1);
+        group1_5_params.add(group1_5_param1);
+        group2_5_params.add(group2_5_param1);
+        group3_5_params.add(group3_5_param1);
+        dep_sec_2_params.add(dep_sec_2_param1);
+
+
+        Component dep_sec = new Component("DependingSection", dep_sec_params);
+        Component group1_5 = new Component("Group", group1_5_params);
+        Component group2_5 = new Component("Group", group2_5_params);
+        Component group3_5 = new Component("Group", group3_5_params);
+        Component dep_sec_2 = new Component("DependingSection", dep_sec_2_params);
+        List<Component> components_sec5 = new ArrayList<>();
+        components_sec5.add(dep_sec);
+        components_sec5.add(group1_5);
+        components_sec5.add(group2_5);
+        components_sec5.add(group3_5);
+
+        Section s5_behinderung = new Section("Angaben bei Behinderung", components_sec5);
         sections.add(s5_behinderung);
-        sections.add(s6_erklaerung);
-        sections.add(s7_datenschutz);*/
-        //form.getSections();
+
+        //Section 6
+
+        //Section s6_erklaerung = new Section("Erklärung", components_sec6);
+        //sections.add(s6_erklaerung);
 
 
-        //only for testing if Form was createt
-        long form_id_check = form.getForm_id();
-        //output & return statement
-        LOG.info("GET called on /form resource || For debugging purpose: Form ID= " + form_id_check);
-        //will return the Form object holding the structure of form-data.json soon
-        return "Called api/form... Will return a Form Object soon!";
+        LOG.info("GET called on /form resource || returned Form with ID= " + form.getForm_id());
+        //return Form Object (-> JSON Structure from which Anmeldung is created)
+        return form;
     }
 
     @RequestMapping(path = "/hello")

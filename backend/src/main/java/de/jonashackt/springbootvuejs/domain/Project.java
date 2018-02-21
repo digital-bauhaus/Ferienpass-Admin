@@ -15,6 +15,7 @@ public class Project {
     private String name;
     private String date;
     private int age;
+    //private String organisation;
     private int price;
     private int slots;
     private int slotsFree;

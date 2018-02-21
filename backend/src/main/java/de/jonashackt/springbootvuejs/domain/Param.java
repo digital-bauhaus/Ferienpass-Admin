@@ -34,6 +34,7 @@ public class Param {
     // ALLERGIEN UND DER GANZE MUELL
     // private String title;
     private String emptyMessage;
+    //private Textfield textfield;
 
     // TEXTFELDER
     // private String label;
@@ -65,11 +66,15 @@ public class Param {
         this.checkbox = checkbox;
     }
 
+    public Param(String title, Checkbox checkbox, List<Component> components) {
+        this.title = title;
+        this.checkbox = checkbox;
+        this.components = components;
+    }
     public Param(String title, Checkbox checkbox) {
         this.title = title;
         this.checkbox = checkbox;
     }
-
     // Checkbox, RadioButton
     public Param(String label) {
         this.label = label;
@@ -86,6 +91,12 @@ public class Param {
         this.label = label;
         this.placeholder = placeholder;
         this.hideLabel = hideLabel;
+    }
+    //Allergien > String String Textfield
+    public Param(String title, String emptyMessage, Textfield textfield) {
+        this.title = title;
+        this.emptyMessage = emptyMessage;
+        this.textfield = textfield;
     }
 
     // Allergien, Besonderheiten etc
