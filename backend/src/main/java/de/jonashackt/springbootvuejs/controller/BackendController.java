@@ -7,12 +7,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
+
+
 
 @RestController()
 @RequestMapping("/api")
@@ -719,5 +723,15 @@ public class BackendController {
     }
 
 
-
+    // Expect requests from this origin
+    @CrossOrigin(origins = "http://localhost:8090")
+    @RequestMapping(path     = "/register",
+        method   = RequestMethod.POST,
+        consumes = {
+            MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            MediaType.APPLICATION_JSON_VALUE
+        })
+    public String register(@RequestBody Map<String, Object> request) throws Exception {
+        return "Recieved POST request to `/api/register`.";
+    }
 }
