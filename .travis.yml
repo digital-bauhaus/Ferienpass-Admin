@@ -11,9 +11,3 @@ notifications:
   slack: digital-bauhaus:2ZFDhvBSWsjMpEVQitxCzxmY
   email:
     on_success: never
-    on_failure: change
-
-deploy:
-  provider: heroku
-  api_key:
-    secure: A1TOT48c38cnTrIvulOxOEP0RbJeFFEFsdH/tbzTIwYyHCkDWnsRSsjLHH70S5FvsCaU+c8RriWavKOxJyTd45LtVd+P4r6+Ndhm/EmVQzM82gANG7N0pzmGnyQuHdshgMyoHozLZvR0MPPLve6keHJsBlr5+ugf/ztS5DeErr6iiEldnshU5i5vd5JYWSuy+a/JDkZVyYoS7qE3Pcmyflj3dbAfx9dVkZYOsvEN+Bm9q0y1i8EbweCv3E0OPmtm0TpYlVGfMOsp5DcBGzckL3cC/C78QjOJKmDSvK/NXnSwwGC/gV+Za0UDphupE+0sZr7VNtCul5r6O0sz2e+HCBdljCq+tArXcug9G6Q5TSHbcpX1+rRoVKu/7i5ueg1nPKTxWrpTD6ntNJhyuJaUcF3+gJEtkCpvCTmf47EfsBNtMl3lfsVoZ36pzTXJRFHojgspWGNRhJsStkWfqk4F5RTHUIISlSlZqcpCRxNciQyqQYTdjHScn77N0fLbzK1QkSa7h7vrpOpZ2nVl9IDYlAbx1mGYWnQf0hI982tCn8TDW6O/Fc8yYEW/Lk2ATB6bOVbJ8cJis5q3Vu67x149dD4LPgjTWQGnQXFhFi9ggK/XXDlnjSOOPJuHlqV3XY6VZ9FEDnosW81HO1J8jF0V7qi04duk+mehjKLndWzg2B8=
