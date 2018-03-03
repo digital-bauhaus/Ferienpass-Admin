@@ -8,8 +8,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>spring-boot-vuejs</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Admin für den Ferienpass Weimar</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
