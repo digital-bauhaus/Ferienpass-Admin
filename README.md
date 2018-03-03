@@ -5,7 +5,10 @@
 
 Hier entsteht die Administrations-Oberfläche für den digitalen Ferienpass der Stadt Weimar.
 
+Jeder commit in den master löst einen Travis build aus. Wenn dieser inkl. Tests erfolgreich durchläuft, wird die Anwendung automatisch auf unsere QA-Stage deployed: https://ferienpass-admin.herokuapp.com
+
 Das Projekt basiert auf dem repo [spring-boot-vuejs](https://github.com/jonashackt/spring-boot-vuejs).
+
 
 ## NodeJS, NPM, Vue.js
 
