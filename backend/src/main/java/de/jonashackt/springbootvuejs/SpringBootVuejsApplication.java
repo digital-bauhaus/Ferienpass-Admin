@@ -18,3 +18,4 @@ public class SpringBootVuejsApplication {
 		final ApplicationContext ctx = SpringApplication.run(SpringBootVuejsApplication.class, args);
 	}
 }
+//{"de.jonashackt.springbootvuejs.repository_refactored",

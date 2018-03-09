@@ -19,7 +19,7 @@ import java.util.Map;
 
 
 @RestController()
-@RequestMapping("/api")
+@RequestMapping("/api_old")
 public class BackendController {
 
     private static final Logger LOG = LoggerFactory.getLogger(BackendController.class);
@@ -35,7 +35,6 @@ public class BackendController {
     private ProjectRepository projectRepository;
 
     //INITIAL REQUEST FOR FORM OBJECT
-    /*
     @RequestMapping(path = "/form")
     public @ResponseBody
     Form sendinitialForm() {
@@ -467,7 +466,6 @@ public class BackendController {
         //return Form Object (-> JSON Structure from which Anmeldung is created)
         return form;
     }
-    */
 
     @RequestMapping(path = "/hello")
     public @ResponseBody
@@ -734,162 +732,6 @@ public class BackendController {
             MediaType.APPLICATION_JSON_VALUE
         })
     public String register(@RequestBody Map<String, Object> request) throws Exception {
-        User user = new User();
-        user.setFirstName(request.get("base__family-name").toString());
-        user.setLastName(request.get("base__forename").toString());
-        String birth_day = request.get("base__birthdate-day").toString();
-        String birth_month = request.get("base__birthdate-month").toString();
-        String birth_year = request.get("base__birthdate-year").toString();
-        String birth_date = birth_day +"."+ birth_month +"."+ birth_year;
-        user.setBirthDate(birth_date);
-        String user_street = request.get("base__street-name").toString();
-        String user_housenumber = request.get("base__house-number").toString();
-        String user_address = user_street + " " + user_housenumber;
-        user.setStreet(user_address);
-        user.setPostcode(request.get("base__zip-code").toString());
-        user.setCity(request.get("base__residence").toString());
-        user.setTelephone(request.get("base__phone-number").toString());
-
-        //Dieser Part sollte dynamisch sein :(
-        String base_proj_id = "projects__id-";
-        List<Project> user_projects = new ArrayList<>();
-
-        for (long i = 1; i<22; i++){
-            String temp = base_proj_id+i;
-            if (request.get(temp).toString().equals("true"))
-            {
-               Project user_project = projectRepository.findOne(i);
-               user_projects.add(user_project);
-            }
-        }
-        user.setProjects(user_projects);
-
-        String allergy = request.get("conditions__allergies-0").toString();
-        String diseases = request.get("conditions__diseases-0").toString();
-        String heat_sensitivity = request.get("conditions__heat-sensitivity").toString();
-        String medication = request.get("conditions__medication-0").toString();
-        String vegi = request.get("conditions__vegetarian").toString();
-        String lactose_intol = request.get("conditions__lactose-intolerance").toString();
-        String egg_intol = request.get("conditions__egg-intolerance").toString();
-        String nutrition = request.get("conditions__nutrition-0").toString();
-
-        List<Limitation> user_limits = new ArrayList<>();
-
-        Allergy user_allergy = new Allergy("Allergy",allergy,"");
-        user_limits.add(user_allergy);
-
-        Illness user_illness = new Illness("Illness",diseases,medication);
-        user_limits.add(user_illness);
-
-        Limitation heat_sens = new Limitation("HeatSensitivity","");
-
-        if (heat_sensitivity.equals("true")){
-            heat_sens.setInformation("true");
-            user_limits.add(heat_sens);
-        }
-        else
-        {
-            heat_sens.setInformation("false");
-            user_limits.add(heat_sens);
-        }
-
-        Limitation vegi_limit = new Limitation("Vegetarian", vegi);
-        Limitation lacto_limit = new Limitation("Lactose-Intolerance", lactose_intol);
-        Limitation egg_limit = new Limitation("Egg-Intolerance", egg_intol);
-        Limitation nutrition_limit = new Limitation("Nutrition", nutrition);
-
-        user_limits.add(vegi_limit);
-        user_limits.add(lacto_limit);
-        user_limits.add(egg_limit);
-        user_limits.add(nutrition_limit);
-
-        //yes/no not true/false ??
-        if (request.get("conditions__child-treatment-allowed").toString().equals("yes")) {
-            user.setAllowTreatment(true);
-        }
-        else {
-            user.setAllowTreatment(false);
-        }
-
-        user.setHealthcareNr(request.get("conditions__health-insurance").toString());
-        //Emergency
-        String emergency_name = request.get("conditions__emergency-name").toString();
-        String emergency_address = request.get("conditions__emergency-address").toString();
-        String emergency_phone_nr = request.get("conditions__emergency-phone-number").toString();
-        Contact user_emergency = new Contact(emergency_name, emergency_address, emergency_phone_nr);
-        user.setEmergencyContact(user_emergency);
-        //Doctor
-        String doc_name = request.get("conditions__family-doctor-name").toString();
-        String doc_adress = request.get("conditions__family-doctor-address").toString();
-        String doc_nr = request.get("conditions__family-doctor-phone-number").toString();
-        Doctor user_doc = new Doctor(doc_name,doc_adress,doc_nr);
-        user.setDoctor(user_doc);
-        //Disabilities
-        /*request.get("disabilities__disability-existent").toString();
-        //nur true false part
-        request.get("disabilities__mark-ag").toString();
-        request.get("disabilities__mark-h").toString();
-        request.get("disabilities__mark-bl").toString();
-        request.get("disabilities__mark-gl").toString();
-        request.get("disabilities__mark-b").toString();
-        request.get("disabilities__mark-g").toString();
-        request.get("disabilities__mark-tbl").toString();
-        request.get("disabilities__wheelchair").toString();
-        ////////////////////////////////////////////////////////
-        request.get("disabilities__additional-tools").toString();
-        request.get("disabilities__token-available").toString();
-        request.get("disabilities__companion-required").toString();
-        request.get("disabilities__companion-for-nursing").toString();
-        request.get("disabilities__companion-for-health-care").toString();
-        request.get("disabilities__companion-for-mobility").toString();
-        request.get("disabilities__companion-for-orientation").toString();
-        request.get("disabilities__affected-senses-0").toString();
-        request.get("disabilities__companion-additional-notes").toString();
-        request.get("disabilities__companion-help-finding-required").toString();
-        request.get("disabilities__companion-usual-service").toString();
-        request.get("disabilities__companion-cost-takeover").toString();
-        */
-        //declaration
-        //yes/no ? -> true false?
-        String user_home_alone = request.get("declaration__going-home-alone-allowed").toString();
-        String user_horse = request.get("declaration__horse-riding-allowed").toString();
-        String user_swim = request.get("declaration__swimming-allowed").toString();
-        String user_swim_batch = request.get("declaration__swimming-badge").toString();
-
-        //home
-        if(user_home_alone.equals("yes")) {
-            user.setAllowHomeAlone(true);
-        }
-        else {
-            user.setAllowHomeAlone(false);
-        }
-        //ride
-        if(user_horse.equals("yes")) {
-            user.setAllowRiding(true);
-        }
-        else {
-            user.setAllowRiding(false);
-        }
-        //swim
-        if(user_swim.equals("yes")) {
-            user.setAllowSwimming(true);
-        }
-        else {
-            user.setAllowSwimming(false);
-        }
-
-        if (request.get("privacy-policy__confirmation").toString().equals("true")){
-            userRepository.save(user);
-        }
-
-        LOG.info("Registered total User with id: " + user.getId() + " & saved to DB");
         return "Recieved POST request to `/api/register`.";
-
-        //TO DO
-        //Missing:
-        //Disability mapping !! -> class does not contain all parameter
-        //User has no String Swimmingbatch
-        //Does privacy policy confirmation affect any other stuff than .save(user) ?
-        //do we have so recieve all projects listed or is it possible to make it dynamically
     }
 }

@@ -1,6 +1,7 @@
 package de.jonashackt.springbootvuejs.repository;
 
 import de.jonashackt.springbootvuejs.domain.*;
+import de.jonashackt.springbootvuejs.repository.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

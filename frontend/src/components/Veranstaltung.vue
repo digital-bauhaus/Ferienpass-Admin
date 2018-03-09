@@ -13,7 +13,7 @@
             <label for ="label">Veranstaltungsname: </label>
             <input type="text" name="label" v-model="projectName" placeholder="Veranstaltungsname" required>
             <label for ="date">Datum: </label>
-            <input type="text" name="org" v-model="projectDate" placeholder="Datum (TT.MM.JJJ)" required>
+            <input type="text" name="org" v-model="projectDate" placeholder="Datum (TT.MM.JJJJ)" required>
             <label for ="num">Plätze (gesamt): </label>
             <input type="text" name="num" v-model="projectSlots" placeholder="Plätze" required>
             <label for ="reserve">Plätze (reserviert): </label>

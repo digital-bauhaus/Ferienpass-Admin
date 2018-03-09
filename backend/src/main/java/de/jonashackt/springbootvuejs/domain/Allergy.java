@@ -1,5 +1,6 @@
 package de.jonashackt.springbootvuejs.domain;
 
+
 public class Allergy extends Limitation {
 
     private String medication;
