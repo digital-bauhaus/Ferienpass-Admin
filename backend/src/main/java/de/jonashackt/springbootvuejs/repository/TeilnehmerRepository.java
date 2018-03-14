@@ -35,6 +35,9 @@ public interface TeilnehmerRepository extends CrudRepository<Teilnehmer, Long> {
     @Query(value="SELECT u.angemeldeteProjekte FROM Teilnehmer u WHERE u.vorname in :vorname AND u.nachname in :nachname")
     List<Projekt> findProjektsByVornameAndNachname(@Param("vorname") String vorname, @Param("nachname") String nachname);
 
+    //@Query(value="From Projekt p WHERE p.projekt_id IN (SELECT u.angemeldeteProjekte FROM Teilnehmer u WHERE u.vorname in :vorname AND u.nachname in :nachname)")
+   // List<Projekt> findProjektsByVornameAndNachname
+
     @Query(value="FROM Teilnehmer u WHERE u.vorname LIKE CONCAT('%',:vorname,'%') or u.vorname LIKE CONCAT('%',:nachname,'%') or u.nachname LIKE CONCAT('%',:vorname,'%') or u.nachname LIKE CONCAT('%',:nachname,'%')")
     List<Teilnehmer> findByName(@Param("vorname") String vorname, @Param("nachname") String nachname);
 
