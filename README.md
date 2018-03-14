@@ -1,6 +1,6 @@
 # Ferienpass-Admin
 
-[![Build Status](https://travis-ci.org/nsiegmun/Ferienpass-Admin.svg?branch=master)](https://travis-ci.org/digital-bauhaus/Ferienpass-Admin)
+[![Build Status](https://travis-ci.org/nsiegmun/Ferienpass-Admin.svg?branch=master)](https://travis-ci.org/nsiegmun/Ferienpass-Admin)
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/nsiegmun/Ferienpass-Anmeldung/blob/master/LICENSE)
 
 Hier entsteht die Administrations-Oberfläche für den digitalen Ferienpass der Stadt Weimar.
