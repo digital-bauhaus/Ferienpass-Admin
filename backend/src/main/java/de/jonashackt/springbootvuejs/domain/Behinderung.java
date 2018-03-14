@@ -1,6 +1,4 @@
-package de.jonashackt.springbootvuejs.domain_refactored;
-
-import de.jonashackt.springbootvuejs.domain.DisabilityCode;
+package de.jonashackt.springbootvuejs.domain;
 
 import javax.persistence.*;
 

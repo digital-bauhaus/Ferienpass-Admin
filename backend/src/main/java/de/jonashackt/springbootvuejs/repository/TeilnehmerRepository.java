@@ -1,8 +1,8 @@
-package de.jonashackt.springbootvuejs.repository_refactored;
+package de.jonashackt.springbootvuejs.repository;
 
 
-import de.jonashackt.springbootvuejs.domain_refactored.Projekt;
-import de.jonashackt.springbootvuejs.domain_refactored.Teilnehmer;
+import de.jonashackt.springbootvuejs.domain.Projekt;
+import de.jonashackt.springbootvuejs.domain.Teilnehmer;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -32,7 +32,7 @@ public interface TeilnehmerRepository extends CrudRepository<Teilnehmer, Long> {
 
     List<Teilnehmer> findById(@Param("id") int id);
 
-    @Query(value="From Projekt p WHERE p.projekt_id IN (SELECT u.angemeldeteProjekte FROM Teilnehmer u WHERE u.vorname in :vorname AND u.nachname in :nachname)")
+    @Query(value="SELECT u.angemeldeteProjekte FROM Teilnehmer u WHERE u.vorname in :vorname AND u.nachname in :nachname")
     List<Projekt> findProjektsByVornameAndNachname(@Param("vorname") String vorname, @Param("nachname") String nachname);
 
     @Query(value="FROM Teilnehmer u WHERE u.vorname LIKE CONCAT('%',:vorname,'%') or u.vorname LIKE CONCAT('%',:nachname,'%') or u.nachname LIKE CONCAT('%',:vorname,'%') or u.nachname LIKE CONCAT('%',:nachname,'%')")

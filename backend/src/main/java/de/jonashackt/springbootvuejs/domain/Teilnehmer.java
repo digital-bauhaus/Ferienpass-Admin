@@ -1,4 +1,4 @@
-package de.jonashackt.springbootvuejs.domain_refactored;
+package de.jonashackt.springbootvuejs.domain;
 
 import javax.persistence.*;
 import java.time.LocalDate;

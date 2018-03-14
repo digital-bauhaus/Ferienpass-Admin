@@ -1,8 +1,8 @@
-package de.jonashackt.springbootvuejs.repository_refactored;
+package de.jonashackt.springbootvuejs.repository;
 
 
-import de.jonashackt.springbootvuejs.domain_refactored.Projekt;
-import de.jonashackt.springbootvuejs.domain_refactored.Teilnehmer;
+import de.jonashackt.springbootvuejs.domain.Projekt;
+import de.jonashackt.springbootvuejs.domain.Teilnehmer;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

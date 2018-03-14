@@ -4,44 +4,29 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.ManyToMany;
-import java.util.Date;
 
 @Entity
-public class Doctor {
-
-    // PrimaryKey
+public class Kontakt {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long doctor_id;
+    private long kontakt_id;
     private String name;
     private String address;
     private String telephone;
 
-    protected Doctor() {}
-
-    public Doctor(String name, String address, String telephone) {
+    public Kontakt(String name, String address, String telephone) {
         this.name = name;
         this.address = address;
         this.telephone = telephone;
     }
 
+    protected  Kontakt() {}
+
     @Override
     public String toString() {
         return String.format(
-                "Doctor[doctor_id=%d, name='%s', address='%s', telephone='%s']",
-                doctor_id, name, address, telephone);
-    }
-
-
-    public long getDoctor_id() {
-        return doctor_id;
-    }
-
-    public void setDoctor_id(long doctor_id) {
-        this.doctor_id = doctor_id;
+                "Contact[id=%d, name='%s', address='%s', telephone='%s']",
+                kontakt_id, name, address, telephone);
     }
 
     public String getName() {
@@ -56,7 +41,7 @@ public class Doctor {
         return address;
     }
 
-    public void setAddress(String street) {
+    public void setAddress(String address) {
         this.address = address;
     }
 
@@ -68,5 +53,11 @@ public class Doctor {
         this.telephone = telephone;
     }
 
+    public long getId() {
+        return kontakt_id;
+    }
 
+    public void setId(long id) {
+        this.kontakt_id = id;
+    }
 }

@@ -1,4 +1,4 @@
-package de.jonashackt.springbootvuejs.domain_refactored;
+package de.jonashackt.springbootvuejs.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -6,27 +6,36 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Kontakt {
+public class Arzt {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long kontakt_id;
+    private long arzt_id;
     private String name;
     private String address;
     private String telephone;
 
-    public Kontakt(String name, String address, String telephone) {
-        this.name = name;
-        this.address = address;
-        this.telephone = telephone;
+    public Arzt(String name, String address, String telephone) {
+        this.setName(name);
+        this.setAddress(address);
+        this.setTelephone(telephone);
     }
 
-    protected  Kontakt() {}
+    protected Arzt(){}
 
     @Override
     public String toString() {
         return String.format(
-                "Contact[id=%d, name='%s', address='%s', telephone='%s']",
-                kontakt_id, name, address, telephone);
+                "Arzt[id=%d, Name='%s', Adresse='%s', Telefon='%s']",
+                arzt_id, name, address, telephone);
+    }
+
+    public long getId() {
+        return arzt_id;
+    }
+
+    public void setId(long id) {
+        this.arzt_id = id;
     }
 
     public String getName() {
@@ -51,13 +60,5 @@ public class Kontakt {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
-    }
-
-    public long getId() {
-        return kontakt_id;
-    }
-
-    public void setId(long id) {
-        this.kontakt_id = id;
     }
 }

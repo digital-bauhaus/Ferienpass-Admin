@@ -5,19 +5,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-
 @Entity
-public class DisabilityCode {
-
+public class BehinderungKodierung {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long d_code;
-    private String meaning;
+    private String bedeutung;
 
-    public DisabilityCode(long d_code, String meaning) {
-        this.d_code = d_code;
-        this.meaning = meaning;
+    public BehinderungKodierung(String bedeutung) {
+        this.setD_code(d_code);
+        this.setBedeutung(bedeutung);
     }
+
+    protected BehinderungKodierung() {}
 
     public long getD_code() {
         return d_code;
@@ -27,11 +27,11 @@ public class DisabilityCode {
         this.d_code = d_code;
     }
 
-    public String getMeaning() {
-        return meaning;
+    public String getBedeutung() {
+        return bedeutung;
     }
 
-    public void setMeaning(String meaning) {
-        this.meaning = meaning;
+    public void setBedeutung(String bedeutung) {
+        this.bedeutung = bedeutung;
     }
 }

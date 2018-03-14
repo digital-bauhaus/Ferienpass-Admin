@@ -1,13 +1,14 @@
 package de.jonashackt.springbootvuejs.repository;
 
-import de.jonashackt.springbootvuejs.domain_refactored.*;
-import de.jonashackt.springbootvuejs.repository_refactored.TeilnehmerRepository;
+import de.jonashackt.springbootvuejs.SpringBootVuejsApplication;
+import de.jonashackt.springbootvuejs.domain.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
@@ -21,7 +22,8 @@ import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-public class TeilnehmerRepository_refactoredTest {
+@SpringBootTest(classes = SpringBootVuejsApplication.class)
+public class TeilnehmerRepositoryTest {
     @Autowired
     private TestEntityManager entityManager;
 
