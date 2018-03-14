@@ -8,7 +8,7 @@
       <a href="/#/TeilnehmerAdd/" >Teilnehmer erstellen</a>
     </nav>
     <main>
-    <h1>Teilnehmerübersicht !!!</h1>
+    <h1>Teilnehmerübersicht</h1>
 
        <table v-if="allusers && allusers.length" id="myTable">
        <tr>
@@ -27,7 +27,7 @@
          <td>{{user.telefon}}</th>
 
          <td><span v-on:click="kill($event)" class="fakebutton"><a>stornieren</a></span>
-           <router-link :to="{path: '../TeilnehmerEdit', query: {id: alluser.id }}" class="fakebutton">Bearbeiten</router-link>
+           <router-link :to="{path: '../TeilnehmerEdit', query: {id: user.id }}" class="fakebutton">Bearbeiten</router-link>
            <span class="fakebutton"><a>als PDF exportieren</a></span>
          </td>
        </tr>
