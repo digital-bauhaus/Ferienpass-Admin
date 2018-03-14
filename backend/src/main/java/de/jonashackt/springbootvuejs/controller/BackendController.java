@@ -56,41 +56,6 @@ public class BackendController {
         return teilnehmerRepository.findOne(id);
     }
 
-    // CREATE A SAMPLE USER
-    @RequestMapping(path = "/sampleuser")
-    @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody
-    Long addNewUser() {
-        // EXAMPLE USER
-        LocalDate registerDate = LocalDate.now();
-        Arzt arzt = new Arzt("Eich", "Route 1 Alabastia, 39829",
-                "555-6891");
-        Kontakt kontact = new Kontakt("Igor Eich", "Route 4 Neuborkia  96825", "555-2532");
-        Projekt project1 = new Projekt("Ball werfen", registerDate, 10, 20, 3, 1,"www.google.com", new ArrayList<>());
-        EssenLimitierung laktose = new EssenLimitierung("Laktoseintoleranz", "");
-        Krankheit krank = new Krankheit("Grippe", "Muss oft Husten", "Hustenbonbons");
-        List<Projekt> projects = new ArrayList<Projekt>();
-        projects.add(project1);
-        projektRepository.save(project1);
-
-        List<EssenLimitierung> essenLimitierungen = new ArrayList<EssenLimitierung>();
-        essenLimitierungen.add(laktose);
-        List<Krankheit> krankheiten = new ArrayList<Krankheit>();
-        krankheiten.add(krank);
-        List<Allergie> allergien = new ArrayList<Allergie>();
-        allergien.add(new Allergie("Heuschnupfen","Nasenspray","nur 2x am Tag"));
-        List<Behinderung> behinderungen = new ArrayList<Behinderung>();
-        behinderungen.add(new Behinderung("Gehörlos",new BehinderungKodierung("G1"),false,true,true, true));
-        Teilnehmer user = new Teilnehmer("Gary","Eich", LocalDate.of(2005,10,20),registerDate, "Bahnhofstraße 4", "Weimar", "99423", "03544444", "0453434", true, kontact,
-                true, false, false, false, arzt, projects, allergien, essenLimitierungen, krankheiten, behinderungen,new ArrayList<Projekt>());
-
-        teilnehmerRepository.save(user);
-
-        LOG.info(user.toString() + " successfully saved into DB");
-
-        return user.getId();
-    }
-
     //Add a new user (Teilnehmer) based on a user object
     @RequestMapping(path = "/adduser", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)

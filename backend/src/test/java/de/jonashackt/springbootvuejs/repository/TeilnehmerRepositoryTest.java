@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
@@ -74,8 +74,8 @@ public class TeilnehmerRepositoryTest {
     public void testFindByLastName() throws Exception {
         // Search for specific User in Database according to lastname
         List<Teilnehmer> usersWithLastNameEich = users.findByNachname("Eich");
-
-        assertThat(usersWithLastNameEich, contains(user));
+        Teilnehmer user = usersWithLastNameEich.get(0);
+        assertThat(user.getNachname(), containsString("Eich"));
     }
 
     @Test
@@ -91,6 +91,6 @@ public class TeilnehmerRepositoryTest {
         // Search for specific User in Database according to firstname
         List<Teilnehmer> usersWithFirstNameJonas = users.findByVorname("Gary");
 
-        assertThat(usersWithFirstNameJonas, contains(user));
+        assertThat(usersWithFirstNameJonas.get(0).getVorname(), containsString("Gary"));
     }
 }

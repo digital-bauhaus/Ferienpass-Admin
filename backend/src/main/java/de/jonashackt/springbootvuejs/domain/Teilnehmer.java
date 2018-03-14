@@ -39,50 +39,25 @@ public class Teilnehmer {
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="arzt_id")
     private Arzt arzt;
-    // foreign key as JoinColumn annotation with type of class
 
     @ManyToMany(cascade=CascadeType.ALL)
-    /*@JoinTable(name="teilnehmer_projekte",
-            joinColumns = @JoinColumn(name="id"),
-            inverseJoinColumns = @JoinColumn(name="projekt_id")
-    )*/
     private List<Projekt> angemeldeteProjekte = new ArrayList<>();
 
 
     @ManyToMany(cascade=CascadeType.ALL)
-    /*@JoinTable(name="teilnehmer_allergien",
-            joinColumns = @JoinColumn(name="id"),
-            inverseJoinColumns = @JoinColumn(name="allergie_id")
-    )*/
     private List<Allergie> allergien = new ArrayList<>();
 
     @ManyToMany(cascade=CascadeType.ALL)
-    /*@JoinTable(name="teilnehmer_krankheiten",
-            joinColumns = @JoinColumn(name="id"),
-            inverseJoinColumns = @JoinColumn(name="krankheit_id")
-    )*/
     private List<Krankheit> krankheiten = new ArrayList<>();
 
     @ManyToMany(cascade=CascadeType.ALL)
-    /*@JoinTable(name="teilnehmer_behinderungen",
-            joinColumns = @JoinColumn(name="id"),
-            inverseJoinColumns = @JoinColumn(name="behinderung_id")
-    )*/
     private List<Behinderung> behinderungen= new ArrayList<>();
 
     @ManyToMany(cascade=CascadeType.ALL)
-    /*@JoinTable(name="teilnehmer_EssenLimitierung",
-            joinColumns = @JoinColumn(name="id"),
-            inverseJoinColumns = @JoinColumn(name="essen_id")
-    )*/
     private List<EssenLimitierung> essenLimitierungen= new ArrayList<>();
 
 
     @ManyToMany(cascade=CascadeType.ALL)
-    /*@JoinTable(name="teilnehmer_stornierungen",
-            joinColumns = @JoinColumn(name="id"),
-            inverseJoinColumns = @JoinColumn(name="projekt_id")
-    )*/
     private List<Projekt> stornierungen = new ArrayList<>();
 
 
