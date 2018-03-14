@@ -11,62 +11,91 @@
       <form method="post" v-on:submit.prevent="postProject">
         <h2>Allgemeine Informationen</h2>
         <label for ="lastName">Nachname: </label>
-        <input type="text" id ="lastName" placeholder="Nachname" v-model="userLastname" :value="user.lastName">
+        <input type="text" id ="lastName" placeholder="Nachname" v-model="user.nachname" :value="user.nachname">
         <label for ="firstName">Vorname: </label>
-        <input type="text" id="firstName" placeholder="Vorname" v-model="userFirstname" :value="user.firstName">
+        <input type="text" id="firstName" placeholder="Vorname" v-model="user.vorname" :value="user.vorname">
         <label for ="birthDate">Geburtstag: </label>
-        <input type="text" id="birthDate" placeholder="Geburtstag" v-model="userBirthdate" :value="user.birthDate">
+        <input type="text" id="birthDate" placeholder="Geburtstag" v-model="user.geburtsdatum" :value="user.geburtsdatum">
         <label for ="street">Straße: </label>
-        <input type="text" id="street" placeholder="Straße" v-model="userStreet" :value="user.street">
+        <input type="text" id="street" placeholder="Straße" v-model="user.strasse" :value="user.strasse">
         <label for ="postcode">Postleitzahl: </label>
-        <input type="text" id="postcode" placeholder="Postleitzahl" v-model="userPostcode" :value="user.postcode">
+        <input type="text" id="postcode" placeholder="Postleitzahl" v-model="user.postleitzahl" :value="user.postleitzahl">
         <label for ="city">Stadt: </label>
-        <input type="text" id="city" placeholder="Stadt" v-model="userCity" :value="user.city">
+        <input type="text" id="city" placeholder="Stadt" v-model="user.stadt" :value="user.stadt">
         <label for ="telephone">Telefonnummer: </label>
-        <input type="text" id="telephone" placeholder="Telefonnummer" v-model="userTelephone" :value="user.telephone">
+        <input type="text" id="telephone" placeholder="Telefonnummer" v-model="user.telefon" :value="user.telefon">
         <label for ="healthcare">Krankenversicherungsnummer: </label>
-        <input type="text" id="healthcare" placeholder="Krankenversicherungsnummer" v-model="userHealthcarenr" :value="user.healthcareNr">
+        <input type="text" id="healthcare" placeholder="Krankenversicherungsnummer" v-model="user.notrufnummer" :value="user.notrufnummer">
 
           <fieldset>
-              <label><input v-model="userAllowtreatment" type="checkbox" id="check">Darf behandelt werden</label><br/>
-              <label><input v-model="userAllowhomealone" type="checkbox" id="check">Darf schwimmen</label><br/>
-              <label><input v-model="userAllowride" type="checkbox" id="check">Darf reiten</label><br/>
-              <label><input v-model="userAllowswim" type="checkbox" id="check">Darf alleine nach Hause gehen</label><br/>
-              <label><input v-model="userHaspayed" type="checkbox" id="check">Hat bezahlt</label><br/>
+              <label><input v-model="user.erlaubeMedikamentation" type="checkbox" id="check">Darf behandelt werden</label><br/>
+              <label><input v-model="user.darfAlleinNachHause" type="checkbox" id="check">Darf schwimmen</label><br/>
+              <label><input v-model="user.darfReiten" type="checkbox" id="check">Darf reiten</label><br/>
+              <label><input v-model="user.darfSchwimmen" type="checkbox" id="check">Darf alleine nach Hause gehen</label><br/>
+              <label><input v-model="user.hatBezahlt" type="checkbox" id="check">Hat bezahlt</label><br/>
           </fieldset>
 
         <h2>Notfallkontaktdaten</h2>
-        <label for ="contactname">Name, Vorname:</label>
-        <input type="text" id="contactname" v-model="userContactname" placeholder="Name" :value="user.emergencyContact.name">
-        <label for ="contactaddress">Addresse:</label>
-        <input type="text" id="contactaddress" v-model="userContactaddress" placeholder="Addresse" :value="user.emergencyContact.address">
-        <label for ="contacttelephone">Telefon:</label>
-        <input type="text" id="contacttelephone" v-model="userContacttelephone" placeholder="Telefon" :value="user.emergencyContact.telephone">
+        <label for ="user.notfallKontakt.name">Name, Vorname:</label>
+        <input type="text" id="contactname" v-model="user.notfallKontakt.name" placeholder="Name" :value="user.notfallKontakt.name">
+        <label for ="user.notfallKontakt.address">Addresse:</label>
+        <input type="text" id="contactaddress" v-model="user.notfallKontakt.address" placeholder="Addresse" :value="user.notfallKontakt.address">
+        <label for ="user.notfallKontakt.telephone">Telefon:</label>
+        <input type="text" id="contacttelephone" v-model="user.notfallKontakt.telephone" placeholder="Telefon" :value="user.notfallKontakt.telephone">
 
         <h2>Arztdaten</h2>
-        <label for ="doctorname">Name, Vorname:</label>
-        <input type="text" id="doctorname" placeholder="Name" v-model="userDoctorname" :value="user.doctor.name">
-        <label for ="doctoraddress">Addresse:</label>
-        <input type="text" id="doctoraddress" v-model="userDoctoraddress" placeholder="Addresse" :value="user.doctor.address">
-        <label for ="doctortelephone">Telefon:</label>
-        <input type="text" id="doctortelephone" v-model="userDoctortelephone" placeholder="Telefon" :value="user.doctor.telephone">
+        <label for ="user.arzt.name">Name, Vorname:</label>
+        <input type="text" id="doctorname" placeholder="Name" v-model="user.arzt.name" :value="user.arzt.name">
+        <label for ="user.arzt.address">Adresse:</label>
+        <input type="text" id="doctoraddress" v-model="user.arzt.address" placeholder="Addresse" :value="user.arzt.address">
+        <label for ="user.arzt.telephone">Telefon:</label>
+        <input type="text" id="doctortelephone" v-model="user.arzt.telephone" placeholder="Telefon" :value="user.arzt.telephone">
 
         <h2>Einschränkungen</h2>
-        <div v-if="user.limits">
-        <span class="limit" v-for="limit of user.limits">
-          {{limit.name}}
-          <span v-if="limit.information" :title="limit.information">
-            ?
+        <h3>Allergien</h3>
+        <div v-if="user.allergien">
+        <span class="limit" v-for="allergie of user.allergien">
+          {{allergie.name}}
+          <span v-if="allergie.information" :title="allergie.information">
           </span>
         </span>
         </div>
-
-        <h2>Projekte</h2>
-        <div v-if="user.projects">
-        <div class="project" v-for="project of user.projects">
-        {{project.name}}
+        <h3>Krankheiten</h3>
+        <div v-if="user.krankheiten">
+        <span class="limit" v-for="krankheit of user.krankheiten">
+        {{krankheit.name}}
+        <span v-if="krankheit.information" :title="krankheit.information">
+        </span>
+        </span>
+        </div>
+        <h3>Behinderungen</h3>
+        <div v-if="user.behinderungen">
+        <span class="limit" v-for="behinderung of user.behinderungen">
+        {{behinderung.name}}
+        <span v-if="behinderung.information" :title="behinderung.information">
+        </span>
+        </span>
+        </div>
+        <h3>Essensbesonderheiten</h3>
+        <div v-if="user.essenLimitierungen">
+        <span class="limit" v-for="essen of user.essenLimitierungen">
+        {{essen.name}}
+        <span v-if="essen.information" :title="essen.information">
+        </span>
+        </span>
         </div>
 
+        <h2>Angemeldete Projekte</h2>
+        <div v-if="user.angemeldeteProjekte">
+        <div class="project" v-for="project of user.angemeldeteProjekte">
+        {{project.name}}
+        </div>
+        </div>
+        <h2>Stornierte Projekte</h2>
+        <div v-if="user.stornierungen">
+        <div class="storno" v-for="storno of user.stornierungen">
+        {{storno.name}}
+        </div>
         </div>
 
         <input type="submit" value="Bearbeiten">
@@ -85,26 +114,6 @@ export default {
   data () {
     return {
       user: [],
-      userLastname: '',
-      userFirstname: '',
-      userBirthdate: '',
-      userStreet: '',
-      userCity: '',
-      userPostcode: '',
-      userTelephone: '',
-      userHealthcarenr: '',
-      userAllowtreatment: '',
-      userAllowhomealone: '',
-      userAllowride: '',
-      userAllowswim: '',
-      userHaspayed: '',
-      userContactname: '',
-      userContactaddress: '',
-      userContacttelephone: '',
-      userDoctorname: '',
-      userDoctoraddress: '',
-      userDoctortelephone: '',
-      userLimits: [],
       popupClass: 'fadeOut',
       errors: []
     };
@@ -114,26 +123,6 @@ export default {
     axios.get('http://localhost:8088/api/user/' + id)
     .then(response => {
       this.user = response.data
-      this.userLastname = this.user.lastName
-      this.userFirstname = this.user.firstName
-      this.userBirthdate = this.user.birthDate
-      this.userStreet = this.user.street
-      this.userCity = this.user.city
-      this.userPostcode = this.user.postcode
-      this.userTelephone = this.user.telephone
-      this.userHealthcarenr = this.user.healthcareNr
-      this.userAllowtreatment = this.user.allowTreatment
-      this.userAllowhomealone = this.user.allowHomeAlone
-      this.userAllowride = this.user.allowRiding
-      this.userAllowswim = this.user.allowSwimming
-      this.userHaspayed = this.user.hasPayed
-      this.userContactname = this.user.emergencyContact.name
-      this.userContactaddress = this.user.emergencyContact.address
-      this.userContacttelephone = this.user.emergencyContact.telephone
-      this.userDoctorname = this.user.doctor.name
-      this.userDoctoraddress = this.user.doctor.address
-      this.userDoctortelephone = this.user.doctor.telephone
-      this.userLimits = this.user.limits
     })
     .catch(e => {
       this.errors.push(e)
