@@ -84,9 +84,10 @@ public class TeilnehmerRepositoryTest {
 
     @Test
     public void testFindProjectsByFirstNameAndLastName() throws Exception {
+        List<Teilnehmer> usersWithLastNameEich = users.findByNachname("Eich");
+        Teilnehmer user = usersWithLastNameEich.get(0);
         List<Projekt> projectsByFirstNameAndLastName = users.findProjektsByVornameAndNachname("Gary","Eich");
-        String projectName = createProjects(1).get(0).getName();
-        assertEquals(projectsByFirstNameAndLastName.get(0).getName(), projectName);
+        assertEquals(projectsByFirstNameAndLastName.get(0).getName(), user.getAngemeldeteProjekte().get(0).getName());
     }
 
 
