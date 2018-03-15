@@ -54,11 +54,14 @@
         <h2>Einschränkungen</h2>
         <h3>Allergien</h3>
         <div v-if="user.allergien">
-        <span class="limit" v-for="allergie of user.allergien">
-          {{allergie.name}}
-          <span v-if="allergie.information" :title="allergie.information">
-          </span>
-        </span>
+        <table>
+        <tr><th>Name</th><th>Information</th><th>Löschen</th></tr>
+         <tr v-for="allergie of user.allergien">
+         <td><input type="text" id="allergie_n" placeholder="Keine Allergie" v-model="allergie.name" :value="allergie.name"></td>
+         <td><input type="text" id="allergie_info" placeholder="-" v-model="allergie.information" :value="allergie.information"></td>
+         <td></td>
+        </tr>
+        </table>
         </div>
         <h3>Krankheiten</h3>
         <div v-if="user.krankheiten">
@@ -158,6 +161,23 @@ export default {
       params.append('doctorAddress', this.userDoctoraddress);
       params.append('doctorTelephone', this.userDoctortelephone);
       axios.post('http://localhost:8088/api/updateuser', params)
+      .then(response => {
+        this.popupClass = 'fadeIn'
+        var self = this;
+        setTimeout(function () {
+          self.popupClass = 'fadeOut';
+        }, 2000);
+      })
+      .catch(e => {
+        this.errors.push(e)
+      })
+    },
+    deleteListItem (id, type, item) {
+      var params = new URLSearchParams();
+      params.append('project_id', id);
+      params.append('type', type);
+      params.append('item', item);
+      axios.post('http://localhost:8088/api/deltelistitem', params)
       .then(response => {
         this.popupClass = 'fadeIn'
         var self = this;
