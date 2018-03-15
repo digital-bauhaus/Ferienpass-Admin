@@ -174,7 +174,7 @@ export default {
     },
     deleteListItem (id, type, item) {
       var params = new URLSearchParams();
-      params.append('project_id', id);
+      params.append('user_id', id);
       params.append('type', type);
       params.append('item', item);
       axios.post('http://localhost:8088/api/deltelistitem', params)

@@ -2,8 +2,7 @@ package de.jonashackt.springbootvuejs.controller;
 
 
 import de.jonashackt.springbootvuejs.SpringBootVuejsApplication;
-import de.jonashackt.springbootvuejs.domain.Projekt;
-import de.jonashackt.springbootvuejs.domain.Teilnehmer;
+import de.jonashackt.springbootvuejs.domain.*;
 import de.jonashackt.springbootvuejs.repository.TeilnehmerRepositoryTest;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
@@ -13,10 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -61,6 +57,269 @@ public class BackendControllerTest {
 
         assertThat(responseUser.getVorname(), is(user.getVorname()));
         assertThat(responseUser.getNachname(), is(user.getNachname()));
+    }
+
+    @Test
+    public void addNewUserAddSeveralListItemsAndRemoveThemAgain() {
+        Teilnehmer user = TeilnehmerRepositoryTest.createUser();
+
+        //add some allergies
+        Allergie a1 = new Allergie("Arbeiten","Viele Aufgaben","Viel reden");
+        Allergie a2 = new Allergie("Freizeit","Urlaub","Spaß haben");
+        user.setAllergien(new ArrayList<>());
+        user.getAllergien().add(a1);
+        user.getAllergien().add(a2);
+        assertThat(user.getAllergien().size(), is(2));
+
+        //add some food limitations
+        EssenLimitierung e1 = new EssenLimitierung("Fleisch", "vegetarier");
+        EssenLimitierung e2 = new EssenLimitierung("Obst", "Sollte dennoch Obst essen");
+        user.setEssenLimitierungen(new ArrayList<>());
+        user.getEssenLimitierungen().add(e1);
+        user.getEssenLimitierungen().add(e2);
+        assertThat(user.getEssenLimitierungen().size(), is(2));
+
+        //add some illnesses
+        Krankheit k1 = new Krankheit("Grippe", "Sollte viel Pausen machen", "Keine");
+        Krankheit k2 = new Krankheit("Husten", "Immer in den Arm husten", "Hustensaft");
+        user.setKrankheiten(new ArrayList<>());
+        user.getKrankheiten().add(k1);
+        user.getKrankheiten().add(k2);
+        assertThat(user.getKrankheiten().size(), is(2));
+
+        //add some handicaps
+        Behinderung b1 = new Behinderung("Arm", new BehinderungKodierung("A1"),true,false, false, true);
+        Behinderung b2 = new Behinderung("Bein", new BehinderungKodierung("A2"),true,false, false, true);
+        user.setBehinderungen(new ArrayList<>());
+        user.getBehinderungen().add(b1);
+        user.getBehinderungen().add(b2);
+        assertThat(user.getBehinderungen().size(), is(2));
+
+        //add some projects
+        List<Projekt> projekte = TeilnehmerRepositoryTest.createProjects(3);
+        user.setAngemeldeteProjekte(projekte);
+        assertThat(user.getAngemeldeteProjekte().size(), is(3));
+
+        //add some canceld projects
+        List<Projekt> stornierteProjekte =TeilnehmerRepositoryTest.createProjects(2);
+        user.setStornierungen(stornierteProjekte);
+        assertThat(user.getStornierungen().size(), is(2));
+
+        Long userId =
+                given()
+                        .body(user)
+                        .contentType(ContentType.JSON)
+                        .when()
+                        .post(BASE_URL + "/adduser")
+                        .then()
+                        .statusCode(is(HttpStatus.SC_CREATED))
+                        .extract()
+                        .body().as(Long.class);
+
+        Teilnehmer responseUser =
+                given()
+                        .pathParam("id", userId)
+                        .when()
+                        .get(BASE_URL + "/user/{id}")
+                        .then()
+                        .statusCode(HttpStatus.SC_OK)
+                        .assertThat()
+                        .extract().as(Teilnehmer.class);
+
+        assertThat(responseUser.getAllergien().size(), is(2));
+        assertThat(responseUser.getEssenLimitierungen().size(), is(2));
+        assertThat(responseUser.getKrankheiten().size(), is(2));
+        assertThat(responseUser.getBehinderungen().size(), is(2));
+        assertThat(responseUser.getAngemeldeteProjekte().size(), is(3));
+        assertThat(responseUser.getStornierungen().size(), is(2));
+
+        //Begin with test
+
+        //Remove second allergy
+        Map<String,Long> newID_Map = new HashMap<String, Long>();
+        newID_Map.put("user_id",userId);
+        newID_Map.put("type", new Integer(ListType.allergien.ordinal()).longValue());
+        newID_Map.put("item", new Long(1));
+        Boolean success =
+                given()
+                        .body(newID_Map)
+                        .contentType(ContentType.JSON)
+                        .when()
+                        .post(BASE_URL+"/deletelistitem")
+                        .then()
+                        .statusCode(HttpStatus.SC_OK)
+                        .extract().as(Boolean.class);
+        assertThat(success,is(true));
+        responseUser =
+                given()
+                        .pathParam("id", userId)
+                        .when()
+                        .get(BASE_URL + "/user/{id}")
+                        .then()
+                        .statusCode(HttpStatus.SC_OK)
+                        .assertThat()
+                        .extract().as(Teilnehmer.class);
+        assertThat(responseUser.getAllergien().size(),is(1));
+        assertThat(responseUser.getAllergien().get(0).getName(),is(a1.getName()));
+
+        //remove first food limitation
+        newID_Map = new HashMap<String, Long>();
+        newID_Map.put("user_id",userId);
+        newID_Map.put("type", new Integer(ListType.essenslimitierungen.ordinal()).longValue());
+        newID_Map.put("item", new Long(0L));
+        success =
+                given()
+                        .body(newID_Map)
+                        .contentType(ContentType.JSON)
+                        .when()
+                        .post(BASE_URL+"/deletelistitem")
+                        .then()
+                        .statusCode(HttpStatus.SC_OK)
+                        .extract().as(Boolean.class);
+        assertThat(success,is(true));
+        responseUser =
+                given()
+                        .pathParam("id", userId)
+                        .when()
+                        .get(BASE_URL + "/user/{id}")
+                        .then()
+                        .statusCode(HttpStatus.SC_OK)
+                        .assertThat()
+                        .extract().as(Teilnehmer.class);
+        assertThat(responseUser.getEssenLimitierungen().size(),is(1));
+        assertThat(responseUser.getEssenLimitierungen().get(0).getName(),is(e2.getName()));
+
+        //remove second illness
+        newID_Map = new HashMap<String, Long>();
+        newID_Map.put("user_id",userId);
+        newID_Map.put("type", new Integer(ListType.krankheiten.ordinal()).longValue());
+        newID_Map.put("item", new Long(1L));
+        success =
+                given()
+                        .body(newID_Map)
+                        .contentType(ContentType.JSON)
+                        .when()
+                        .post(BASE_URL+"/deletelistitem")
+                        .then()
+                        .statusCode(HttpStatus.SC_OK)
+                        .extract().as(Boolean.class);
+        assertThat(success,is(true));
+        responseUser =
+                given()
+                        .pathParam("id", userId)
+                        .when()
+                        .get(BASE_URL + "/user/{id}")
+                        .then()
+                        .statusCode(HttpStatus.SC_OK)
+                        .assertThat()
+                        .extract().as(Teilnehmer.class);
+        assertThat(responseUser.getKrankheiten().size(),is(1));
+        assertThat(responseUser.getKrankheiten().get(0).getName(),is(k1.getName()));
+
+        //remove first handicap
+        newID_Map = new HashMap<String, Long>();
+        newID_Map.put("user_id",userId);
+        newID_Map.put("type", new Integer(ListType.behinderungen.ordinal()).longValue());
+        newID_Map.put("item", new Long(0L));
+        success =
+                given()
+                        .body(newID_Map)
+                        .contentType(ContentType.JSON)
+                        .when()
+                        .post(BASE_URL+"/deletelistitem")
+                        .then()
+                        .statusCode(HttpStatus.SC_OK)
+                        .extract().as(Boolean.class);
+        assertThat(success,is(true));
+        responseUser =
+                given()
+                        .pathParam("id", userId)
+                        .when()
+                        .get(BASE_URL + "/user/{id}")
+                        .then()
+                        .statusCode(HttpStatus.SC_OK)
+                        .assertThat()
+                        .extract().as(Teilnehmer.class);
+        assertThat(responseUser.getBehinderungen().size(),is(1));
+        assertThat(responseUser.getBehinderungen().get(0).getName(),is(b2.getName()));
+
+        //remove third and first project from registered projects
+        newID_Map = new HashMap<String, Long>();
+        newID_Map.put("user_id",userId);
+        newID_Map.put("type", new Integer(ListType.angemeldeteProjekte.ordinal()).longValue());
+        newID_Map.put("item", new Long(2L));
+        success =
+                given()
+                        .body(newID_Map)
+                        .contentType(ContentType.JSON)
+                        .when()
+                        .post(BASE_URL+"/deletelistitem")
+                        .then()
+                        .statusCode(HttpStatus.SC_OK)
+                        .extract().as(Boolean.class);
+        assertThat(success,is(true));
+        responseUser =
+                given()
+                        .pathParam("id", userId)
+                        .when()
+                        .get(BASE_URL + "/user/{id}")
+                        .then()
+                        .statusCode(HttpStatus.SC_OK)
+                        .assertThat()
+                        .extract().as(Teilnehmer.class);
+        assertThat(responseUser.getAngemeldeteProjekte().size(),is(2));
+        newID_Map = new HashMap<String, Long>();
+        newID_Map.put("user_id",userId);
+        newID_Map.put("type", new Integer(ListType.angemeldeteProjekte.ordinal()).longValue());
+        newID_Map.put("item", new Long(0L));
+        success =
+                given()
+                        .body(newID_Map)
+                        .contentType(ContentType.JSON)
+                        .when()
+                        .post(BASE_URL+"/deletelistitem")
+                        .then()
+                        .statusCode(HttpStatus.SC_OK)
+                        .extract().as(Boolean.class);
+        assertThat(success,is(true));
+        responseUser =
+                given()
+                        .pathParam("id", userId)
+                        .when()
+                        .get(BASE_URL + "/user/{id}")
+                        .then()
+                        .statusCode(HttpStatus.SC_OK)
+                        .assertThat()
+                        .extract().as(Teilnehmer.class);
+        assertThat(responseUser.getAngemeldeteProjekte().size(),is(1));
+        assertThat(responseUser.getAngemeldeteProjekte().get(0).getName(),is(projekte.get(1).getName()));
+
+        //Remove fist canceled project
+        newID_Map = new HashMap<String, Long>();
+        newID_Map.put("user_id",userId);
+        newID_Map.put("type", new Integer(ListType.stornierteProjekte.ordinal()).longValue());
+        newID_Map.put("item", new Long(0L));
+        success =
+                given()
+                        .body(newID_Map)
+                        .contentType(ContentType.JSON)
+                        .when()
+                        .post(BASE_URL+"/deletelistitem")
+                        .then()
+                        .statusCode(HttpStatus.SC_OK)
+                        .extract().as(Boolean.class);
+        assertThat(success,is(true));
+        responseUser =
+                given()
+                        .pathParam("id", userId)
+                        .when()
+                        .get(BASE_URL + "/user/{id}")
+                        .then()
+                        .statusCode(HttpStatus.SC_OK)
+                        .assertThat()
+                        .extract().as(Teilnehmer.class);
+        assertThat(responseUser.getStornierungen().size(),is(1));
+        assertThat(responseUser.getStornierungen().get(0).getName(),is(stornierteProjekte.get(1).getName()));
     }
 
     @Test

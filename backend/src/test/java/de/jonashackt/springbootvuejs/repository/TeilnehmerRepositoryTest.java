@@ -30,7 +30,9 @@ public class TeilnehmerRepositoryTest {
     @Autowired
     private TeilnehmerRepository users;
 
-    Teilnehmer user = createUser();
+    private static int addedProjects = 0;
+
+    private Teilnehmer user = createUser();
 
     public static Teilnehmer createUser() {
         LocalDate registerDate = LocalDate.now();
@@ -39,7 +41,7 @@ public class TeilnehmerRepositoryTest {
         Kontakt kontact = new Kontakt("Igor Eich", "Route 4 Neuborkia  96825", "555-2532");
         EssenLimitierung laktose = new EssenLimitierung("Laktoseintoleranz", "");
         Krankheit krank = new Krankheit("Grippe", "Muss oft Husten", "Hustenbonbons");
-        List<Projekt> projects = createProjects();
+        List<Projekt> projects = createProjects(1);
 
 
         List<EssenLimitierung> essenLimitierungen = new ArrayList<EssenLimitierung>();
@@ -56,9 +58,11 @@ public class TeilnehmerRepositoryTest {
     }
 
 
-    public static List<Projekt> createProjects() {
-        Projekt project1 = new Projekt("Ball werfen", LocalDate.now(), 10, 20, 3, 1,"www.google.com", new ArrayList<>());
-        return new ArrayList<Projekt>(Arrays.asList(project1));
+    public static List<Projekt> createProjects(int numberOfProjects) {
+        ArrayList<Projekt> result = new ArrayList<Projekt>();
+        for (int i = addedProjects; i < addedProjects+numberOfProjects; i++)
+            result.add(new Projekt("Testprojekt " + i, LocalDate.now(), 5+i, 20, 3+i, 1,"www.google.com", new ArrayList<>()));
+        return result;
     }
 
     public static Projekt createSingleProject() {
@@ -81,7 +85,7 @@ public class TeilnehmerRepositoryTest {
     @Test
     public void testFindProjectsByFirstNameAndLastName() throws Exception {
         List<Projekt> projectsByFirstNameAndLastName = users.findProjektsByVornameAndNachname("Gary","Eich");
-        String projectName = createProjects().get(0).getName();
+        String projectName = createProjects(1).get(0).getName();
         assertEquals(projectsByFirstNameAndLastName.get(0).getName(), projectName);
     }
 

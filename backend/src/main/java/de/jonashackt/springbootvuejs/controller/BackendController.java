@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import static java.lang.Math.toIntExact;
 
 @RestController()
 @RequestMapping("/api")
@@ -91,6 +92,81 @@ public class BackendController {
         LOG.info("Successfully assigned project " + projekt.toString() + " to user " + teilnehmer.toString());
 
         return true;
+    }
+
+    //Delete an item from a list of a user (e.g., an illness or so)
+    @RequestMapping(path="/deletelistitem", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody
+    Boolean deleteItemFromUserList(@RequestBody Map<String, Long> delete_information) {
+        Long user_id = delete_information.get("user_id");
+        ListType typeOfList = ListType.values()[toIntExact(delete_information.get("type"))];
+        int itemPosition = toIntExact(delete_information.get("item"));
+        LOG.info("user_id: " + user_id + " type: " + typeOfList + " itemPosition: " + itemPosition);
+        Teilnehmer teilnehmer = teilnehmerRepository.findOne(user_id);
+        if (teilnehmer == null) {
+            LOG.info("Failed to find user with id " + user_id);
+            return false;
+        }
+        switch (typeOfList) {
+            case angemeldeteProjekte:
+                if (teilnehmer.getAngemeldeteProjekte().size() <= itemPosition){
+                    LOG.info("Position of item to delete exceeds list size for position " + itemPosition);
+                    return false;
+                }
+                teilnehmer.getAngemeldeteProjekte().remove(itemPosition);
+                teilnehmerRepository.save(teilnehmer);
+                LOG.info("Successfully removed project in booked projects");
+                return true;
+            case stornierteProjekte:
+                if (teilnehmer.getStornierungen().size() <= itemPosition){
+                    LOG.info("Position of item to delete exceeds list size for position " + itemPosition);
+                    return false;
+                }
+                teilnehmer.getStornierungen().remove(itemPosition);
+                teilnehmerRepository.save(teilnehmer);
+                LOG.info("Successfully removed project in canceled projects");
+                return  true;
+            case krankheiten:
+                if (teilnehmer.getKrankheiten().size() <= itemPosition){
+                LOG.info("Position of item to delete exceeds list size for position " + itemPosition);
+                return false;
+                }
+                teilnehmer.getKrankheiten().remove(itemPosition);
+                teilnehmerRepository.save(teilnehmer);
+                LOG.info("Successfully removed an item from list of illness");
+                return  true;
+            case behinderungen:
+                if (teilnehmer.getBehinderungen().size() <= itemPosition){
+                LOG.info("Position of item to delete exceeds list size for position " + itemPosition);
+                return false;
+                }
+                teilnehmer.getBehinderungen().remove(itemPosition);
+                teilnehmerRepository.save(teilnehmer);
+                LOG.info("Successfully removed item from list of handicaps");
+                return  true;
+            case essenslimitierungen:
+                if (teilnehmer.getEssenLimitierungen().size() <= itemPosition){
+                LOG.info("Position of item to delete exceeds list size for position " + itemPosition);
+                return false;
+                }
+                teilnehmer.getEssenLimitierungen().remove(itemPosition);
+                teilnehmerRepository.save(teilnehmer);
+                LOG.info("Successfully removed item from list of food limitations");
+                return  true;
+            case allergien:
+                if (teilnehmer.getAllergien().size() <= itemPosition){
+                    LOG.info("Error: " + ListType.allergien + ": " + teilnehmer.getAllergien().size()+ ">=" + itemPosition);
+                    return false;
+                }
+                teilnehmer.getAllergien().remove(itemPosition);
+                teilnehmerRepository.save(teilnehmer);
+                LOG.info("Successfully removed item from list of allergies");
+                return  true;
+            default:
+                LOG.info("Failed to find an according list type for the given id " + delete_information.get("item"));
+                return false;
+        }
     }
 
     /*******************************************
