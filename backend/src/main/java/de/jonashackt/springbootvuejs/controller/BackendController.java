@@ -78,21 +78,28 @@ public class BackendController {
     Boolean assignProjectToUser(@RequestBody Map<String, Long> ids) {
         Long user_id = ids.get("user");
         Long projekt_id = ids.get("project");
+        LOG.info(user_id + " " + projekt_id);
         Teilnehmer teilnehmer = teilnehmerRepository.findOne(user_id);
         if (teilnehmer == null)
             return false;
-        List<Projekt> currentProjects = teilnehmer.getAngemeldeteProjekte();
+        List<Projekt> currentProjects = new ArrayList<Projekt>(teilnehmer.getAngemeldeteProjekte());
         Projekt projekt = projektRepository.findOne(projekt_id);
         if (projekt == null)
             return false;
         currentProjects.add(projekt);
         teilnehmer.setAngemeldeteProjekte(currentProjects);
+        if(teilnehmer.getStornierungen().contains(projekt)) {
+            List<Projekt> temp = new ArrayList<>(teilnehmer.getStornierungen());
+            temp.remove(projekt);
+            teilnehmer.setStornierungen(temp);
+        }
         teilnehmerRepository.save(teilnehmer);
 
         LOG.info("Successfully assigned project " + projekt.toString() + " to user " + teilnehmer.toString());
 
         return true;
     }
+
 
     //Delete an item from a list of a user (e.g., an illness or so)
     @RequestMapping(path="/deletelistitem", method = RequestMethod.POST)

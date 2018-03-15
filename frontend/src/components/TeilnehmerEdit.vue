@@ -8,7 +8,7 @@
     </nav>
     <main>
       <h1>Teilnehmerbearbeitung</h1>
-      <form method="post" v-on:submit.prevent="postProject">
+      <form method="post" v-on:submit.prevent="updateUser">
         <h2>Allgemeine Informationen</h2>
         <label for ="lastName">Nachname: </label>
         <input type="text" id ="lastName" placeholder="Nachname" v-model="user.nachname" :value="user.nachname">
@@ -37,7 +37,7 @@
 
         <h2>Notfallkontaktdaten</h2>
         <label for ="user.notfallKontakt.name">Name, Vorname:</label>
-        <input type="text" id="contactname" v-model="user.notfallKontakt.name" placeholder="Name" :value="user.notfallKontakt.name">
+        <input type="text" v-if="user.notfallKontakt.name" id="contactname" v-model="user.notfallKontakt.name" placeholder="Name" :value="user.notfallKontakt.name">
         <label for ="user.notfallKontakt.address">Addresse:</label>
         <input type="text" id="contactaddress" v-model="user.notfallKontakt.address" placeholder="Addresse" :value="user.notfallKontakt.address">
         <label for ="user.notfallKontakt.telephone">Telefon:</label>
@@ -56,54 +56,72 @@
         <div v-if="user.allergien">
         <table>
         <tr><th>Name</th><th>Information</th><th>Löschen</th></tr>
-         <tr v-for="allergie of user.allergien">
+         <tr v-for="(allergie, index) of user.allergien">
          <td><input type="text" id="allergie_n" placeholder="Keine Allergie" v-model="allergie.name" :value="allergie.name"></td>
          <td><input type="text" id="allergie_info" placeholder="-" v-model="allergie.information" :value="allergie.information"></td>
-         <td></td>
+         <td><button v-on:click="deleteListItem(user.id,5,index)">Löschen</button></td>
         </tr>
         </table>
         </div>
         <h3>Krankheiten</h3>
         <div v-if="user.krankheiten">
-        <span class="limit" v-for="krankheit of user.krankheiten">
-        {{krankheit.name}}
-        <span v-if="krankheit.information" :title="krankheit.information">
-        </span>
-        </span>
+        <table>
+        <tr><th>Name</th><th>Information</th><th>Löschen</th></tr>
+        <tr v-for="(krankheit, index) of user.krankheiten">
+        <td><input type="text" id="krankheit_n" placeholder="Keine Krankheit" v-model="krankheit.name" :value="krankheit.name"></td>
+        <td><input type="text" id="krankheit_info" placeholder="-" v-model="krankheit.information" :value="krankheit.information"></td>
+        <td><button v-on:click="deleteListItem(user.id,2,index)">Löschen</button></td>
+        </tr>
+        </table>
         </div>
         <h3>Behinderungen</h3>
         <div v-if="user.behinderungen">
-        <span class="limit" v-for="behinderung of user.behinderungen">
-        {{behinderung.name}}
-        <span v-if="behinderung.information" :title="behinderung.information">
-        </span>
-        </span>
+        <table>
+        <tr><th>Name</th><th>Information</th><th>Code</th><th>Löschen</th></tr>
+        <tr v-for="(behinderung, index) of user.behinderungen">
+        <td><input type="text" id="behinderung_n" placeholder="Keine Behinderung" v-model="behinderung.name" :value="behinderung.name"></td>
+        <td><input type="text" id="behinderung_info" placeholder="-" v-model="behinderung.information" :value="behinderung.information"></td>
+        <td><input type="text" id="behinderung_code" placeholder="-" v-model="behinderung.code.d_code" :value="behinderung.code.d_code"></td>
+        <td><button v-on:click="deleteListItem(user.id,3,index)">Löschen</button></td>
+        </tr>
+        </table>
         </div>
         <h3>Essensbesonderheiten</h3>
         <div v-if="user.essenLimitierungen">
-        <span class="limit" v-for="essen of user.essenLimitierungen">
-        {{essen.name}}
-        <span v-if="essen.information" :title="essen.information">
-        </span>
-        </span>
+        <table>
+        <tr><th>Name</th><th>Information</th><th>Löschen</th></tr>
+        <tr v-for="(essen, index) of user.essenLimitierungen">
+        <td><input type="text" id="essen_n" placeholder="Keine Besonderheiten" v-model="essen.name" :value="essen.name"></td>
+        <td><input type="text" id="essen_info" placeholder="-" v-model="essen.information" :value="essen.information"></td>
+        <td><button v-on:click="deleteListItem(user.id,4,index)">Löschen</button></td>
+        </tr>
+        </table>
         </div>
 
-        <h2>Angemeldete Projekte</h2>
-        <div v-if="user.angemeldeteProjekte">
-        <div class="project" v-for="project of user.angemeldeteProjekte">
-        {{project.name}}
-        </div>
-        </div>
-        <h2>Stornierte Projekte</h2>
-        <div v-if="user.stornierungen">
-        <div class="storno" v-for="storno of user.stornierungen">
-        {{storno.name}}
-        </div>
-        </div>
 
-        <input type="submit" value="Bearbeiten">
+      <h2>Angemeldete Projekte</h2>
+      <div v-if="user.angemeldeteProjekte">
+      <table>
+      <tr><th>Name</th><th>Stornieren</th></tr>
+      <tr v-for="(projekt, index) of user.angemeldeteProjekte">
+      <td><label for="projekt.name"> {{projekt.name}}</label></td>
+      <td><button v-on:click="cancelProject(user.id,projekt.id)">Stornieren</button></td>
+      </tr>
+      </table>
+      </div>
+
+      <h2>Stornierte Projekte</h2>
+      <div v-if="user.stornierungen">
+      <table>
+      <tr><th>Name</th><th>Aktivieren</th></tr>
+      <tr v-for="(projekt, index) of user.angemeldeteProjekte">
+      <td><label for="projekt.name">{{projekt.name}}</label></td>
+      <td><button v-on:click="activateProject(user.id, projekt.id)">Reaktivieren</button></td>
+      </tr>
+      </table>
+      </div>
+      <input type="submit" value="Update">
       </form>
-
     </main>
       <div :class="popupClass">✔ Erfolgreich!</div>
     </html>
@@ -172,12 +190,47 @@ export default {
         this.errors.push(e)
       })
     },
-    deleteListItem (id, type, item) {
-      var params = new URLSearchParams();
-      params.append('user_id', id);
-      params.append('type', type);
-      params.append('item', item);
-      axios.post('http://localhost:8088/api/deltelistitem', params)
+    updateUser () {
+      axios.post('http://localhost:8088/api/cancelproject', {
+        user_id: this.user.id,
+        vorname: this.user.vorname,
+        nachname: this.user.nachname,
+        geburtsdatum: this.user.geburtsdatum,
+        strasse: this.user.strasse,
+        stadt: this.user.stadt,
+        postleitzahlt: this.user.postleitzahl,
+        telefon: this.user.telefon,
+        notrufnummer: this.user.notrufnummer,
+        medikamente: this.user.erlaubeMedikamentation,
+        nachHause: this.user.darfAlleinNachHause,
+        reiten: this.user.darfReiten,
+        schwimmen: this.user.darfSchwimmen,
+        bezahlt: this.user.bezahlt,
+        kname: this.user.notfallKontakt.name,
+        kaddress: this.user.notfallKontakt.address,
+        ktelefon: this.user.notfallKontakt.telephone,
+        aname: this.user.arzt.name,
+        aaddress: this.user.arzt.address,
+        atel: this.user.arzt.telephone
+      })
+        .then(response => {
+          this.popupClass = 'fadeIn'
+          var self = this;
+          setTimeout(function () {
+            self.popupClass = 'fadeOut';
+          }, 2000);
+        })
+          .catch(e => {
+            this.errors.push(e)
+          })
+    },
+    deleteListItem (id, typeList, itemPos) {
+    /* note that the numbers of variable typeList correspond to the index value of the enumeration ListType in the backend */
+      axios.post('http://localhost:8088/api/deletelistitem', {
+        user_id: id,
+        type: typeList,
+        item: itemPos
+      })
       .then(response => {
         this.popupClass = 'fadeIn'
         var self = this;
@@ -188,6 +241,38 @@ export default {
       .catch(e => {
         this.errors.push(e)
       })
+    },
+    cancelProject (id, projectId) {
+      axios.post('http://localhost:8088/api/cancelproject', {
+        user_id: id,
+        project: projectId
+      })
+        .then(response => {
+          this.popupClass = 'fadeIn'
+          var self = this;
+          setTimeout(function () {
+            self.popupClass = 'fadeOut';
+          }, 2000);
+        })
+          .catch(e => {
+            this.errors.push(e)
+          })
+    },
+    activateProject (id, projectId) {
+      axios.post('http://localhost:8088/api/assignProject', {
+        user: id,
+        project: projectId
+      })
+        .then(response => {
+          this.popupClass = 'fadeIn'
+          var self = this;
+          setTimeout(function () {
+            self.popupClass = 'fadeOut';
+          }, 2000);
+        })
+          .catch(e => {
+            this.errors.push(e)
+          })
     }
   }
 }
