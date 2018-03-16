@@ -15,7 +15,7 @@ import java.util.List;
 
 @EnableAutoConfiguration
 @ComponentScan
-public class SpringBootVuejsApplication implements CommandLineRunner{
+public class FerienpassAdminApplication implements CommandLineRunner{
 
 	@Autowired
 	private TeilnehmerRepository teilnehmerRepository;
@@ -65,6 +65,6 @@ public class SpringBootVuejsApplication implements CommandLineRunner{
 
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringBootVuejsApplication.class, args);
+		SpringApplication.run(FerienpassAdminApplication.class, args);
 	}
 }

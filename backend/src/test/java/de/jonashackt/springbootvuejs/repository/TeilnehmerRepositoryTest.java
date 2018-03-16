@@ -1,6 +1,6 @@
 package de.jonashackt.springbootvuejs.repository;
 
-import de.jonashackt.springbootvuejs.SpringBootVuejsApplication;
+import de.jonashackt.springbootvuejs.FerienpassAdminApplication;
 import de.jonashackt.springbootvuejs.domain.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +13,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.containsString;
@@ -22,7 +21,7 @@ import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-@SpringBootTest(classes = SpringBootVuejsApplication.class)
+@SpringBootTest(classes = FerienpassAdminApplication.class)
 public class TeilnehmerRepositoryTest {
     @Autowired
     private TestEntityManager entityManager;

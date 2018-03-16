@@ -1,7 +1,7 @@
 package de.jonashackt.springbootvuejs.controller;
 
 
-import de.jonashackt.springbootvuejs.SpringBootVuejsApplication;
+import de.jonashackt.springbootvuejs.FerienpassAdminApplication;
 import de.jonashackt.springbootvuejs.domain.*;
 import de.jonashackt.springbootvuejs.repository.TeilnehmerRepositoryTest;
 import io.restassured.http.ContentType;
@@ -16,11 +16,11 @@ import java.util.*;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(
-        classes = SpringBootVuejsApplication.class,
+        classes = FerienpassAdminApplication.class,
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT,
         properties = "server.port = 8089"
 )
