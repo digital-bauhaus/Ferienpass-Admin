@@ -433,7 +433,16 @@ public class BackendControllerTest {
         assertThat(krankheiten.get(3).getName(), is("Kopfschmerzen"));
         assertThat(krankheiten.get(4).getName(), is("Bauchschmerzen"));
 
+        List<EssenLimitierung> essenLimitierungen = responseUser.getEssenLimitierungen();
 
+        assertThat(essenLimitierungen.get(0).getName(), is("Vegetarier"));
+        assertThat(essenLimitierungen.get(1).getName(), is("Laktose-Unverträglichkeit"));
+        assertThat(essenLimitierungen.get(2).getName(), is("Eier-Unverträglichkeit"));
+        assertThat(essenLimitierungen.get(3).getName(), is("Schokoladenunverträglichkeit"));
+        assertThat(essenLimitierungen.get(4).getName(), is("Sofortiges Kotzen nach Nutellagenuss"));
+        assertThat(essenLimitierungen.get(5).getName(), is("Wasserunverträglichkeit"));
+        assertThat(essenLimitierungen.get(6).getName(), is("Weizenunverträglichkeit"));
+        assertThat(essenLimitierungen.get(7).getName(), is("Bierunverträglichkeit"));
 
     }
 

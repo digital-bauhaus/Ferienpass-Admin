@@ -56,10 +56,18 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "conditions__diseases-4",
         "conditions__heat-sensitivity",
         "conditions__medication-0",
+        "conditions__medication-1",
+        "conditions__medication-2",
+        "conditions__medication-3",
+        "conditions__medication-4",
         "conditions__vegetarian",
         "conditions__lactose-intolerance",
         "conditions__egg-intolerance",
         "conditions__nutrition-0",
+        "conditions__nutrition-1",
+        "conditions__nutrition-2",
+        "conditions__nutrition-3",
+        "conditions__nutrition-4",
         "conditions__child-treatment-allowed",
         "conditions__health-insurance",
         "conditions__emergency-name",
@@ -184,6 +192,14 @@ public class AnmeldungJson {
     private Boolean conditionsHeatSensitivity;
     @JsonProperty("conditions__medication-0")
     private String conditionsMedication0;
+    @JsonProperty("conditions__medication-1")
+    private String conditionsMedication1;
+    @JsonProperty("conditions__medication-2")
+    private String conditionsMedication2;
+    @JsonProperty("conditions__medication-3")
+    private String conditionsMedication3;
+    @JsonProperty("conditions__medication-4")
+    private String conditionsMedication4;
     @JsonProperty("conditions__vegetarian")
     private Boolean conditionsVegetarian;
     @JsonProperty("conditions__lactose-intolerance")
@@ -192,6 +208,14 @@ public class AnmeldungJson {
     private Boolean conditionsEggIntolerance;
     @JsonProperty("conditions__nutrition-0")
     private String conditionsNutrition0;
+    @JsonProperty("conditions__nutrition-1")
+    private String conditionsNutrition1;
+    @JsonProperty("conditions__nutrition-2")
+    private String conditionsNutrition2;
+    @JsonProperty("conditions__nutrition-3")
+    private String conditionsNutrition3;
+    @JsonProperty("conditions__nutrition-4")
+    private String conditionsNutrition4;
     @JsonProperty("conditions__child-treatment-allowed")
     private String conditionsChildTreatmentAllowed;
     @JsonProperty("conditions__health-insurance")
@@ -695,6 +719,46 @@ public class AnmeldungJson {
         this.conditionsMedication0 = conditionsMedication0;
     }
 
+    @JsonProperty("conditions__medication-1")
+    public String getConditionsMedication1() {
+        return conditionsMedication1;
+    }
+
+    @JsonProperty("conditions__medication-1")
+    public void setConditionsMedication1(String conditionsMedication1) {
+        this.conditionsMedication1 = conditionsMedication1;
+    }
+
+    @JsonProperty("conditions__medication-2")
+    public String getConditionsMedication2() {
+        return conditionsMedication2;
+    }
+
+    @JsonProperty("conditions__medication-2")
+    public void setConditionsMedication2(String conditionsMedication2) {
+        this.conditionsMedication2 = conditionsMedication2;
+    }
+
+    @JsonProperty("conditions__medication-3")
+    public String getConditionsMedication3() {
+        return conditionsMedication3;
+    }
+
+    @JsonProperty("conditions__medication-3")
+    public void setConditionsMedication3(String conditionsMedication3) {
+        this.conditionsMedication3 = conditionsMedication3;
+    }
+
+    @JsonProperty("conditions__medication-4")
+    public String getConditionsMedication4() {
+        return conditionsMedication4;
+    }
+
+    @JsonProperty("conditions__medication-4")
+    public void setConditionsMedication4(String conditionsMedication4) {
+        this.conditionsMedication4 = conditionsMedication4;
+    }
+
     @JsonProperty("conditions__vegetarian")
     public Boolean getConditionsVegetarian() {
         return conditionsVegetarian;
@@ -733,6 +797,46 @@ public class AnmeldungJson {
     @JsonProperty("conditions__nutrition-0")
     public void setConditionsNutrition0(String conditionsNutrition0) {
         this.conditionsNutrition0 = conditionsNutrition0;
+    }
+
+    @JsonProperty("conditions__nutrition-1")
+    public String getConditionsNutrition1() {
+        return conditionsNutrition1;
+    }
+
+    @JsonProperty("conditions__nutrition-1")
+    public void setConditionsNutrition1(String conditionsNutrition1) {
+        this.conditionsNutrition1 = conditionsNutrition1;
+    }
+
+    @JsonProperty("conditions__nutrition-2")
+    public String getConditionsNutrition2() {
+        return conditionsNutrition2;
+    }
+
+    @JsonProperty("conditions__nutrition-2")
+    public void setConditionsNutrition2(String conditionsNutrition2) {
+        this.conditionsNutrition2 = conditionsNutrition2;
+    }
+
+    @JsonProperty("conditions__nutrition-3")
+    public String getConditionsNutrition3() {
+        return conditionsNutrition3;
+    }
+
+    @JsonProperty("conditions__nutrition-3")
+    public void setConditionsNutrition3(String conditionsNutrition3) {
+        this.conditionsNutrition3 = conditionsNutrition3;
+    }
+
+    @JsonProperty("conditions__nutrition-4")
+    public String getConditionsNutrition4() {
+        return conditionsNutrition4;
+    }
+
+    @JsonProperty("conditions__nutrition-4")
+    public void setConditionsNutrition4(String conditionsNutrition4) {
+        this.conditionsNutrition4 = conditionsNutrition4;
     }
 
     @JsonProperty("conditions__child-treatment-allowed")

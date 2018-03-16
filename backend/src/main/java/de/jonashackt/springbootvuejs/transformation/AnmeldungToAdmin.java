@@ -3,6 +3,7 @@ package de.jonashackt.springbootvuejs.transformation;
 import de.jonashackt.springbootvuejs.domain.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,23 +29,12 @@ public class AnmeldungToAdmin {
         teilnehmer.setAllergien(mappeAllergien(anmeldungJson));
         teilnehmer.setKrankheiten(mappeKrankheiten(anmeldungJson));
 
+        //TODO: Wir haben aktuell keine Hitzeempfindlichkeit im Admindatenmodell
 
+        //TODO: Wir haben aktuell die Medikamente den Allergien und Krankheiten zugeordnet im Datenmodell. Aber so kommen die von der Anmeldeseite gar nicht an, sondern als Einzelliste
 
-//        //add some illnesses
-//        Krankheit k1 = new Krankheit("Grippe", "Sollte viel Pausen machen", "Keine");
-//        Krankheit k2 = new Krankheit("Husten", "Immer in den Arm husten", "Hustensaft");
-//        neuAngemeldeterTeilnehmer.setKrankheiten(new ArrayList<>());
-//        neuAngemeldeterTeilnehmer.getKrankheiten().add(k1);
-//        neuAngemeldeterTeilnehmer.getKrankheiten().add(k2);
+        teilnehmer.setEssenLimitierungen(mappeEssenslimitierungen(anmeldungJson));
 
-
-//        //add some food limitations
-//        EssenLimitierung e1 = new EssenLimitierung("Fleisch", "vegetarier");
-//        EssenLimitierung e2 = new EssenLimitierung("Obst", "Sollte dennoch Obst essen");
-//        neuAngemeldeterTeilnehmer.setEssenLimitierungen(new ArrayList<>());
-//        neuAngemeldeterTeilnehmer.getEssenLimitierungen().add(e1);
-//        neuAngemeldeterTeilnehmer.getEssenLimitierungen().add(e2);
-//
 
 //
 //        //add some handicaps
@@ -58,6 +48,30 @@ public class AnmeldungToAdmin {
 
 
         return teilnehmer;
+    }
+
+    private static List<EssenLimitierung> mappeEssenslimitierungen(AnmeldungJson anmeldungJson) {
+
+        List<EssenLimitierung> essenLimitierungen = new ArrayList<>();
+
+        // TODO: Wozu ist die info?
+        if(anmeldungJson.getConditionsVegetarian()) {
+            // TODO: Die Namen der Essensunvertraeglichkeiten sollten direkt im Datenmodell abgebildet sein!
+            essenLimitierungen.add(new EssenLimitierung("Vegetarier", null));
+        }
+        if(anmeldungJson.getConditionsLactoseIntolerance()) {
+            essenLimitierungen.add(new EssenLimitierung("Laktose-Unverträglichkeit", null));
+        }
+        if(anmeldungJson.getConditionsEggIntolerance()) {
+            essenLimitierungen.add(new EssenLimitierung("Eier-Unverträglichkeit", null));
+        }
+        essenLimitierungen.add(new EssenLimitierung(anmeldungJson.getConditionsNutrition0(), null));
+        essenLimitierungen.add(new EssenLimitierung(anmeldungJson.getConditionsNutrition1(), null));
+        essenLimitierungen.add(new EssenLimitierung(anmeldungJson.getConditionsNutrition2(), null));
+        essenLimitierungen.add(new EssenLimitierung(anmeldungJson.getConditionsNutrition3(), null));
+        essenLimitierungen.add(new EssenLimitierung(anmeldungJson.getConditionsNutrition4(), null));
+
+        return essenLimitierungen;
     }
 
     private static List<Allergie> mappeAllergien(AnmeldungJson anmeldungJson) {
