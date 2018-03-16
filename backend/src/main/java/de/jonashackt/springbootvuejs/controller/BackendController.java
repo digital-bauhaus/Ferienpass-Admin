@@ -3,6 +3,8 @@ package de.jonashackt.springbootvuejs.controller;
 import de.jonashackt.springbootvuejs.domain.*;
 import de.jonashackt.springbootvuejs.repository.ProjektRepository;
 import de.jonashackt.springbootvuejs.repository.TeilnehmerRepository;
+import de.jonashackt.springbootvuejs.transformation.AnmeldungJson;
+import de.jonashackt.springbootvuejs.transformation.AnmeldungToAdmin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -177,6 +179,25 @@ public class BackendController {
     }
 
     /*******************************************
+     * API for registering from Ferienpass-Anmeldung Microservice
+     ******************************************/
+
+    @RequestMapping(path = "/register", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    public @ResponseBody Long registerNewTeilnehmer(@RequestBody AnmeldungJson anmeldungJson) {
+
+        LOG.info("New POST request from Ferienpass-Anmeldung Microservice containing new Teilnehmer");
+
+        Teilnehmer neuAngemeldeterTeilnehmer = AnmeldungToAdmin.mapAnmeldedataToTeilnehmer(anmeldungJson);
+
+        Teilnehmer savedTeilnehmer = teilnehmerRepository.save(neuAngemeldeterTeilnehmer);
+
+        LOG.info("Successfully saved new Teilnehmer " + neuAngemeldeterTeilnehmer.toString() + " into Admin-Backend-DB");
+
+        return savedTeilnehmer.getId();
+    }
+
+    /*******************************************
      * API for projects (Projekte) functionality
      ******************************************/
     //Retrieve all projects
@@ -262,5 +283,5 @@ public class BackendController {
     Projekt getProjectById(@PathVariable("projekt_id") Long projekt_id) {
         return projektRepository.findOne(projekt_id);
     }
-
+    
 }

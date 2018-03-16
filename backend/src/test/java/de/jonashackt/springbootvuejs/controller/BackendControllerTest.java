@@ -1,16 +1,22 @@
 package de.jonashackt.springbootvuejs.controller;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import de.jonashackt.springbootvuejs.FerienpassAdminApplication;
 import de.jonashackt.springbootvuejs.domain.*;
 import de.jonashackt.springbootvuejs.repository.TeilnehmerRepositoryTest;
+import de.jonashackt.springbootvuejs.transformation.AnmeldungJson;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.Resource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.IOException;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -26,6 +32,10 @@ import static org.hamcrest.Matchers.is;
 )
 public class BackendControllerTest {
     private static final String BASE_URL = "http://localhost:8089/api";
+
+    @Value("classpath:requests/anmeldung-post-data.json")
+    private Resource anmeldungJsonFile;
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     /****************************
      * Test user (Teilnehmer) API
@@ -370,6 +380,42 @@ public class BackendControllerTest {
         assertThat(id2,is(userId2));
 
     }
+
+    /*******************************************
+     * Tests API for registering from Ferienpass-Anmeldung Microservice
+     ******************************************/
+
+    @Test
+    public void addNewTeilnehmerFromFerienpassAnmeldungMicroservice() throws IOException {
+
+        AnmeldungJson anmeldungJson = objectMapper.readValue(anmeldungJsonFile.getInputStream(), AnmeldungJson.class);
+
+        Long userId =
+                given()
+                        .contentType(ContentType.JSON)
+                        .body(anmeldungJson)
+                .when()
+                        .post(BASE_URL + "/register")
+                .then()
+                        .statusCode(is(HttpStatus.SC_CREATED))
+                        .extract()
+                        .body().as(Long.class);
+
+        Teilnehmer responseUser =
+                given()
+                        .pathParam("id", userId)
+                .when()
+                        .get(BASE_URL + "/user/{id}")
+                .then()
+                        .statusCode(HttpStatus.SC_OK)
+                        .assertThat()
+                        .extract().as(Teilnehmer.class);
+
+        assertThat(responseUser.getVorname(), is("Paul"));
+        assertThat(responseUser.getNachname(), is("Siegmund"));
+        assertThat(responseUser.getGeburtsdatum(), is(LocalDate.of(2019,1,10)));
+    }
+
 
     /****************************
      * Test project (Projekt) API
