@@ -19,8 +19,8 @@
                  <tr v-for="allproject of allprojects">
                  <!--<td v-on:click="teil($event)">{{allproject.name}}</td>-->
                    <td>{{allproject.name}}</td>
-                   <td>{{allproject.date}}</td>
-                   <td>{{allproject.slotsFree}} / </nobr> {{allproject.slots}} / </nobr> [{{allproject.slotsReserved}}]</td>
+                   <td>{{allproject.datum}}</td>
+                   <td>{{allproject.slotsFrei}} / </nobr> {{allproject.slotsGesamt}} / </nobr> [{{allproject.slotsReserviert}}]</td>
                    <td><nobr><span v-on:click="kill($event,allproject.project_id)" class="fakebutton"><a>löschen</a></span>
                      <router-link :to="{path: '../VeranstaltungEdit', query: {id: allproject.project_id }}" class="fakebutton">Bearbeiten</router-link>
                      <span class="fakebutton"><a>PDF exportieren</a></span></nobr>

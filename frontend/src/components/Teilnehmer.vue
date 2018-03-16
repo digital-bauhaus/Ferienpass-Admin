@@ -19,15 +19,15 @@
          <th>Telefon</th>
          <th>Bearbeiten</th>
        </tr>
-       <tr v-for="alluser of allusers">
-         <td :id="alluser.hasPayed"><span :id="alluser.hasPayed">{{alluser.hasPayed}}</span></td>
-         <td>{{alluser.lastName}}, {{alluser.firstName}}</td>
-         <td>{{alluser.birthDate}}</td>
-         <td>{{alluser.street}}, {{alluser.city}}</td>
-         <td>{{alluser.telephone}}</th>
+       <tr v-for="user of allusers">
+         <td :id="user.bezahlt"><span :id="user.bezahlt">{{user.bezahlt}}</span></td>
+         <td>{{user.nachname}}, {{user.vorname}}</td>
+         <td>{{user.geburtsdatum}}</td>
+         <td>{{user.strasse}}, {{user.stadt}}</td>
+         <td>{{user.telefon}}</th>
 
          <td><span v-on:click="kill($event)" class="fakebutton"><a>stornieren</a></span>
-           <router-link :to="{path: '../TeilnehmerEdit', query: {id: alluser.id }}" class="fakebutton">Bearbeiten</router-link>
+           <router-link :to="{path: '../TeilnehmerEdit', query: {id: user.id }}" class="fakebutton">Bearbeiten</router-link>
            <span class="fakebutton"><a>als PDF exportieren</a></span>
          </td>
        </tr>

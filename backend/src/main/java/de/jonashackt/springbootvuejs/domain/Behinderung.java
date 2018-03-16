@@ -1,44 +1,46 @@
 package de.jonashackt.springbootvuejs.domain;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
-public class Disability {
-
-    // PrimaryKey
+public class Behinderung {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long disability_id;
+    private long behinderung_id;
     private String name;
+
     @ManyToOne(cascade= CascadeType.ALL)
     @JoinColumn(name="d_code")
-    private DisabilityCode code;
+    private BehinderungKodierung code;
     private boolean approved;
     private boolean id_available;
     private boolean token_available;
     private boolean needs_escort;
 
-    public Disability(long disability_id, String name, DisabilityCode code, boolean approved, boolean id_available, boolean token_available, boolean needs_escort) {
-        this.disability_id = disability_id;
-        this.name = name;
-        this.code = code;
-        this.approved = approved;
-        this.id_available = id_available;
-        this.token_available = token_available;
-        this.needs_escort = needs_escort;
+    public Behinderung(String name, BehinderungKodierung code, boolean approved, boolean id_available, boolean token_available, boolean needs_escort) {
+        this.setName(name);
+        this.setCode(code);
+        this.setApproved(approved);
+        this.setId_available(id_available);
+        this.setToken_available(token_available);
+        this.setNeeds_escort(needs_escort);
     }
 
-    protected Disability() {
+    protected Behinderung() {}
+
+    @Override
+    public String toString() {
+        return String.format(
+                "Behinderung[id=%d, name='%s', code='%s', approved='%b', id_available='%b', token_available='%b', needs_escort='%b']",
+                behinderung_id, name, code.toString(), approved, id_available, token_available, needs_escort);
     }
 
-
-    public long getDisability_id() {
-        return disability_id;
+    public long getId() {
+        return behinderung_id;
     }
 
-    public void setDisability_id(long disability_id) {
-        this.disability_id = disability_id;
+    public void setId(long id) {
+        this.behinderung_id = id;
     }
 
     public String getName() {
@@ -49,11 +51,11 @@ public class Disability {
         this.name = name;
     }
 
-    public DisabilityCode getCode() {
+    public BehinderungKodierung getCode() {
         return code;
     }
 
-    public void setCode(DisabilityCode code) {
+    public void setCode(BehinderungKodierung code) {
         this.code = code;
     }
 

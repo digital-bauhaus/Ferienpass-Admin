@@ -4,44 +4,38 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.ManyToMany;
-import java.util.Date;
 
 @Entity
-public class Contact {
+public class Arzt {
 
-    // PrimaryKey
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long contact_id;
+    private long arzt_id;
     private String name;
     private String address;
     private String telephone;
 
-    protected Contact() {}
-
-    public Contact(String name, String address, String telephone) {
-        this.name = name;
-        this.address = address;
-        this.telephone = telephone;
+    public Arzt(String name, String address, String telephone) {
+        this.setName(name);
+        this.setAddress(address);
+        this.setTelephone(telephone);
     }
+
+    protected Arzt(){}
 
     @Override
     public String toString() {
         return String.format(
-                "Contact[contact_id=%d, name='%s', address='%s', telephone='%s']",
-                contact_id, name, address, telephone);
+                "Arzt[id=%d, Name='%s', Adresse='%s', Telefon='%s']",
+                arzt_id, name, address, telephone);
     }
 
-
-    public long getContact_id() {
-        return contact_id;
+    public long getId() {
+        return arzt_id;
     }
 
-    public void setContact_id(long doctor_id) {
-        this.contact_id = contact_id;
+    public void setId(long id) {
+        this.arzt_id = id;
     }
 
     public String getName() {
@@ -56,7 +50,7 @@ public class Contact {
         return address;
     }
 
-    public void setAddress(String street) {
+    public void setAddress(String address) {
         this.address = address;
     }
 
@@ -67,6 +61,4 @@ public class Contact {
     public void setTelephone(String telephone) {
         this.telephone = telephone;
     }
-
-
 }
