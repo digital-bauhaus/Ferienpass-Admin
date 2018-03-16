@@ -1,5 +1,27 @@
-.idea/
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# Eclipse #
+.settings
+.project
+.classpath
+.studio
+target
+
+# Apple #
+.DS_Store
+
+# Intellij #
+.idea
 *.iml
+*.log
+
+# logback
+logback.out.xml
 
 backend/src/main/resources/public/
 

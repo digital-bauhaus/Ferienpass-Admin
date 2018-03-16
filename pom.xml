@@ -4,12 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>de.jonashackt</groupId>
-	<artifactId>spring-boot-vuejs</artifactId>
+	<artifactId>ferienpass-admin</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>spring-boot-vuejs</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Admin fuer den Ferienpass Weimar</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>

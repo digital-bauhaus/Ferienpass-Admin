@@ -8,7 +8,7 @@
 
 	<parent>
 		<groupId>de.jonashackt</groupId>
-		<artifactId>spring-boot-vuejs</artifactId>
+		<artifactId>ferienpass-admin</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
