@@ -94,6 +94,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "disabilities__companion-for-orientation",
         "disabilities__companion-social",
         "disabilities__affected-senses-0",
+        "disabilities__affected-senses-1",
+        "disabilities__affected-senses-2",
+        "disabilities__affected-senses-3",
         "disabilities__companion-additional-notes",
         "disabilities__companion-help-finding-required",
         "disabilities__companion-usual-service",
@@ -268,6 +271,12 @@ public class AnmeldungJson {
     private Boolean disabilitiesCompanionSocial;
     @JsonProperty("disabilities__affected-senses-0")
     private String disabilitiesAffectedSenses0;
+    @JsonProperty("disabilities__affected-senses-1")
+    private String disabilitiesAffectedSenses1;
+    @JsonProperty("disabilities__affected-senses-2")
+    private String disabilitiesAffectedSenses2;
+    @JsonProperty("disabilities__affected-senses-3")
+    private String disabilitiesAffectedSenses3;
     @JsonProperty("disabilities__companion-additional-notes")
     private String disabilitiesCompanionAdditionalNotes;
     @JsonProperty("disabilities__companion-help-finding-required")
@@ -1099,6 +1108,36 @@ public class AnmeldungJson {
         this.disabilitiesAffectedSenses0 = disabilitiesAffectedSenses0;
     }
 
+    @JsonProperty("disabilities__affected-senses-1")
+    public String getDisabilitiesAffectedSenses1() {
+        return disabilitiesAffectedSenses1;
+    }
+
+    @JsonProperty("disabilities__affected-senses-1")
+    public void setDisabilitiesAffectedSenses1(String disabilitiesAffectedSenses1) {
+        this.disabilitiesAffectedSenses1 = disabilitiesAffectedSenses1;
+    }
+
+    @JsonProperty("disabilities__affected-senses-2")
+    public String getDisabilitiesAffectedSenses2() {
+        return disabilitiesAffectedSenses2;
+    }
+
+    @JsonProperty("disabilities__affected-senses-2")
+    public void setDisabilitiesAffectedSenses2(String disabilitiesAffectedSenses2) {
+        this.disabilitiesAffectedSenses2 = disabilitiesAffectedSenses2;
+    }
+
+    @JsonProperty("disabilities__affected-senses-3")
+    public String getDisabilitiesAffectedSenses3() {
+        return disabilitiesAffectedSenses3;
+    }
+
+    @JsonProperty("disabilities__affected-senses-3")
+    public void setDisabilitiesAffectedSenses3(String disabilitiesAffectedSenses3) {
+        this.disabilitiesAffectedSenses3 = disabilitiesAffectedSenses3;
+    }
+
     @JsonProperty("disabilities__companion-additional-notes")
     public String getDisabilitiesCompanionAdditionalNotes() {
         return disabilitiesCompanionAdditionalNotes;
@@ -1198,4 +1237,5 @@ public class AnmeldungJson {
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
+
 }

@@ -51,6 +51,8 @@ public class Teilnehmer {
     private List<Krankheit> krankheiten = new ArrayList<>();
 
     private boolean liegtBehinderungVor;
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="behinderung_id")
     private Behinderung behinderung;
 
     @ManyToMany(cascade=CascadeType.ALL)

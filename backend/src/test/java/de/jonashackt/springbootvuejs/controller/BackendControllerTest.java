@@ -97,14 +97,6 @@ public class BackendControllerTest {
         user.getKrankheiten().add(k2);
         assertThat(user.getKrankheiten().size(), is(2));
 
-        //add some handicaps
-        Behinderung b1 = new Behinderung("Arm", new BehinderungKodierung("A1"),true,false, false, true);
-        Behinderung b2 = new Behinderung("Bein", new BehinderungKodierung("A2"),true,false, false, true);
-        user.setBehinderungen(new ArrayList<>());
-        user.getBehinderungen().add(b1);
-        user.getBehinderungen().add(b2);
-        assertThat(user.getBehinderungen().size(), is(2));
-
         //add some projects
         List<Projekt> projekte = TeilnehmerRepositoryTest.createProjects(3);
         user.setAngemeldeteProjekte(projekte);
@@ -139,7 +131,6 @@ public class BackendControllerTest {
         assertThat(responseUser.getAllergien().size(), is(2));
         assertThat(responseUser.getEssenLimitierungen().size(), is(2));
         assertThat(responseUser.getKrankheiten().size(), is(2));
-        assertThat(responseUser.getBehinderungen().size(), is(2));
         assertThat(responseUser.getAngemeldeteProjekte().size(), is(3));
         assertThat(responseUser.getStornierungen().size(), is(2));
 
@@ -226,32 +217,6 @@ public class BackendControllerTest {
         assertThat(responseUser.getKrankheiten().size(),is(1));
         assertThat(responseUser.getKrankheiten().get(0).getName(),is(k1.getName()));
 
-        //remove first handicap
-        newID_Map = new HashMap<String, Long>();
-        newID_Map.put("user_id",userId);
-        newID_Map.put("type", new Integer(ListType.behinderungen.ordinal()).longValue());
-        newID_Map.put("item", new Long(0L));
-        success =
-                given()
-                        .body(newID_Map)
-                        .contentType(ContentType.JSON)
-                        .when()
-                        .post(BASE_URL+"/deletelistitem")
-                        .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .extract().as(Boolean.class);
-        assertThat(success,is(true));
-        responseUser =
-                given()
-                        .pathParam("id", userId)
-                        .when()
-                        .get(BASE_URL + "/user/{id}")
-                        .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .assertThat()
-                        .extract().as(Teilnehmer.class);
-        assertThat(responseUser.getBehinderungen().size(),is(1));
-        assertThat(responseUser.getBehinderungen().get(0).getName(),is(b2.getName()));
 
         //remove third and first project from registered projects
         newID_Map = new HashMap<String, Long>();
@@ -456,6 +421,36 @@ public class BackendControllerTest {
         assertThat(hausarzt.getAddress(), is("Amadeusstrasse 2"));
         assertThat(hausarzt.getTelephone(), is("0364 / 0123456"));
 
+        assertThat(responseUser.isLiegtBehinderungVor(), is(true));
+        Behinderung behinderung = responseUser.getBehinderung();
+
+        // Merkzeichen
+        assertThat(behinderung.isMerkzeichen_AussergewoehnlicheGehbehinderung_aG(), is(true));
+        assertThat(behinderung.isMerkzeichen_Hilflosigkeit_H(), is(false));
+        assertThat(behinderung.isMerkzeichen_Blind_Bl(), is(false));
+        assertThat(behinderung.isMerkzeichen_Gehoerlos_Gl(), is(true));
+        assertThat(behinderung.isMerkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B(), is(false));
+        assertThat(behinderung.isMerkzeichen_ErheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G(), is(true));
+        assertThat(behinderung.isMerkzeichen_Taubblind_TBL(), is(true));
+
+        assertThat(behinderung.isRollstuhlNutzungNotwendig(), is(true));
+        assertThat(behinderung.getWeitereHilfsmittel(), is("Krücken"));
+        assertThat(behinderung.isWertmarkeVorhanden(), is(true));
+
+        // Begleitperson
+        assertThat(behinderung.isBegleitungNotwendig(), is(true));
+        assertThat(behinderung.isBegleitpersonPflege(), is(false));
+        assertThat(behinderung.isBegleitpersonMedizinischeVersorgung(), is(true));
+        assertThat(behinderung.isBegleitpersonMobilitaet(), is(false));
+        assertThat(behinderung.isBegleitpersonOrientierung(), is(false));
+        assertThat(behinderung.isBegleitpersonSozialeBegleitung(), is(true));
+
+        assertThat(behinderung.getEingeschraenkteSinne(), is("Sicht; Gehör; Geschmack; Geruch"));
+
+        assertThat(behinderung.getHinweiseZumUmgangMitDemKind(), is("Bei unserem Kind ist insbesondere darauf zu achten, dass es manchmal spontan..."));
+        assertThat(behinderung.isUnterstuetzungSucheBegleitpersonNotwendig(), is(true));
+        assertThat(behinderung.getGewohnterBegleitpersonenDienstleister(), is("Mensch im Mittelpunkt e.V."));
+        assertThat(behinderung.isBeantragungKostenuebernahmeBegleitpersonNotwendig(), is(false));
 
     }
 

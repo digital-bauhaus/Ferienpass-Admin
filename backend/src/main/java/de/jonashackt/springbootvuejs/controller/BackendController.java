@@ -145,15 +145,6 @@ public class BackendController {
                 teilnehmerRepository.save(teilnehmer);
                 LOG.info("Successfully removed an item from list of illness");
                 return  true;
-            case behinderungen:
-                if (teilnehmer.getBehinderungen().size() <= itemPosition){
-                LOG.info("Position of item to delete exceeds list size for position " + itemPosition);
-                return false;
-                }
-                teilnehmer.getBehinderungen().remove(itemPosition);
-                teilnehmerRepository.save(teilnehmer);
-                LOG.info("Successfully removed item from list of handicaps");
-                return  true;
             case essenslimitierungen:
                 if (teilnehmer.getEssenLimitierungen().size() <= itemPosition){
                 LOG.info("Position of item to delete exceeds list size for position " + itemPosition);
@@ -283,5 +274,5 @@ public class BackendController {
     Projekt getProjectById(@PathVariable("projekt_id") Long projekt_id) {
         return projektRepository.findOne(projekt_id);
     }
-    
+
 }

@@ -48,10 +48,33 @@ public class FerienpassAdminApplication implements CommandLineRunner{
 		krankheiten.add(krank);
 		List<Allergie> allergien = new ArrayList<Allergie>();
 		allergien.add(new Allergie("Heuschnupfen","Nasenspray","nur 2x am Tag"));
-		List<Behinderung> behinderungen = new ArrayList<Behinderung>();
-		behinderungen.add(new Behinderung("Gehörlos",new BehinderungKodierung("G1"),false,true,true, true));
-		Teilnehmer user = new Teilnehmer("Gary","Eich", LocalDate.of(2005,10,20),LocalDate.now(), "Bahnhofstraße 4", "Weimar", "99423", "03544444", "0453434", true, kontact,
-				true, false, false, false, arzt, projects, allergien, essenLimitierungen, krankheiten, behinderungen,new ArrayList<Projekt>());
+		Behinderung behinderung = new Behinderung();
+		behinderung.setRollstuhlNutzungNotwendig(true);
+		behinderung.setMerkzeichen_Taubblind_TBL(true);
+
+		Teilnehmer user = new Teilnehmer(
+		        "Gary",
+                "Eich",
+                LocalDate.of(2005,10,20),LocalDate.now(),
+                "Bahnhofstraße 4",
+                "Weimar",
+                "99423",
+                "03544444",
+                "0453434",
+                true,
+                kontact,
+				true,
+                false,
+                false,
+                false,
+                arzt,
+                projects,
+                allergien,
+                essenLimitierungen,
+                krankheiten,
+                true,
+                behinderung,
+                new ArrayList<Projekt>());
 
 		teilnehmerRepository.save(user);
 

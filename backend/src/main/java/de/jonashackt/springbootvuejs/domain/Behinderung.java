@@ -9,82 +9,57 @@ public class Behinderung {
     private long id;
 
     // Merkzeichen
-    private boolean aussergewoehnlicheGehbehinderung_aG;
-    private boolean hilflosigkeit_H;
-    private boolean blind_Bl;
-    private boolean gehoerlos_Gl;
-    private boolean berechtigtZurMitnahmeEinerBegleitperson_B;
-    private boolean erheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G;
-    private boolean taubblind_TBL;
-
+    private boolean merkzeichen_AussergewoehnlicheGehbehinderung_aG;
+    private boolean merkzeichen_Hilflosigkeit_H;
+    private boolean merkzeichen_Blind_Bl;
+    private boolean merkzeichen_Gehoerlos_Gl;
+    private boolean merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B;
+    private boolean merkzeichen_ErheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G;
+    private boolean merkzeichen_Taubblind_TBL;
     private boolean rollstuhlNutzungNotwendig;
+
     private String weitereHilfsmittel;
     private boolean wertmarkeVorhanden;
-
     private boolean begleitungNotwendig;
+
     private boolean begleitpersonPflege;
     private boolean begleitpersonMedizinischeVersorgung;
     private boolean begleitpersonMobilitaet;
     private boolean begleitpersonOrientierung;
     private boolean begleitpersonSozialeBegleitung;
-
     private String eingeschraenkteSinne;
+
     private String hinweiseZumUmgangMitDemKind;
     private boolean unterstuetzungSucheBegleitpersonNotwendig;
     private String gewohnterBegleitpersonenDienstleister;
     private boolean beantragungKostenuebernahmeBegleitpersonNotwendig;
 
-
-    public Behinderung(boolean aussergewoehnlicheGehbehinderung_aG, boolean hilflosigkeit_H, boolean blind_Bl, boolean gehoerlos_Gl, boolean berechtigtZurMitnahmeEinerBegleitperson_B, boolean erheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G, boolean taubblind_TBL, boolean rollstuhlNutzungNotwendig, String weitereHilfsmittel, boolean wertmarkeVorhanden, boolean begleitungNotwendig, boolean begleitpersonPflege, boolean begleitpersonMedizinischeVersorgung, boolean begleitpersonMobilitaet, boolean begleitpersonOrientierung, boolean begleitpersonSozialeBegleitung, String eingeschraenkteSinne, String hinweiseZumUmgangMitDemKind, boolean unterstuetzungSucheBegleitpersonNotwendig, String gewohnterBegleitpersonenDienstleister, boolean beantragungKostenuebernahmeBegleitpersonNotwendig) {
-        this.aussergewoehnlicheGehbehinderung_aG = aussergewoehnlicheGehbehinderung_aG;
-        this.hilflosigkeit_H = hilflosigkeit_H;
-        this.blind_Bl = blind_Bl;
-        this.gehoerlos_Gl = gehoerlos_Gl;
-        this.berechtigtZurMitnahmeEinerBegleitperson_B = berechtigtZurMitnahmeEinerBegleitperson_B;
-        this.erheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G = erheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G;
-        this.taubblind_TBL = taubblind_TBL;
-        this.rollstuhlNutzungNotwendig = rollstuhlNutzungNotwendig;
-        this.weitereHilfsmittel = weitereHilfsmittel;
-        this.wertmarkeVorhanden = wertmarkeVorhanden;
-        this.begleitungNotwendig = begleitungNotwendig;
-        this.begleitpersonPflege = begleitpersonPflege;
-        this.begleitpersonMedizinischeVersorgung = begleitpersonMedizinischeVersorgung;
-        this.begleitpersonMobilitaet = begleitpersonMobilitaet;
-        this.begleitpersonOrientierung = begleitpersonOrientierung;
-        this.begleitpersonSozialeBegleitung = begleitpersonSozialeBegleitung;
-        this.eingeschraenkteSinne = eingeschraenkteSinne;
-        this.hinweiseZumUmgangMitDemKind = hinweiseZumUmgangMitDemKind;
-        this.unterstuetzungSucheBegleitpersonNotwendig = unterstuetzungSucheBegleitpersonNotwendig;
-        this.gewohnterBegleitpersonenDienstleister = gewohnterBegleitpersonenDienstleister;
-        this.beantragungKostenuebernahmeBegleitpersonNotwendig = beantragungKostenuebernahmeBegleitpersonNotwendig;
+    public void setMerkzeichen_AussergewoehnlicheGehbehinderung_aG(boolean merkzeichn_AussergewoehnlicheGehbehinderung_aG) {
+        this.merkzeichen_AussergewoehnlicheGehbehinderung_aG = merkzeichn_AussergewoehnlicheGehbehinderung_aG;
     }
 
-    public void setAussergewoehnlicheGehbehinderung_aG(boolean aussergewoehnlicheGehbehinderung_aG) {
-        this.aussergewoehnlicheGehbehinderung_aG = aussergewoehnlicheGehbehinderung_aG;
+    public void setMerkzeichen_Hilflosigkeit_H(boolean merkzeichen_Hilflosigkeit_H) {
+        this.merkzeichen_Hilflosigkeit_H = merkzeichen_Hilflosigkeit_H;
     }
 
-    public void setHilflosigkeit_H(boolean hilflosigkeit_H) {
-        this.hilflosigkeit_H = hilflosigkeit_H;
+    public void setMerkzeichen_Blind_Bl(boolean merkzeichen_Blind_Bl) {
+        this.merkzeichen_Blind_Bl = merkzeichen_Blind_Bl;
     }
 
-    public void setBlind_Bl(boolean blind_Bl) {
-        this.blind_Bl = blind_Bl;
+    public void setMerkzeichen_Gehoerlos_Gl(boolean merkzeichen_Gehoerlos_Gl) {
+        this.merkzeichen_Gehoerlos_Gl = merkzeichen_Gehoerlos_Gl;
     }
 
-    public void setGehoerlos_Gl(boolean gehoerlos_Gl) {
-        this.gehoerlos_Gl = gehoerlos_Gl;
+    public void setMerkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B(boolean merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B) {
+        this.merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B = merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B;
     }
 
-    public void setBerechtigtZurMitnahmeEinerBegleitperson_B(boolean berechtigtZurMitnahmeEinerBegleitperson_B) {
-        this.berechtigtZurMitnahmeEinerBegleitperson_B = berechtigtZurMitnahmeEinerBegleitperson_B;
+    public void setMerkzeichen_ErheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G(boolean merkzeichen_ErheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G) {
+        this.merkzeichen_ErheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G = merkzeichen_ErheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G;
     }
 
-    public void setErheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G(boolean erheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G) {
-        this.erheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G = erheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G;
-    }
-
-    public void setTaubblind_TBL(boolean taubblind_TBL) {
-        this.taubblind_TBL = taubblind_TBL;
+    public void setMerkzeichen_Taubblind_TBL(boolean merkzeichen_Taubblind_TBL) {
+        this.merkzeichen_Taubblind_TBL = merkzeichen_Taubblind_TBL;
     }
 
     public void setRollstuhlNutzungNotwendig(boolean rollstuhlNutzungNotwendig) {
@@ -143,33 +118,33 @@ public class Behinderung {
         this.beantragungKostenuebernahmeBegleitpersonNotwendig = beantragungKostenuebernahmeBegleitpersonNotwendig;
     }
 
-    public boolean isAussergewoehnlicheGehbehinderung_aG() {
+    public boolean isMerkzeichen_AussergewoehnlicheGehbehinderung_aG() {
 
-        return aussergewoehnlicheGehbehinderung_aG;
+        return merkzeichen_AussergewoehnlicheGehbehinderung_aG;
     }
 
-    public boolean isHilflosigkeit_H() {
-        return hilflosigkeit_H;
+    public boolean isMerkzeichen_Hilflosigkeit_H() {
+        return merkzeichen_Hilflosigkeit_H;
     }
 
-    public boolean isBlind_Bl() {
-        return blind_Bl;
+    public boolean isMerkzeichen_Blind_Bl() {
+        return merkzeichen_Blind_Bl;
     }
 
-    public boolean isGehoerlos_Gl() {
-        return gehoerlos_Gl;
+    public boolean isMerkzeichen_Gehoerlos_Gl() {
+        return merkzeichen_Gehoerlos_Gl;
     }
 
-    public boolean isBerechtigtZurMitnahmeEinerBegleitperson_B() {
-        return berechtigtZurMitnahmeEinerBegleitperson_B;
+    public boolean isMerkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B() {
+        return merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B;
     }
 
-    public boolean isErheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G() {
-        return erheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G;
+    public boolean isMerkzeichen_ErheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G() {
+        return merkzeichen_ErheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G;
     }
 
-    public boolean isTaubblind_TBL() {
-        return taubblind_TBL;
+    public boolean isMerkzeichen_Taubblind_TBL() {
+        return merkzeichen_Taubblind_TBL;
     }
 
     public boolean isRollstuhlNutzungNotwendig() {
@@ -228,7 +203,16 @@ public class Behinderung {
         return beantragungKostenuebernahmeBegleitpersonNotwendig;
     }
 
-    protected Behinderung() {}
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+
+        return id;
+    }
+
+    public Behinderung() {}
 
 
 

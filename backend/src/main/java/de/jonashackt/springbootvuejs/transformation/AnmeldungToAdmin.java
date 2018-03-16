@@ -15,27 +15,71 @@ public class AnmeldungToAdmin {
 
         mappeBasisInformationen(anmeldungJson, teilnehmer);
 
-        //        //add some projects
-//        List<Projekt> projekte = null;
-//        neuAngemeldeterTeilnehmer.setAngemeldeteProjekte(projekte);
+        // TODO: map projects
 
         mappeAllergienKrankheitenNotfallkontaktEtc(anmeldungJson, teilnehmer);
 
-
-
-//
-//        //add some handicaps
-//        Behinderung b1 = new Behinderung("Arm", new BehinderungKodierung("A1"),true,false, false, true);
-//        Behinderung b2 = new Behinderung("Bein", new BehinderungKodierung("A2"),true,false, false, true);
-//        neuAngemeldeterTeilnehmer.setBehinderungen(new ArrayList<>());
-//        neuAngemeldeterTeilnehmer.getBehinderungen().add(b1);
-//        neuAngemeldeterTeilnehmer.getBehinderungen().add(b2);
-//
-
-
+        mappeDatenZuBehinderungen(anmeldungJson, teilnehmer);
 
         return teilnehmer;
     }
+
+    private static void mappeDatenZuBehinderungen(AnmeldungJson anmeldungJson, Teilnehmer teilnehmer) {
+
+        teilnehmer.setLiegtBehinderungVor(anmeldungJson.getDisabilitiesDisabilityExistent());
+
+        Behinderung behinderung = new Behinderung();
+
+        mappeMerkzeichen(anmeldungJson, behinderung);
+
+        behinderung.setRollstuhlNutzungNotwendig(anmeldungJson.getDisabilitiesWheelchair());
+        behinderung.setWeitereHilfsmittel(anmeldungJson.getDisabilitiesAdditionalTools());
+        behinderung.setWertmarkeVorhanden(anmeldungJson.getDisabilitiesTokenAvailable());
+
+        mappeBegleitpersonenDaten(anmeldungJson, behinderung);
+        behinderung.setEingeschraenkteSinne(mappeEingeschraenkteSinne(anmeldungJson));
+
+        behinderung.setHinweiseZumUmgangMitDemKind(anmeldungJson.getDisabilitiesCompanionAdditionalNotes());
+
+        teilnehmer.setBehinderung(behinderung);
+    }
+
+    private static String mappeEingeschraenkteSinne(AnmeldungJson anmeldungJson) {
+        return new StringBuilder()
+                .append(anmeldungJson.getDisabilitiesAffectedSenses0())
+                .append("; ")
+                .append(anmeldungJson.getDisabilitiesAffectedSenses1())
+                .append("; ")
+                .append(anmeldungJson.getDisabilitiesAffectedSenses2())
+                .append("; ")
+                .append(anmeldungJson.getDisabilitiesAffectedSenses3())
+                .toString();
+    }
+
+    private static void mappeBegleitpersonenDaten(AnmeldungJson anmeldungJson, Behinderung behinderung) {
+        behinderung.setBegleitungNotwendig(anmeldungJson.getDisabilitiesCompanionRequired());
+        behinderung.setBegleitpersonPflege(anmeldungJson.getDisabilitiesCompanionForNursing());
+        behinderung.setBegleitpersonMedizinischeVersorgung(anmeldungJson.getDisabilitiesCompanionForHealthCare());
+        behinderung.setBegleitpersonMobilitaet(anmeldungJson.getDisabilitiesCompanionForMobility());
+        behinderung.setBegleitpersonOrientierung(anmeldungJson.getDisabilitiesCompanionForOrientation());
+        behinderung.setBegleitpersonSozialeBegleitung(anmeldungJson.getDisabilitiesCompanionSocial());
+
+        behinderung.setUnterstuetzungSucheBegleitpersonNotwendig(anmeldungJson.getDisabilitiesCompanionHelpFindingRequired());
+        behinderung.setGewohnterBegleitpersonenDienstleister(anmeldungJson.getDisabilitiesCompanionUsualService());
+        behinderung.setBeantragungKostenuebernahmeBegleitpersonNotwendig(anmeldungJson.getDisabilitiesCompanionCostTakeover());
+
+    }
+
+    private static void mappeMerkzeichen(AnmeldungJson anmeldungJson, Behinderung behinderung) {
+        behinderung.setMerkzeichen_AussergewoehnlicheGehbehinderung_aG(anmeldungJson.getDisabilitiesMarkAg());
+        behinderung.setMerkzeichen_Hilflosigkeit_H(anmeldungJson.getDisabilitiesMarkH());
+        behinderung.setMerkzeichen_Blind_Bl(anmeldungJson.getDisabilitiesMarkBl());
+        behinderung.setMerkzeichen_Gehoerlos_Gl(anmeldungJson.getDisabilitiesMarkGl());
+        behinderung.setMerkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B(anmeldungJson.getDisabilitiesMarkB());
+        behinderung.setMerkzeichen_ErheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G(anmeldungJson.getDisabilitiesMarkG());
+        behinderung.setMerkzeichen_Taubblind_TBL(anmeldungJson.getDisabilitiesMarkTbl());
+    }
+
 
     private static void mappeBasisInformationen(AnmeldungJson anmeldungJson, Teilnehmer teilnehmer) {
         teilnehmer.setNachname(anmeldungJson.getBaseFamilyName());
