@@ -35,6 +35,20 @@ public class AnmeldungToAdmin {
 
         teilnehmer.setEssenLimitierungen(mappeEssenslimitierungen(anmeldungJson));
 
+        if("yes".equals(anmeldungJson.getConditionsChildTreatmentAllowed())) {
+            // TODO: ist setErlaubeMedikamentation() das Gleiche wie "Behandlungserlaubnis bei Erkrankungen und Unfällen"?
+            teilnehmer.setErlaubeMedikamentation(true);
+        } else {
+            teilnehmer.setErlaubeMedikamentation(false);
+        }
+
+        //TODO: Was ist mit der Krankenkasse?
+
+        teilnehmer.setNotfallKontakt(mappeNotfallKontakt(anmeldungJson));
+        //TODO: Warum muss die Notrufnummer zweimal gesetzt werden?
+        teilnehmer.setNotrufnummer(anmeldungJson.getConditionsEmergencyPhoneNumber());
+
+        teilnehmer.setArzt(mappeArzt(anmeldungJson));
 
 //
 //        //add some handicaps
@@ -48,6 +62,20 @@ public class AnmeldungToAdmin {
 
 
         return teilnehmer;
+    }
+
+    private static Arzt mappeArzt(AnmeldungJson anmeldungJson) {
+        return new Arzt(
+                anmeldungJson.getConditionsFamilyDoctorName(),
+                anmeldungJson.getConditionsFamilyDoctorAddress(),
+                anmeldungJson.getConditionsFamilyDoctorPhoneNumber());
+    }
+
+    private static Kontakt mappeNotfallKontakt(AnmeldungJson anmeldungJson) {
+        return new Kontakt(
+                anmeldungJson.getConditionsEmergencyName(),
+                anmeldungJson.getConditionsEmergencyAddress(),
+                anmeldungJson.getConditionsEmergencyPhoneNumber());
     }
 
     private static List<EssenLimitierung> mappeEssenslimitierungen(AnmeldungJson anmeldungJson) {

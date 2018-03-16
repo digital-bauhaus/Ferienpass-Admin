@@ -444,6 +444,19 @@ public class BackendControllerTest {
         assertThat(essenLimitierungen.get(6).getName(), is("Weizenunverträglichkeit"));
         assertThat(essenLimitierungen.get(7).getName(), is("Bierunverträglichkeit"));
 
+        assertThat(responseUser.isErlaubeMedikamentation(), is(false));
+
+        Kontakt notfallKontakt = responseUser.getNotfallKontakt();
+        assertThat(notfallKontakt.getName(), is("Andreas Müller"));
+        assertThat(notfallKontakt.getAddress(), is("Werner-Heisenberg-Straße 5"));
+        assertThat(notfallKontakt.getTelephone(), is("0172/34012875"));
+
+        Arzt hausarzt = responseUser.getArzt();
+        assertThat(hausarzt.getName(), is("Dr. Martin Schreiber"));
+        assertThat(hausarzt.getAddress(), is("Amadeusstrasse 2"));
+        assertThat(hausarzt.getTelephone(), is("0364 / 0123456"));
+
+
     }
 
 
