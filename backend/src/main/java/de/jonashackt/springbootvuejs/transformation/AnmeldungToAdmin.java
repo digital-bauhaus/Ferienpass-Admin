@@ -13,42 +13,15 @@ public class AnmeldungToAdmin {
 
         Teilnehmer teilnehmer = new Teilnehmer();
 
-        teilnehmer.setNachname(anmeldungJson.getBaseFamilyName());
-        teilnehmer.setVorname(anmeldungJson.getBaseForename());
-        teilnehmer.setGeburtsdatum(mappeGeburtsdatum(anmeldungJson));
-        //TODO: Hat das Adminbackend Strasse und Hausnummer getrennt?
-        teilnehmer.setStrasse(anmeldungJson.getBaseStreetName() + " " + anmeldungJson.getBaseHouseNumber());
-        teilnehmer.setPostleitzahl(anmeldungJson.getBaseZipCode());
-        teilnehmer.setStadt(anmeldungJson.getBaseResidence());
-        teilnehmer.setTelefon(anmeldungJson.getBasePhoneNumber());
+        mappeBasisInformationen(anmeldungJson, teilnehmer);
 
         //        //add some projects
 //        List<Projekt> projekte = null;
 //        neuAngemeldeterTeilnehmer.setAngemeldeteProjekte(projekte);
 
-        teilnehmer.setAllergien(mappeAllergien(anmeldungJson));
-        teilnehmer.setKrankheiten(mappeKrankheiten(anmeldungJson));
+        mappeAllergienKrankheitenNotfallkontaktEtc(anmeldungJson, teilnehmer);
 
-        //TODO: Wir haben aktuell keine Hitzeempfindlichkeit im Admindatenmodell
 
-        //TODO: Wir haben aktuell die Medikamente den Allergien und Krankheiten zugeordnet im Datenmodell. Aber so kommen die von der Anmeldeseite gar nicht an, sondern als Einzelliste
-
-        teilnehmer.setEssenLimitierungen(mappeEssenslimitierungen(anmeldungJson));
-
-        if("yes".equals(anmeldungJson.getConditionsChildTreatmentAllowed())) {
-            // TODO: ist setErlaubeMedikamentation() das Gleiche wie "Behandlungserlaubnis bei Erkrankungen und Unfällen"?
-            teilnehmer.setErlaubeMedikamentation(true);
-        } else {
-            teilnehmer.setErlaubeMedikamentation(false);
-        }
-
-        //TODO: Was ist mit der Krankenkasse?
-
-        teilnehmer.setNotfallKontakt(mappeNotfallKontakt(anmeldungJson));
-        //TODO: Warum muss die Notrufnummer zweimal gesetzt werden?
-        teilnehmer.setNotrufnummer(anmeldungJson.getConditionsEmergencyPhoneNumber());
-
-        teilnehmer.setArzt(mappeArzt(anmeldungJson));
 
 //
 //        //add some handicaps
@@ -62,6 +35,45 @@ public class AnmeldungToAdmin {
 
 
         return teilnehmer;
+    }
+
+    private static void mappeBasisInformationen(AnmeldungJson anmeldungJson, Teilnehmer teilnehmer) {
+        teilnehmer.setNachname(anmeldungJson.getBaseFamilyName());
+        teilnehmer.setVorname(anmeldungJson.getBaseForename());
+        teilnehmer.setGeburtsdatum(mappeGeburtsdatum(anmeldungJson));
+        //TODO: Hat das Adminbackend Strasse und Hausnummer getrennt?
+        teilnehmer.setStrasse(anmeldungJson.getBaseStreetName() + " " + anmeldungJson.getBaseHouseNumber());
+        teilnehmer.setPostleitzahl(anmeldungJson.getBaseZipCode());
+        teilnehmer.setStadt(anmeldungJson.getBaseResidence());
+        teilnehmer.setTelefon(anmeldungJson.getBasePhoneNumber());
+    }
+
+    private static void mappeAllergienKrankheitenNotfallkontaktEtc(AnmeldungJson anmeldungJson, Teilnehmer teilnehmer) {
+        teilnehmer.setAllergien(mappeAllergien(anmeldungJson));
+        teilnehmer.setKrankheiten(mappeKrankheiten(anmeldungJson));
+
+        //TODO: Wir haben aktuell keine Hitzeempfindlichkeit im Admindatenmodell
+
+        //TODO: Wir haben aktuell die Medikamente den Allergien und Krankheiten zugeordnet im Datenmodell. Aber so kommen die von der Anmeldeseite gar nicht an, sondern als Einzelliste
+
+        teilnehmer.setEssenLimitierungen(mappeEssenslimitierungen(anmeldungJson));
+        teilnehmer.setErlaubeMedikamentation(mappeMedikationErlaubt(anmeldungJson));
+
+        //TODO: Was ist mit der Krankenkasse?
+
+        teilnehmer.setNotfallKontakt(mappeNotfallKontakt(anmeldungJson));
+        //TODO: Warum muss die Notrufnummer zweimal gesetzt werden?
+        teilnehmer.setNotrufnummer(anmeldungJson.getConditionsEmergencyPhoneNumber());
+
+        teilnehmer.setArzt(mappeArzt(anmeldungJson));
+    }
+
+    private static boolean mappeMedikationErlaubt(AnmeldungJson anmeldungJson) {
+        if("yes".equals(anmeldungJson.getConditionsChildTreatmentAllowed())) {
+            // TODO: ist setErlaubeMedikamentation() das Gleiche wie "Behandlungserlaubnis bei Erkrankungen und Unfällen"?
+            return true;
+        }
+        return false;
     }
 
     private static Arzt mappeArzt(AnmeldungJson anmeldungJson) {
