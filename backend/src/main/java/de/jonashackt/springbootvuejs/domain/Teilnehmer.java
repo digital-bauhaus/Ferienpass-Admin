@@ -50,8 +50,8 @@ public class Teilnehmer {
     @ManyToMany(cascade=CascadeType.ALL)
     private List<Krankheit> krankheiten = new ArrayList<>();
 
-    @ManyToMany(cascade=CascadeType.ALL)
-    private List<Behinderung> behinderungen= new ArrayList<>();
+    private boolean liegtBehinderungVor;
+    private Behinderung behinderung;
 
     @ManyToMany(cascade=CascadeType.ALL)
     private List<EssenLimitierung> essenLimitierungen= new ArrayList<>();
@@ -83,7 +83,8 @@ public class Teilnehmer {
                 ", Arzt=" + getArzt() +
                 ", angemeldete Projekte=" + getAngemeldeteProjekte() +
                 ", Stornierungen=" + getStornierungen() +
-                ", Behinderungen=" + getBehinderungen() +
+                ", liegt Beeinträchtigung vor=" + isLiegtBehinderungVor() +
+                ", Behinderung=" + getBehinderung() +
                 ", Krankheiten=" + getKrankheiten() +
                 ", Essenslimitierungen=" + getEssenLimitierungen() +
                 ", Allergien=" + getAllergien() +
@@ -94,7 +95,7 @@ public class Teilnehmer {
 
     public Teilnehmer(String firstName, String lastName, LocalDate birthDate, LocalDate registerDate, String street, String city, String postcode, String telephone, String healthcareNr,
                       boolean allowTreatment, Kontakt emergencyContact, boolean allowHomeAlone, boolean allowRiding, boolean allowSwimming, boolean hasPayed, Arzt doctor, List<Projekt> projects,
-                      List<Allergie> allergien, List<EssenLimitierung> essenLimitierungen, List<Krankheit> krankheiten, List<Behinderung> behinderungen, List<Projekt> cancellations) {
+                      List<Allergie> allergien, List<EssenLimitierung> essenLimitierungen, List<Krankheit> krankheiten, boolean beeintraechtigt, Behinderung behinderung, List<Projekt> cancellations) {
 
         this.setVorname(firstName);
         this.setNachname(lastName);
@@ -116,7 +117,8 @@ public class Teilnehmer {
         this.setAllergien(allergien);
         this.setEssenLimitierungen(essenLimitierungen);
         this.setKrankheiten(krankheiten);
-        this.setBehinderungen(behinderungen);
+        this.setLiegtBehinderungVor(beeintraechtigt);
+        this.setBehinderung(behinderung);
         this.setStornierungen(cancellations);
         this.setAktiv(true);
     }
@@ -299,12 +301,13 @@ public class Teilnehmer {
         this.krankheiten = krankheiten;
     }
 
-    public List<Behinderung> getBehinderungen() {
-        return behinderungen;
+    public void setBehinderung(Behinderung behinderung) {
+        this.behinderung = behinderung;
     }
 
-    public void setBehinderungen(List<Behinderung> behinderungen) {
-        this.behinderungen = behinderungen;
+    public Behinderung getBehinderung() {
+
+        return behinderung;
     }
 
     public List<EssenLimitierung> getEssenLimitierungen() {
@@ -313,5 +316,13 @@ public class Teilnehmer {
 
     public void setEssenLimitierungen(List<EssenLimitierung> essenLimitierungen) {
         this.essenLimitierungen = essenLimitierungen;
+    }
+
+    public boolean isLiegtBehinderungVor() {
+        return liegtBehinderungVor;
+    }
+
+    public void setLiegtBehinderungVor(boolean liegtBehinderungVor) {
+        this.liegtBehinderungVor = liegtBehinderungVor;
     }
 }
