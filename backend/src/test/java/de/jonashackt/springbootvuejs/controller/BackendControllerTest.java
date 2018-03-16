@@ -414,6 +414,27 @@ public class BackendControllerTest {
         assertThat(responseUser.getVorname(), is("Paul"));
         assertThat(responseUser.getNachname(), is("Siegmund"));
         assertThat(responseUser.getGeburtsdatum(), is(LocalDate.of(2019,1,10)));
+        assertThat(responseUser.getStrasse(), is("Rainer-Maria-Rilke-Strasse 33"));
+        assertThat(responseUser.getPostleitzahl(), is("99423"));
+        assertThat(responseUser.getStadt(), is("Weimar"));
+        assertThat(responseUser.getTelefon(), is("03643 / 123456"));
+
+        List<Allergie> allergien = responseUser.getAllergien();
+        assertThat(allergien.get(0).getName(), is("Heuschnupfen"));
+        assertThat(allergien.get(1).getName(), is("Hausstaub"));
+        assertThat(allergien.get(2).getName(), is("Nussallergie"));
+        assertThat(allergien.get(3).getName(), is("Katzenhaarallergie"));
+        assertThat(allergien.get(4).getName(), is("Regenallergie"));
+
+        List<Krankheit> krankheiten = responseUser.getKrankheiten();
+        assertThat(krankheiten.get(0).getName(), is("Epilepsie"));
+        assertThat(krankheiten.get(1).getName(), is("Schnupfen"));
+        assertThat(krankheiten.get(2).getName(), is("Halschmerzen"));
+        assertThat(krankheiten.get(3).getName(), is("Kopfschmerzen"));
+        assertThat(krankheiten.get(4).getName(), is("Bauchschmerzen"));
+
+
+
     }
 
 

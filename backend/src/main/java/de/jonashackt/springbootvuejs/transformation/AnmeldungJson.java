@@ -45,7 +45,15 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "projects__id-20",
         "projects__id-21",
         "conditions__allergies-0",
+        "conditions__allergies-1",
+        "conditions__allergies-2",
+        "conditions__allergies-3",
+        "conditions__allergies-4",
         "conditions__diseases-0",
+        "conditions__diseases-1",
+        "conditions__diseases-2",
+        "conditions__diseases-3",
+        "conditions__diseases-4",
         "conditions__heat-sensitivity",
         "conditions__medication-0",
         "conditions__vegetarian",
@@ -154,8 +162,24 @@ public class AnmeldungJson {
     private Boolean projectsId21;
     @JsonProperty("conditions__allergies-0")
     private String conditionsAllergies0;
+    @JsonProperty("conditions__allergies-1")
+    private String conditionsAllergies1;
+    @JsonProperty("conditions__allergies-2")
+    private String conditionsAllergies2;
+    @JsonProperty("conditions__allergies-3")
+    private String conditionsAllergies3;
+    @JsonProperty("conditions__allergies-4")
+    private String conditionsAllergies4;
     @JsonProperty("conditions__diseases-0")
     private String conditionsDiseases0;
+    @JsonProperty("conditions__diseases-1")
+    private String conditionsDiseases1;
+    @JsonProperty("conditions__diseases-2")
+    private String conditionsDiseases2;
+    @JsonProperty("conditions__diseases-3")
+    private String conditionsDiseases3;
+    @JsonProperty("conditions__diseases-4")
+    private String conditionsDiseases4;
     @JsonProperty("conditions__heat-sensitivity")
     private Boolean conditionsHeatSensitivity;
     @JsonProperty("conditions__medication-0")
@@ -561,6 +585,46 @@ public class AnmeldungJson {
         this.conditionsAllergies0 = conditionsAllergies0;
     }
 
+    @JsonProperty("conditions__allergies-1")
+    public String getConditionsAllergies1() {
+        return conditionsAllergies1;
+    }
+
+    @JsonProperty("conditions__allergies-1")
+    public void setConditionsAllergies1(String conditionsAllergies1) {
+        this.conditionsAllergies1 = conditionsAllergies1;
+    }
+
+    @JsonProperty("conditions__allergies-2")
+    public String getConditionsAllergies2() {
+        return conditionsAllergies2;
+    }
+
+    @JsonProperty("conditions__allergies-2")
+    public void setConditionsAllergies2(String conditionsAllergies2) {
+        this.conditionsAllergies2 = conditionsAllergies2;
+    }
+
+    @JsonProperty("conditions__allergies-3")
+    public String getConditionsAllergies3() {
+        return conditionsAllergies3;
+    }
+
+    @JsonProperty("conditions__allergies-3")
+    public void setConditionsAllergies3(String conditionsAllergies3) {
+        this.conditionsAllergies3 = conditionsAllergies3;
+    }
+
+    @JsonProperty("conditions__allergies-4")
+    public String getConditionsAllergies4() {
+        return conditionsAllergies4;
+    }
+
+    @JsonProperty("conditions__allergies-4")
+    public void setConditionsAllergies4(String conditionsAllergies4) {
+        this.conditionsAllergies4 = conditionsAllergies4;
+    }
+
     @JsonProperty("conditions__diseases-0")
     public String getConditionsDiseases0() {
         return conditionsDiseases0;
@@ -569,6 +633,46 @@ public class AnmeldungJson {
     @JsonProperty("conditions__diseases-0")
     public void setConditionsDiseases0(String conditionsDiseases0) {
         this.conditionsDiseases0 = conditionsDiseases0;
+    }
+
+    @JsonProperty("conditions__diseases-1")
+    public String getConditionsDiseases1() {
+        return conditionsDiseases1;
+    }
+
+    @JsonProperty("conditions__diseases-1")
+    public void setConditionsDiseases1(String conditionsDiseases1) {
+        this.conditionsDiseases1 = conditionsDiseases1;
+    }
+
+    @JsonProperty("conditions__diseases-2")
+    public String getConditionsDiseases2() {
+        return conditionsDiseases2;
+    }
+
+    @JsonProperty("conditions__diseases-2")
+    public void setConditionsDiseases2(String conditionsDiseases2) {
+        this.conditionsDiseases2 = conditionsDiseases2;
+    }
+
+    @JsonProperty("conditions__diseases-3")
+    public String getConditionsDiseases3() {
+        return conditionsDiseases3;
+    }
+
+    @JsonProperty("conditions__diseases-3")
+    public void setConditionsDiseases3(String conditionsDiseases3) {
+        this.conditionsDiseases3 = conditionsDiseases3;
+    }
+
+    @JsonProperty("conditions__diseases-4")
+    public String getConditionsDiseases4() {
+        return conditionsDiseases4;
+    }
+
+    @JsonProperty("conditions__diseases-4")
+    public void setConditionsDiseases4(String conditionsDiseases4) {
+        this.conditionsDiseases4 = conditionsDiseases4;
     }
 
     @JsonProperty("conditions__heat-sensitivity")
@@ -990,5 +1094,4 @@ public class AnmeldungJson {
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
-
 }
