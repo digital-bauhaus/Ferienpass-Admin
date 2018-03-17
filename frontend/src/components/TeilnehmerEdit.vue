@@ -111,7 +111,7 @@
       </div>
 
       <h2>Stornierte Projekte</h2>
-      <div v-if="user.stornierungen">
+      <div v-if="user.stornierteTeilnehmer">
       <table>
       <tr><th>Name</th><th>Aktivieren</th></tr>
       <tr v-for="(projekt, index) of user.angemeldeteProjekte">

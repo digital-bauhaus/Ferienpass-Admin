@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.method.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.format.DateTimeFormatter;
@@ -84,10 +85,12 @@ public class BackendController {
         Teilnehmer teilnehmer = teilnehmerRepository.findOne(user_id);
         if (teilnehmer == null)
             return false;
-        List<Projekt> currentProjects = new ArrayList<Projekt>(teilnehmer.getAngemeldeteProjekte());
         Projekt projekt = projektRepository.findOne(projekt_id);
         if (projekt == null)
             return false;
+
+
+        List<Projekt> currentProjects = new ArrayList<Projekt>(teilnehmer.getAngemeldeteProjekte());
         currentProjects.add(projekt);
         teilnehmer.setAngemeldeteProjekte(currentProjects);
         if(teilnehmer.getStornierungen().contains(projekt)) {
@@ -95,7 +98,18 @@ public class BackendController {
             temp.remove(projekt);
             teilnehmer.setStornierungen(temp);
         }
+
+        List<Teilnehmer> registrierteTeilnehmer = projekt.getAnmeldungen();
+        LOG.info("Found " + registrierteTeilnehmer.size() + " registered participants for project " + projekt.getName()+ " " + projekt.getId());
+        if(!registrierteTeilnehmer.contains(teilnehmer))
+            registrierteTeilnehmer.add(teilnehmer);
+        projekt.setAnmeldungen(registrierteTeilnehmer);
+        LOG.info("Now " + registrierteTeilnehmer.size() + " registered participants for project " + projekt.getName()+ " " + projekt.getId());
         teilnehmerRepository.save(teilnehmer);
+        teilnehmer = teilnehmerRepository.findOne(user_id);
+        LOG.info("Vorher: " + currentProjects.size() + " nachher: " + teilnehmer.getAngemeldeteProjekte().size());
+        projektRepository.save(projekt);
+
 
         LOG.info("Successfully assigned project " + projekt.toString() + " to user " + teilnehmer.toString());
 
@@ -275,4 +289,16 @@ public class BackendController {
         return projektRepository.findOne(projekt_id);
     }
 
+    //Get all users (Teilnehmer) for a given project by ID
+    @GetMapping(path = "/projectRegistrations/{projekt_id}")
+    public @ResponseBody
+    List<Teilnehmer> getRegisteredUsersByProjectId(@PathVariable("projekt_id") Long projekt_id) {
+        Projekt projekt = projektRepository.findOne(projekt_id);
+        if (projekt == null) {
+            LOG.info("Did not found project for id: " + projekt_id);
+            return null;
+        }
+        LOG.info("Returning " + projekt.getAnmeldungen().size() + " registered participants for project " + projekt.getName());
+        return projekt.getAnmeldungen();
+    }
 }

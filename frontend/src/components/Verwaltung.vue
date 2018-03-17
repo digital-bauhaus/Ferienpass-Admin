@@ -13,17 +13,17 @@
                 <tr>
                   <th v-on:click="sortTable(0)" class="clickable">Veranstaltung</th>
                   <th v-on:click="sortDate()" class="clickable">Datum</th>
-                  <th> belegt / gesamt Plätze / [Reserviert] </th>
+                  <th>Plätze frei / gesamt / [reserviert] </th>
                   <th>Bearbeiten</th>
                  </tr>
-                 <tr v-for="allproject of allprojects">
+                 <tr v-for="(allproject, index) of allprojects">
                  <!--<td v-on:click="teil($event)">{{allproject.name}}</td>-->
                    <td>{{allproject.name}}</td>
                    <td>{{allproject.datum}}</td>
                    <td>{{allproject.slotsFrei}} / </nobr> {{allproject.slotsGesamt}} / </nobr> [{{allproject.slotsReserviert}}]</td>
                    <td><nobr><span v-on:click="kill($event,allproject.project_id)" class="fakebutton"><a>löschen</a></span>
                      <router-link :to="{path: '../VeranstaltungEdit', query: {id: allproject.project_id }}" class="fakebutton">Bearbeiten</router-link>
-                     <span class="fakebutton"><a>PDF exportieren</a></span></nobr>
+                     <span class="fakebutton" v-on:click="exportPDF(index)"><a>PDF exportieren</a></span></nobr>
                    </td>
                  </tr>
                </table>
@@ -45,6 +45,7 @@
 
 <script>
 import axios from 'axios';
+import jsPDF from 'jspdf'
 
 export default {
   name: 'Verwaltung',
@@ -52,7 +53,8 @@ export default {
     return {
       selectedID: 0,
       allprojects: [],
-      errors: []
+      errors: [],
+      teilnehmerOfProject: []
     };
   },
   created () {
@@ -73,6 +75,37 @@ export default {
       .catch(e => {
         this.errors.push(e)
       })
+    },
+    exportPDF (projectID) {
+      /*eslint-disable */
+      var doc = new jsPDF()
+      /*eslint-enable */
+      /* var ta = document.getElementById(projectID) */
+      let y = 10
+      let deltaLine = 10
+      doc.text('Projektdaten', 20, y += deltaLine)
+      doc.text('Name: ' + this.allprojects[projectID].name, 20, y += deltaLine)
+      doc.text('Veranstaltungsdatum: ' + this.allprojects[projectID].datum, 20, y += deltaLine)
+      doc.text('Altersbeschränkung: ' + this.allprojects[projectID].alterLimitierung, 20, y += deltaLine)
+      doc.text('Regulärer Preis: ' + this.allprojects[projectID].kosten, 20, y += deltaLine)
+      doc.text('Freie Plätze: ' + this.allprojects[projectID].slotsFrei, 20, y += deltaLine)
+      doc.text('Belegte Plätze: ' + this.allprojects[projectID].slotsReserviert, 20, y += deltaLine)
+      doc.text('Plätze gesamt: ' + this.allprojects[projectID].slotsGesamt, 20, y += deltaLine)
+      doc.text('Web Link: ' + this.allprojects[projectID].webLink, 20, y += deltaLine)
+      doc.text('Projekt aktiv: ' + this.allprojects[projectID].aktiv, 20, y += deltaLine)
+
+      axios.get('http://localhost:8088/api/projectRegistrations/' + this.allprojects[projectID].id)
+        .then(response => {
+          this.teilnehmerOfProject = response.data
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
+
+      for (let index = 0; index < this.teilnehmerOfProject.length; ++index) {
+        doc.text('Angemeldete Person: ' + this.teilnehmerOfProject[index].name, 20, y += deltaLine)
+      }
+      doc.save('projekt_' + projectID + '.pdf')
     },
     sortTable (n) {
       var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount;

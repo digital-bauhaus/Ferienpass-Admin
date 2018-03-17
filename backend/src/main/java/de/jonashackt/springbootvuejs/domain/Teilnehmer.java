@@ -1,5 +1,10 @@
 package de.jonashackt.springbootvuejs.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -7,6 +12,7 @@ import java.util.List;
 
 @Entity
 //@Table(name = "[User]")
+@JsonIgnoreProperties(value= {"angemeldeteProjekte","stornierungen"})
 public class Teilnehmer {
     // PrimaryKey
     @Id
@@ -40,7 +46,8 @@ public class Teilnehmer {
     @JoinColumn(name="arzt_id")
     private Arzt arzt;
 
-    @ManyToMany(cascade=CascadeType.ALL)
+    //@ManyToMany(cascade=CascadeType.ALL)
+    @ManyToMany(mappedBy="anmeldungen")
     private List<Projekt> angemeldeteProjekte = new ArrayList<>();
 
 
@@ -59,7 +66,8 @@ public class Teilnehmer {
     private List<EssenLimitierung> essenLimitierungen= new ArrayList<>();
 
 
-    @ManyToMany(cascade=CascadeType.ALL)
+    //@ManyToMany(cascade=CascadeType.ALL)
+    @ManyToMany(mappedBy="stornierteTeilnehmer")
     private List<Projekt> stornierungen = new ArrayList<>();
 
 
@@ -276,7 +284,6 @@ public class Teilnehmer {
     public void setAngemeldeteProjekte(List<Projekt> angemeldeteProjekte) {
         this.angemeldeteProjekte = angemeldeteProjekte;
     }
-
 
 
     public List<Projekt> getStornierungen() {
