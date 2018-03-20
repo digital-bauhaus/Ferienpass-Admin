@@ -452,6 +452,10 @@ public class BackendControllerTest {
         assertThat(behinderung.getGewohnterBegleitpersonenDienstleister(), is("Mensch im Mittelpunkt e.V."));
         assertThat(behinderung.isBeantragungKostenuebernahmeBegleitpersonNotwendig(), is(false));
 
+        assertThat(responseUser.isDarfAlleinNachHause(), is(true));
+        assertThat(responseUser.isDarfReiten(), is(false));
+        assertThat(responseUser.isDarfSchwimmen(), is(false));
+
     }
 
 

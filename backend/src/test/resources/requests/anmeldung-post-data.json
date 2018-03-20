@@ -87,9 +87,9 @@
   "disabilities__companion-help-finding-required": true,
   "disabilities__companion-usual-service": "Mensch im Mittelpunkt e.V.",
   "disabilities__companion-cost-takeover": false,
-  "declaration__going-home-alone-allowed": "no",
+  "declaration__going-home-alone-allowed": "yes",
   "declaration__horse-riding-allowed": "no",
   "declaration__swimming-allowed": "no",
-  "declaration__swimming-badge": " qwdd",
+  "declaration__swimming-badge": " Seepferdchen",
   "privacy-policy__confirmation": true
 }

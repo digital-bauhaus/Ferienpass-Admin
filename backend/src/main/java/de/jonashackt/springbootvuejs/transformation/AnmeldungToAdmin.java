@@ -21,7 +21,25 @@ public class AnmeldungToAdmin {
 
         mappeDatenZuBehinderungen(anmeldungJson, teilnehmer);
 
+        mappeErklaerung(anmeldungJson, teilnehmer);
+
+        // TODO: Kein Feld für Datenschutzerklärung!!!
+
         return teilnehmer;
+    }
+
+    private static void mappeErklaerung(AnmeldungJson anmeldungJson, Teilnehmer teilnehmer) {
+        teilnehmer.setDarfAlleinNachHause(mappeYesOrNoToBoolean(anmeldungJson.getDeclarationGoingHomeAloneAllowed()));
+        teilnehmer.setDarfReiten(mappeYesOrNoToBoolean(anmeldungJson.getDeclarationHorseRidingAllowed()));
+        teilnehmer.setDarfSchwimmen(mappeYesOrNoToBoolean(anmeldungJson.getDeclarationSwimmingAllowed()));
+        //TODO: Das Admin-Datenmodell kennt kein Schwimmabzeichen! Aktuell daher ungemappt!
+    }
+
+    private static boolean mappeYesOrNoToBoolean(String yesOrNo) {
+        if("yes".equals(yesOrNo)) {
+            return true;
+        }
+        return false;
     }
 
     private static void mappeDatenZuBehinderungen(AnmeldungJson anmeldungJson, Teilnehmer teilnehmer) {
@@ -101,7 +119,8 @@ public class AnmeldungToAdmin {
         //TODO: Wir haben aktuell die Medikamente den Allergien und Krankheiten zugeordnet im Datenmodell. Aber so kommen die von der Anmeldeseite gar nicht an, sondern als Einzelliste
 
         teilnehmer.setEssenLimitierungen(mappeEssenslimitierungen(anmeldungJson));
-        teilnehmer.setErlaubeMedikamentation(mappeMedikationErlaubt(anmeldungJson));
+        // TODO: ist setErlaubeMedikamentation() das Gleiche wie "Behandlungserlaubnis bei Erkrankungen und Unfällen"?
+        teilnehmer.setErlaubeMedikamentation(mappeYesOrNoToBoolean(anmeldungJson.getConditionsChildTreatmentAllowed()));
 
         //TODO: Was ist mit der Krankenkasse?
 
@@ -110,14 +129,6 @@ public class AnmeldungToAdmin {
         teilnehmer.setNotrufnummer(anmeldungJson.getConditionsEmergencyPhoneNumber());
 
         teilnehmer.setArzt(mappeArzt(anmeldungJson));
-    }
-
-    private static boolean mappeMedikationErlaubt(AnmeldungJson anmeldungJson) {
-        if("yes".equals(anmeldungJson.getConditionsChildTreatmentAllowed())) {
-            // TODO: ist setErlaubeMedikamentation() das Gleiche wie "Behandlungserlaubnis bei Erkrankungen und Unfällen"?
-            return true;
-        }
-        return false;
     }
 
     private static Arzt mappeArzt(AnmeldungJson anmeldungJson) {
