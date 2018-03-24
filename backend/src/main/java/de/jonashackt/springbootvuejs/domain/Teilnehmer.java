@@ -46,11 +46,6 @@ public class Teilnehmer {
     @JoinColumn(name="arzt_id")
     private Arzt arzt;
 
-    //@ManyToMany(cascade=CascadeType.ALL)
-    @ManyToMany(mappedBy="anmeldungen")
-    private List<Projekt> angemeldeteProjekte = new ArrayList<>();
-
-
     @ManyToMany(cascade=CascadeType.ALL)
     private List<Allergie> allergien = new ArrayList<>();
 
@@ -65,10 +60,6 @@ public class Teilnehmer {
     @ManyToMany(cascade=CascadeType.ALL)
     private List<EssenLimitierung> essenLimitierungen= new ArrayList<>();
 
-
-    //@ManyToMany(cascade=CascadeType.ALL)
-    @ManyToMany(mappedBy="stornierteTeilnehmer")
-    private List<Projekt> stornierungen = new ArrayList<>();
 
 
     @Override
@@ -91,8 +82,6 @@ public class Teilnehmer {
                 ", darf Schwimmen=" + isDarfSchwimmen() +
                 ", bezahlt=" + isBezahlt() +
                 ", Arzt=" + getArzt() +
-                ", angemeldete Projekte=" + getAngemeldeteProjekte() +
-                ", Stornierungen=" + getStornierungen() +
                 ", liegt Beeinträchtigung vor=" + isLiegtBehinderungVor() +
                 ", Behinderung=" + getBehinderung() +
                 ", Krankheiten=" + getKrankheiten() +
@@ -104,8 +93,8 @@ public class Teilnehmer {
     public Teilnehmer() {}
 
     public Teilnehmer(String firstName, String lastName, LocalDate birthDate, LocalDate registerDate, String street, String city, String postcode, String telephone, String healthcareNr,
-                      boolean allowTreatment, Kontakt emergencyContact, boolean allowHomeAlone, boolean allowRiding, boolean allowSwimming, boolean hasPayed, Arzt doctor, List<Projekt> projects,
-                      List<Allergie> allergien, List<EssenLimitierung> essenLimitierungen, List<Krankheit> krankheiten, boolean beeintraechtigt, Behinderung behinderung, List<Projekt> cancellations) {
+                      boolean allowTreatment, Kontakt emergencyContact, boolean allowHomeAlone, boolean allowRiding, boolean allowSwimming, boolean hasPayed, Arzt doctor,
+                      List<Allergie> allergien, List<EssenLimitierung> essenLimitierungen, List<Krankheit> krankheiten, boolean beeintraechtigt, Behinderung behinderung) {
 
         this.setVorname(firstName);
         this.setNachname(lastName);
@@ -123,13 +112,11 @@ public class Teilnehmer {
         this.setDarfSchwimmen(allowSwimming);
         this.setBezahlt(hasPayed);
         this.setArzt(doctor);
-        this.setAngemeldeteProjekte(projects);
         this.setAllergien(allergien);
         this.setEssenLimitierungen(essenLimitierungen);
         this.setKrankheiten(krankheiten);
         this.setLiegtBehinderungVor(beeintraechtigt);
         this.setBehinderung(behinderung);
-        this.setStornierungen(cancellations);
         this.setAktiv(true);
     }
 
@@ -275,23 +262,6 @@ public class Teilnehmer {
 
     public void setArzt(Arzt arzt) {
         this.arzt = arzt;
-    }
-
-    public List<Projekt> getAngemeldeteProjekte() {
-        return angemeldeteProjekte;
-    }
-
-    public void setAngemeldeteProjekte(List<Projekt> angemeldeteProjekte) {
-        this.angemeldeteProjekte = angemeldeteProjekte;
-    }
-
-
-    public List<Projekt> getStornierungen() {
-        return stornierungen;
-    }
-
-    public void setStornierungen(List<Projekt> stornierungen) {
-        this.stornierungen = stornierungen;
     }
 
     public List<Allergie> getAllergien() {

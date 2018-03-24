@@ -125,8 +125,6 @@ public class BackendControllerTest {
         assertThat(responseUser.getAllergien().size(), is(2));
         assertThat(responseUser.getEssenLimitierungen().size(), is(2));
         assertThat(responseUser.getKrankheiten().size(), is(2));
-        assertThat(responseUser.getAngemeldeteProjekte().size(), is(0));
-        assertThat(responseUser.getStornierungen().size(), is(0));
 
         //Begin with test
 
@@ -522,7 +520,6 @@ public class BackendControllerTest {
                 .extract().as(Teilnehmer[].class));
 
         assertThat(allUsers.get(allUsers.size()-1).getId(), is(userId));
-        assertThat(allUsers.get(allUsers.size()-1).getAngemeldeteProjekte().size(), is(0));
         int nbUsers = allUsers.size();
 
         Map<String,Long> newID_Map = new HashMap<String, Long>();
@@ -550,19 +547,17 @@ public class BackendControllerTest {
                         .assertThat()
                         .extract().as(Teilnehmer.class);
 
-
-        assertThat(responseUser.getAngemeldeteProjekte().size(), is(1));
-        assertThat(responseUser.getAngemeldeteProjekte().get(0).getId(), is(projectID));
-
-        //Check whether we do not have added another user to make sure that we just updated a single user
-        List<Teilnehmer> allUsers2 =
-                Arrays.asList(given()
+        Projekt p_retrieved =
+                given()
+                        .pathParam("projekt_id", projectID)
                         .when()
-                        .get(BASE_URL + "/allusers")
+                        .get(BASE_URL + "/project/{projekt_id}")
                         .then()
                         .statusCode(HttpStatus.SC_OK)
-                        .extract().as(Teilnehmer[].class));
-        assertThat(nbUsers,is(allUsers2.size()));
+                        .assertThat()
+                        .extract().as(Projekt.class);
+        assertThat(p_retrieved.getAnmeldungen().size(), is(1));
+        assertThat(p_retrieved.getAnmeldungen().get(0).getId(), is(responseUser.getId()));
     }
 
     @Test
@@ -738,12 +733,6 @@ public class BackendControllerTest {
                 .statusCode(is(HttpStatus.SC_OK))
                 .extract()
                 .body().as(Teilnehmer[].class));
-        int sumOfRegisteredProjects = 0;
-        for (Teilnehmer t: allUsers) {
-            sumOfRegisteredProjects += t.getAngemeldeteProjekte().size();
-        }
-        System.out.println("Number of registered projects of all participants: " + sumOfRegisteredProjects);
-        assertThat(sumOfRegisteredProjects, is(sumOfRegisteredTeilnehmer));
 
         //Assign some projects to users
         Map<String,Long> newID_Map = new HashMap<String, Long>();
@@ -812,26 +801,23 @@ public class BackendControllerTest {
                         .body().as(Projekt[].class));
         System.out.println("Number of projects after assignment: " + allProjects.size());
         assertThat(allProjects.size(), is(nbProjects));
-        int sumTeilnehmer = 0;
-        for (Projekt p: allProjects) {
-            sumTeilnehmer += p.getAnmeldungen().size();
-        }
 
-        allUsers =
+        //Retrieve again all projects and count again all registered participants
+        allProjects =
                 Arrays.asList(given()
                         .contentType(ContentType.JSON)
                         .when()
-                        .post(BASE_URL + "/allusers")
+                        .post(BASE_URL + "/allprojects")
                         .then()
-                        .statusCode(is(HttpStatus.SC_OK))
+                        .statusCode(is(HttpStatus.SC_CREATED))
                         .extract()
-                        .body().as(Teilnehmer[].class));
-        sumOfRegisteredProjects = 0;
-        for (Teilnehmer t: allUsers) {
-            System.out.println(t.getAngemeldeteProjekte().size());
-            sumOfRegisteredProjects += t.getAngemeldeteProjekte().size();
+                        .body().as(Projekt[].class));
+
+        sumOfRegisteredTeilnehmer = 0;
+        for (Projekt p: allProjects) {
+            sumOfRegisteredTeilnehmer += p.getAnmeldungen().size();
         }
-        assertThat(sumTeilnehmer, is(sumOfRegisteredProjects));
-        //assertThat(sumOfRegisteredProjects, sumOfRegisteredTeilnehmer);
+        //4 Assignments
+        assertThat(4,is(sumOfRegisteredTeilnehmer));
     }
 }

@@ -15,10 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.containsString;
@@ -52,7 +49,6 @@ public class TeilnehmerRepositoryTest {
         Kontakt kontact = new Kontakt("Igor Eich", "Route 4 Neuborkia  96825", "555-2532");
         EssenLimitierung laktose = new EssenLimitierung("Laktoseintoleranz", "");
         Krankheit krank = new Krankheit("Grippe", "Muss oft Husten", "Hustenbonbons");
-        List<Projekt> projects = new ArrayList<>();//createProjects(1);
 
 
         List<EssenLimitierung> essenLimitierungen = new ArrayList<EssenLimitierung>();
@@ -67,7 +63,7 @@ public class TeilnehmerRepositoryTest {
         behinderung.setMerkzeichen_Taubblind_TBL(true);
 
         Teilnehmer user = new Teilnehmer("Gary","Eich", LocalDate.of(2005,10,20),registerDate, "Bahnhofstraße 4", "Weimar", "99423", "03544444", "0453434", true, kontact,
-                true, false, false, false, arzt, projects, allergien, essenLimitierungen, krankheiten, true, behinderung,new ArrayList<Projekt>());
+                true, false, false, false, arzt,  allergien, essenLimitierungen, krankheiten, true, behinderung);
         return user;
     }
 
@@ -100,10 +96,34 @@ public class TeilnehmerRepositoryTest {
 
     @Test
     public void testFindProjectsByFirstNameAndLastName() throws Exception {
-        List<Teilnehmer> usersWithLastNameEich = users.findByNachname("Eich");
-        Teilnehmer user = usersWithLastNameEich.get(0);
-        assertThat(user.getNachname(),is("Eich"));
-        assertThat(user.getVorname(),is("Gary"));
+        Teilnehmer newUser = createUser();
+        newUser.setVorname("Anton");
+        newUser.setNachname("Tirol");
+
+
+        Long userId =
+                given()
+                        .body(newUser)
+                        .contentType(ContentType.JSON)
+                        .when()
+                        .post(BASE_URL + "/adduser")
+                        .then()
+                        .statusCode(is(HttpStatus.SC_CREATED))
+                        .extract()
+                        .body().as(Long.class);
+
+        Teilnehmer responseUser =
+                given()
+                        .pathParam("id", userId)
+                        .when()
+                        .get(BASE_URL + "/user/{id}")
+                        .then()
+                        .statusCode(HttpStatus.SC_OK)
+                        .assertThat()
+                        .extract().as(Teilnehmer.class);
+
+        assertThat(responseUser.getNachname(),is("Tirol"));
+        assertThat(responseUser.getVorname(),is("Anton"));
 
         Projekt p = createSingleProject();
         Long projectID =
@@ -121,7 +141,7 @@ public class TeilnehmerRepositoryTest {
         assertThat(allProjects.size(),is(1));
 
         Map<String,Long> newID_Map = new HashMap<String, Long>();
-        newID_Map.put("user",user.getId());
+        newID_Map.put("user",responseUser.getId());
         newID_Map.put("project", projectID);
         Boolean success =
                 given()
@@ -133,13 +153,17 @@ public class TeilnehmerRepositoryTest {
                         .statusCode(HttpStatus.SC_OK)
                         .extract().as(Boolean.class);
         MatcherAssert.assertThat(success,is(true));
-        List<Projekt> projectsByFirstNameAndLastName = users.findProjektsByVornameAndNachname("Gary","Eich");
-        //assertThat(projectsByFirstNameAndLastName.size(),is(1));
 
-        usersWithLastNameEich = users.findByNachname("Eich");
-        user = usersWithLastNameEich.get(0);
-        assertThat(user.getAngemeldeteProjekte().size(),is(1));
-        assertEquals(projectsByFirstNameAndLastName.get(0).getName(), user.getAngemeldeteProjekte().get(0).getName());
+        List<Projekt> projectsByFirstNameAndLastName =
+                Arrays.asList(given()
+                        .param("vorname","Anton")
+                        .param("nachname","Tirol")
+                        .when()
+                        .get(BASE_URL+"/projectsof")
+                        .then()
+                        .statusCode(HttpStatus.SC_OK)
+                        .extract().as(Projekt[].class));
+        assertThat(projectsByFirstNameAndLastName.size(),is(1));
     }
 
 

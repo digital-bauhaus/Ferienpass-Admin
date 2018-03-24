@@ -89,27 +89,12 @@ public class BackendController {
         if (projekt == null)
             return false;
 
-
-        List<Projekt> currentProjects = new ArrayList<Projekt>(teilnehmer.getAngemeldeteProjekte());
-        currentProjects.add(projekt);
-        teilnehmer.setAngemeldeteProjekte(currentProjects);
-        if(teilnehmer.getStornierungen().contains(projekt)) {
-            List<Projekt> temp = new ArrayList<>(teilnehmer.getStornierungen());
-            temp.remove(projekt);
-            teilnehmer.setStornierungen(temp);
-        }
-
         List<Teilnehmer> registrierteTeilnehmer = projekt.getAnmeldungen();
         LOG.info("Found " + registrierteTeilnehmer.size() + " registered participants for project " + projekt.getName()+ " " + projekt.getId());
         if(!registrierteTeilnehmer.contains(teilnehmer))
             registrierteTeilnehmer.add(teilnehmer);
         projekt.setAnmeldungen(registrierteTeilnehmer);
-        LOG.info("Now " + registrierteTeilnehmer.size() + " registered participants for project " + projekt.getName()+ " " + projekt.getId());
-        teilnehmerRepository.save(teilnehmer);
-        teilnehmer = teilnehmerRepository.findOne(user_id);
-        LOG.info("Vorher: " + currentProjects.size() + " nachher: " + teilnehmer.getAngemeldeteProjekte().size());
         projektRepository.save(projekt);
-
 
         LOG.info("Successfully assigned project " + projekt.toString() + " to user " + teilnehmer.toString());
 
@@ -132,24 +117,6 @@ public class BackendController {
             return false;
         }
         switch (typeOfList) {
-            case angemeldeteProjekte:
-                if (teilnehmer.getAngemeldeteProjekte().size() <= itemPosition){
-                    LOG.info("Position of item to delete exceeds list size for position " + itemPosition);
-                    return false;
-                }
-                teilnehmer.getAngemeldeteProjekte().remove(itemPosition);
-                teilnehmerRepository.save(teilnehmer);
-                LOG.info("Successfully removed project in booked projects");
-                return true;
-            case stornierteProjekte:
-                if (teilnehmer.getStornierungen().size() <= itemPosition){
-                    LOG.info("Position of item to delete exceeds list size for position " + itemPosition);
-                    return false;
-                }
-                teilnehmer.getStornierungen().remove(itemPosition);
-                teilnehmerRepository.save(teilnehmer);
-                LOG.info("Successfully removed project in canceled projects");
-                return  true;
             case krankheiten:
                 if (teilnehmer.getKrankheiten().size() <= itemPosition){
                 LOG.info("Position of item to delete exceeds list size for position " + itemPosition);
@@ -216,11 +183,18 @@ public class BackendController {
 
     // Retrieve all projects for a user's first and last name
     @RequestMapping(path = "/projectsof")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public @ResponseBody
     List<Projekt> showProjectsOfUser(@RequestParam String vorname, @RequestParam String nachname) {
         LOG.info("GET called on /projectsof resource");
-        return teilnehmerRepository.findProjektsByVornameAndNachname(vorname, nachname);
+        List<Projekt> resultList = new ArrayList<>();
+        for (Projekt p:projektRepository.findAll()) {
+            for (Teilnehmer t: p.getAnmeldungen()) {
+                if(t.getVorname().equals(vorname) && t.getNachname().equals(nachname))
+                    resultList.add(p);
+            }
+        }
+        return resultList;
     }
 
     // CREATE NEW PROJECT
