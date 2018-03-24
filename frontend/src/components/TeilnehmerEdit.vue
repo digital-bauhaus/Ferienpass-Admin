@@ -100,10 +100,10 @@
 
 
       <h2>Angemeldete Projekte</h2>
-      <div v-if="user.angemeldeteProjekte">
+      <div v-if="projectsOfUser">
       <table>
       <tr><th>Name</th><th>Stornieren</th></tr>
-      <tr v-for="(projekt, index) of user.angemeldeteProjekte">
+      <tr v-for="(projekt, index) of projectsOfUser">
       <td><label for="projekt.name"> {{projekt.name}}</label></td>
       <td><button v-on:click="cancelProject(user.id,projekt.id)">Stornieren</button></td>
       </tr>
@@ -117,6 +117,17 @@
       <tr v-for="(projekt, index) of user.angemeldeteProjekte">
       <td><label for="projekt.name">{{projekt.name}}</label></td>
       <td><button v-on:click="activateProject(user.id, projekt.id)">Reaktivieren</button></td>
+      </tr>
+      </table>
+      </div>
+
+      <h2>Zu folgendem Projekt eintragen:</h2>
+      <div v-if="projectsOfUser">
+      <table>
+      <tr><th>Name</th><th>Anmelden</th></tr>
+      <tr v-for="(projekt, index) of allAvailableProjects">
+      <td><label for="projekt.name"> {{projekt.name}}</label></td>
+      <td><button v-on:click="assignProject(user.id,projekt.id)">Eintragen</button></td>
       </tr>
       </table>
       </div>
@@ -135,19 +146,17 @@ export default {
   data () {
     return {
       user: [],
+      projectsOfUser: [],
+      allAvailableProjects: [],
+      canceldProjectsOfUser: [],
       popupClass: 'fadeOut',
       errors: []
     };
   },
   created () {
-    var id = parseInt(this.$route.query.id);
-    axios.get('http://localhost:8088/api/user/' + id)
-    .then(response => {
-      this.user = response.data
-    })
-    .catch(e => {
-      this.errors.push(e)
-    })
+    this.getUserData()
+    this.getAllProjects()
+    this.getProjectsOfUser()
   },
   methods: {
     postProject () {
@@ -258,7 +267,7 @@ export default {
             this.errors.push(e)
           })
     },
-    activateProject (id, projectId) {
+    assignProject (id, projectId) {
       axios.post('http://localhost:8088/api/assignProject', {
         user: id,
         project: projectId
@@ -273,6 +282,39 @@ export default {
           .catch(e => {
             this.errors.push(e)
           })
+    },
+    getUserData () {
+      var id = parseInt(this.$route.query.id);
+      axios.get('http://localhost:8088/api/user/' + id)
+        .then(response => {
+          this.user = response.data
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
+    },
+    getAllProjects () {
+      axios.get('http://localhost:8088/api/allprojects')
+        .then(response => {
+          this.allAvailableProjects = response.data
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
+    },
+    getProjectsOfUser () {
+      var id = parseInt(this.$route.query.id);
+      axios.get('http://localhost:8088/api/projectsofid', {
+        params: {
+          userID: id
+        }
+      })
+        .then(response => {
+          this.projectsOfUser = response.data
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
     }
   }
 }

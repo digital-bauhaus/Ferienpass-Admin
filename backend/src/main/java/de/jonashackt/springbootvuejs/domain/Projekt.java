@@ -141,6 +141,9 @@ public class Projekt {
     }
 
     public void setAnmeldungen(List<Teilnehmer> anmeldungen) {
+        if(anmeldungen.size() >= this.getSlotsGesamt() - this.getSlotsReserviert())
+            return;
+        this.setSlotsFrei(this.getSlotsGesamt() - this.getSlotsReserviert() - anmeldungen.size());
         this.anmeldungen = anmeldungen;
     }
 

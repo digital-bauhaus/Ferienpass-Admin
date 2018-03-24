@@ -29,7 +29,7 @@ public class FerienpassAdminApplication implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 		createSampleUser();
-		createSampleProject("Ball Werfen", 2);
+		createSampleProject("Ball Werfen", 3);
 	}
 
 	private void createSampleUser() {

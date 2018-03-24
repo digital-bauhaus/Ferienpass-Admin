@@ -81,7 +81,7 @@ public class BackendController {
     Boolean assignProjectToUser(@RequestBody Map<String, Long> ids) {
         Long user_id = ids.get("user");
         Long projekt_id = ids.get("project");
-        LOG.info(user_id + " " + projekt_id);
+        LOG.info("Assigning project with id: " + projekt_id + " for user id: " + user_id);
         Teilnehmer teilnehmer = teilnehmerRepository.findOne(user_id);
         if (teilnehmer == null)
             return false;
@@ -90,13 +90,16 @@ public class BackendController {
             return false;
 
         List<Teilnehmer> registrierteTeilnehmer = projekt.getAnmeldungen();
-        LOG.info("Found " + registrierteTeilnehmer.size() + " registered participants for project " + projekt.getName()+ " " + projekt.getId());
+        if(projekt.getAnmeldungen().size() >= projekt.getSlotsGesamt() - projekt.getSlotsReserviert()) {
+            LOG.info("Could not assign " + teilnehmer.getNachname() + " to project " + projekt.getName() + " because all free slots are taken.");
+            return false;
+        }
         if(!registrierteTeilnehmer.contains(teilnehmer))
             registrierteTeilnehmer.add(teilnehmer);
         projekt.setAnmeldungen(registrierteTeilnehmer);
         projektRepository.save(projekt);
 
-        LOG.info("Successfully assigned project " + projekt.toString() + " to user " + teilnehmer.toString());
+        LOG.info("Successfully assigned project " + projekt.getName() + " to user " + teilnehmer.getNachname());
 
         return true;
     }
@@ -194,6 +197,23 @@ public class BackendController {
                     resultList.add(p);
             }
         }
+        return resultList;
+    }
+
+    // Retrieve all projects for a user's ID
+    @RequestMapping(path = "/projectsofid")
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody
+    List<Projekt> showProjectsOfUserById(@RequestParam Long userID) {
+        LOG.info("GET called on /projectsofid resource with userID: " + userID);
+        List<Projekt> resultList = new ArrayList<>();
+        for (Projekt p:projektRepository.findAll()) {
+            for (Teilnehmer t: p.getAnmeldungen()) {
+                if(t.getId() == userID)
+                    resultList.add(p);
+            }
+        }
+        LOG.info("Returning list with size of " + resultList.size());
         return resultList;
     }
 

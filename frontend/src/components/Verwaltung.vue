@@ -53,18 +53,11 @@ export default {
     return {
       selectedID: 0,
       allprojects: [],
-      errors: [],
-      teilnehmerOfProject: []
+      errors: []
     };
   },
   created () {
-    axios.get('http://localhost:8088/api/allprojects')
-    .then(response => {
-      this.allprojects = response.data
-    })
-    .catch(e => {
-      this.errors.push(e)
-    })
+    this.getProjects()
   },
   methods: {
     getProjects () {
