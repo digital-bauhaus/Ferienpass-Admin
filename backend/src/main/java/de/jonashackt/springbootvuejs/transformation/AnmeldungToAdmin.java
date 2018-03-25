@@ -40,7 +40,7 @@ public class AnmeldungToAdmin {
 //            });
 //        }
 
-        teilnehmer.setAngemeldeteProjekte(angemeldeteProjekte);
+//        teilnehmer.setAngemeldeteProjekte(angemeldeteProjekte);
     }
 
     private static void mappeErklaerung(AnmeldungJson anmeldungJson, Teilnehmer teilnehmer) {
