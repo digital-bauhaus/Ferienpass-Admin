@@ -671,9 +671,9 @@ public class BackendControllerTest {
                 Arrays.asList(given()
                         .contentType(ContentType.JSON)
                         .when()
-                        .post(BASE_URL + "/allprojects")
+                        .get(BASE_URL + "/allprojects")
                         .then()
-                        .statusCode(is(HttpStatus.SC_CREATED))
+                        .statusCode(is(HttpStatus.SC_OK))
                         .extract()
                         .body().as(Projekt[].class));
         Long projectID = 0L;
@@ -743,15 +743,16 @@ public class BackendControllerTest {
 
     @Test
     public void testConsistencyOfRegisteredProjectsOfTeilnehmerAndRegisteredTeilnehmerOfProjects() {
-        List<Projekt> allProjects =
-                Arrays.asList(given()
-                        .contentType(ContentType.JSON)
-                        .when()
-                        .post(BASE_URL + "/allprojects")
-                        .then()
-                        .statusCode(is(HttpStatus.SC_CREATED))
-                        .extract()
-                        .body().as(Projekt[].class));
+        Projekt[] responseProjects = given()
+                .contentType(ContentType.JSON)
+                .when()
+                .get(BASE_URL + "/allprojects")
+                .then()
+                .statusCode(is(HttpStatus.SC_OK))
+                .extract()
+                .body().as(Projekt[].class);
+
+        List<Projekt> allProjects = Arrays.asList(responseProjects);
         int nbProjects = allProjects.size();
         System.out.println("Number of projects at start: " + nbProjects);
 
@@ -808,9 +809,9 @@ public class BackendControllerTest {
                 Arrays.asList(given()
                 .contentType(ContentType.JSON)
                 .when()
-                .post(BASE_URL + "/allprojects")
+                .get(BASE_URL + "/allprojects")
                 .then()
-                .statusCode(is(HttpStatus.SC_CREATED))
+                .statusCode(is(HttpStatus.SC_OK))
                 .extract()
                 .body().as(Projekt[].class));
 
@@ -884,9 +885,9 @@ public class BackendControllerTest {
                 Arrays.asList(given()
                         .contentType(ContentType.JSON)
                         .when()
-                        .post(BASE_URL + "/allprojects")
+                        .get(BASE_URL + "/allprojects")
                         .then()
-                        .statusCode(is(HttpStatus.SC_CREATED))
+                        .statusCode(is(HttpStatus.SC_OK))
                         .extract()
                         .body().as(Projekt[].class));
         System.out.println("Number of projects after assignment: " + allProjects.size());

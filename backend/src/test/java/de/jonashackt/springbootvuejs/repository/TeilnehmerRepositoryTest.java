@@ -144,7 +144,7 @@ public class TeilnehmerRepositoryTest {
                         .body().as(Long.class);
 
         List<Projekt> allProjects = projects.findAllProjects();
-        assertThat(allProjects.size(),is(1));
+        assertThat(allProjects.size(),is(3));
 
         Map<String,Long> newID_Map = new HashMap<String, Long>();
         newID_Map.put("user",responseUser.getId());
