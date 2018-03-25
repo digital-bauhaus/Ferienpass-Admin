@@ -14,7 +14,7 @@
         <input type="text" id ="lastName" placeholder="Nachname" v-model="user.nachname" :value="user.nachname">
         <label for ="firstName">Vorname: </label>
         <input type="text" id="firstName" placeholder="Vorname" v-model="user.vorname" :value="user.vorname">
-        <label for ="birthDate">Geburtstag: </label>
+        <label for ="birthDate">Geburtsta (Jahr,Monat,Tag): </label>
         <input type="text" id="birthDate" placeholder="Geburtstag" v-model="user.geburtsdatum" :value="user.geburtsdatum">
         <label for ="street">Straße: </label>
         <input type="text" id="street" placeholder="Straße" v-model="user.strasse" :value="user.strasse">
@@ -25,8 +25,7 @@
         <label for ="telephone">Telefonnummer: </label>
         <input type="text" id="telephone" placeholder="Telefonnummer" v-model="user.telefon" :value="user.telefon">
         <label for ="healthcare">Krankenversicherungsnummer: </label>
-        <input type="text" id="healthcare" placeholder="Krankenversicherungsnummer" v-model="user.notrufnummer" :value="user.notrufnummer">
-
+        <input type="text" id="healthcare" placeholder="Krankenversicherungsnummer" v-model="user.krankenkasse" :value="user.krankenkasse">>
           <fieldset>
               <label><input v-model="user.erlaubeMedikamentation" type="checkbox" id="check">Darf behandelt werden</label><br/>
               <label><input v-model="user.darfAlleinNachHause" type="checkbox" id="check">Darf schwimmen</label><br/>
@@ -50,10 +49,10 @@
         <input type="text" id="doctoraddress" v-model="user.arzt.address" placeholder="Addresse" :value="user.arzt.address">
         <label for ="user.arzt.telephone">Telefon:</label>
         <input type="text" id="doctortelephone" v-model="user.arzt.telephone" placeholder="Telefon" :value="user.arzt.telephone">
-
+        </div>
+        <input type="submit" value="Update">
         <h2>Einschränkungen</h2>
         <h3>Allergien</h3>
-        <div v-if="user.allergien">
         <table>
         <tr><th>Name</th><th>Information</th><th>Löschen</th></tr>
          <tr v-for="(allergie, index) of user.allergien">
@@ -61,8 +60,11 @@
          <td><input type="text" id="allergie_info" placeholder="-" v-model="allergie.information" :value="allergie.information"></td>
          <td><button v-on:click="deleteListItem(user.id,5,index)">Löschen</button></td>
         </tr>
+        <tr><td><input type="text" id="newAllergie" v-model="newAllergie.name" :value="newAllergie.name"></td>
+         <td><input type="text" id="allergie_info" placeholder="-" v-model="newAllergie.information" :value="newAllergie.information"></td>
+         <td><button v-on:click="addListItem(user.id,5,index)">Hinzufügen</button></td>
+         </tr>
         </table>
-        </div>
         <h3>Krankheiten</h3>
         <div v-if="user.krankheiten">
         <table>
@@ -72,6 +74,10 @@
         <td><input type="text" id="krankheit_info" placeholder="-" v-model="krankheit.information" :value="krankheit.information"></td>
         <td><button v-on:click="deleteListItem(user.id,2,index)">Löschen</button></td>
         </tr>
+        <tr><td><input type="text" id="newKrankheit" v-model="newKrankheit.name" :value="newKrankheit.name"></td>
+         <td><input type="text" id="newKrankheit" placeholder="-" v-model="newKrankheit.information" :value="newKrankheit.information"></td>
+         <td><button v-on:click="addListItem(user.id,5,index)">Hinzufügen</button></td>
+         </tr>
         </table>
         </div>
         <h3>Behinderungen</h3>
@@ -131,8 +137,8 @@
       </tr>
       </table>
       </div>
-      <input type="submit" value="Update">
-    </form>
+      </form>
+
     </main>
       <div :class="popupClass">✔ Erfolgreich!</div>
     </html>
@@ -150,6 +156,10 @@ export default {
       allAvailableProjects: [],
       allRawProjects: [],
       canceldProjectsOfUser: [],
+      newAllergie: [],
+      newKrankheit: [],
+      newBehinderung: [],
+      newEssensbesonderheit: [],
       popupClass: 'fadeOut',
       errors: []
     };
@@ -160,35 +170,27 @@ export default {
     this.getAllProjects()
   },
   methods: {
-    postProject () {
+    updateUser () {
       var params = new URLSearchParams();
       var id = parseInt(this.$route.query.id);
-      params.append('id', id);
-      params.append('firstName', this.userFirstname);
-      params.append('lastName', this.userLastname);
-      params.append('birthDate', this.userBirthdate);
-      params.append('street', this.userStreet);
-      params.append('city', this.userCity);
-      params.append('postcode', this.userPostcode);
-      params.append('telephone', this.userTelephone);
-      params.append('healthcareNr', this.userHealthcarenr);
-      var treatment = (this.userAllowtreatment === true);
-      var homealone = (this.userAllowhomealone === true);
-      var riding = (this.userAllowride === true);
-      var swimming = (this.userAllowswim === true);
-      var payed = (this.userHaspayed === true);
-      params.append('allowTreatment', treatment);
-      params.append('allowHomeAlone', homealone);
-      params.append('allowRiding', riding);
-      params.append('allowSwimming', swimming);
-      params.append('hasPayed', payed);
-      params.append('contactName', this.userContactname);
-      params.append('contactAddress', this.userContactaddress);
-      params.append('contactTelephone', this.userContacttelephone);
-      params.append('doctorName', this.userDoctorname);
-      params.append('doctorAddress', this.userDoctoraddress);
-      params.append('doctorTelephone', this.userDoctortelephone);
-      axios.post('http://localhost:8088/api/updateuser', params)
+      params.append('userId', id);
+      params.append('vorname', this.user.vorname);
+      params.append('nachname', this.user.nachname);
+      params.append('geburtsdatum', this.user.geburtsdatum);
+      params.append('strasse', this.user.strasse);
+      params.append('stadt', this.user.stadt);
+      params.append('plz', this.user.postleitzahl);
+      params.append('tel', this.user.telefon);
+      params.append('krankenkasse', this.user.krankenkasse);
+      params.append('kontaktName', this.user.notfallKontakt.name);
+      params.append('kontaktAdresse', this.user.notfallKontakt.address);
+      params.append('kontaktTel', this.user.notfallKontakt.telephone);
+
+      params.append('arztName', this.user.arzt.name);
+      params.append('arztAdresse', this.user.arzt.address);
+      params.append('arztTel', this.user.arzt.telephone);
+
+      axios.post('http://localhost:8088/api/updateUser', params)
       .then(response => {
         this.popupClass = 'fadeIn'
         var self = this;
@@ -199,40 +201,6 @@ export default {
       .catch(e => {
         this.errors.push(e)
       })
-    },
-    updateUser () {
-      axios.post('http://localhost:8088/api/cancelproject', {
-        user_id: this.user.id,
-        vorname: this.user.vorname,
-        nachname: this.user.nachname,
-        geburtsdatum: this.user.geburtsdatum,
-        strasse: this.user.strasse,
-        stadt: this.user.stadt,
-        postleitzahlt: this.user.postleitzahl,
-        telefon: this.user.telefon,
-        notrufnummer: this.user.notrufnummer,
-        medikamente: this.user.erlaubeMedikamentation,
-        nachHause: this.user.darfAlleinNachHause,
-        reiten: this.user.darfReiten,
-        schwimmen: this.user.darfSchwimmen,
-        bezahlt: this.user.bezahlt,
-        kname: this.user.notfallKontakt.name,
-        kaddress: this.user.notfallKontakt.address,
-        ktelefon: this.user.notfallKontakt.telephone,
-        aname: this.user.arzt.name,
-        aaddress: this.user.arzt.address,
-        atel: this.user.arzt.telephone
-      })
-        .then(response => {
-          this.popupClass = 'fadeIn'
-          var self = this;
-          setTimeout(function () {
-            self.popupClass = 'fadeOut';
-          }, 2000);
-        })
-          .catch(e => {
-            this.errors.push(e)
-          })
     },
     deleteListItem (id, typeList, itemPos) {
     /* note that the numbers of variable typeList correspond to the index value of the enumeration ListType in the backend */

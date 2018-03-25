@@ -56,14 +56,20 @@ public class TeilnehmerRepositoryTest {
         List<Krankheit> krankheiten = new ArrayList<Krankheit>();
         krankheiten.add(krank);
         List<Allergie> allergien = new ArrayList<Allergie>();
-        allergien.add(new Allergie("Heuschnupfen","Nasenspray","nur 2x am Tag"));
+        allergien.add(new Allergie("Heuschnupfen","Nasenspray nur 2x am Tag"));
 
         Behinderung behinderung = new Behinderung();
         behinderung.setRollstuhlNutzungNotwendig(true);
         behinderung.setMerkzeichen_Taubblind_TBL(true);
 
+        List<Medikament> medikaments = new ArrayList<>();
+        medikaments.add(new Medikament("Nasenspray von Forte","2x am Tag"));
+
+        List<Hitzeempfindlichkeit> hitzeempfindlichkeits = new ArrayList<>();
+        hitzeempfindlichkeits.add(new Hitzeempfindlichkeit("grosse Hitze","eincremen"));
+
         Teilnehmer user = new Teilnehmer("Gary","Eich", LocalDate.of(2005,10,20),registerDate, "Bahnhofstraße 4", "Weimar", "99423", "03544444", "0453434", true, kontact,
-                true, false, false, false, arzt,  allergien, essenLimitierungen, krankheiten, true, behinderung);
+                true, false, false, "Seepferdchen", false, false, arzt,  allergien, essenLimitierungen, krankheiten, true, behinderung,hitzeempfindlichkeits,medikaments);
         return user;
     }
 
@@ -173,5 +179,89 @@ public class TeilnehmerRepositoryTest {
         List<Teilnehmer> usersWithFirstNameJonas = users.findByVorname("Gary");
 
         assertThat(usersWithFirstNameJonas.get(0).getVorname(), containsString("Gary"));
+    }
+
+    @Test
+    public void updateTeilnehmer() throws  Exception {
+        Teilnehmer newUser = createUser();
+        newUser.setVorname("Max");
+        newUser.setNachname("Mustermann");
+
+
+        Long userId =
+                given()
+                        .body(newUser)
+                        .contentType(ContentType.JSON)
+                        .when()
+                        .post(BASE_URL + "/adduser")
+                        .then()
+                        .statusCode(is(HttpStatus.SC_CREATED))
+                        .extract()
+                        .body().as(Long.class);
+
+
+
+        String vorname = "Klaus";
+        String nachname = "Klausen";
+        String geburtsdatum = "1999,12,31";
+        String strasse = "Bahnhof 5";
+        String plz = "00111";
+        String stadt = "Erfurt";
+        String tel = "999994444";
+        String krankenkasse = "AOK";
+        String kontaktName = "AlaramKontakt";
+        String kontaktAdresse = "Hinter dem Dorf 4";
+        String kontaktTel = "0101010101";
+        String arztName = "Doktor Who";
+        String arztAdresse = "Arzthaus 1";
+        String arztTel = "5555";
+        Teilnehmer updatedTeilnehmer =
+                given()
+                        .param("userId", userId)
+                        .param("vorname",vorname)
+                        .param("nachname",nachname)
+                        .param("geburtsdatum",geburtsdatum)
+                        .param("strasse",strasse)
+                        .param("plz",plz)
+                        .param("stadt",stadt)
+                        .param("tel",tel)
+                        .param("krankenkasse",krankenkasse)
+                        .param("kontaktName",kontaktName)
+                        .param("kontaktAdresse",kontaktAdresse)
+                        .param("kontaktTel",kontaktTel)
+                        .param("arztName",arztName)
+                        .param("arztAdresse",arztAdresse)
+                        .param("arztTel",arztTel)
+                        .when()
+                        .get(BASE_URL+"/updateUser")
+                        .then()
+                        .statusCode(HttpStatus.SC_OK)
+                        .extract().as(Teilnehmer.class);
+
+        Teilnehmer responseUser =
+                given()
+                        .pathParam("id", userId)
+                        .when()
+                        .get(BASE_URL + "/user/{id}")
+                        .then()
+                        .statusCode(HttpStatus.SC_OK)
+                        .assertThat()
+                        .extract().as(Teilnehmer.class);
+
+        assertThat(responseUser.getVorname(),is(vorname));
+        assertThat(responseUser.getNachname(),is(nachname));
+        String[] datum = geburtsdatum.split(",");
+        assertThat(responseUser.getGeburtsdatum(),is(LocalDate.of(Integer.parseInt(datum[0]),Integer.parseInt(datum[1]),Integer.parseInt(datum[2]))));
+        assertThat(responseUser.getStrasse(),is(strasse));
+        assertThat(responseUser.getPostleitzahl(),is(plz));
+        assertThat(responseUser.getStadt(),is(stadt));
+        assertThat(responseUser.getTelefon(),is(tel));
+        assertThat(responseUser.getKrankenkasse(),is(krankenkasse));
+        assertThat(responseUser.getNotfallKontakt().getName(),is(kontaktName));
+        assertThat(responseUser.getNotfallKontakt().getAddress(),is(kontaktAdresse));
+        assertThat(responseUser.getNotfallKontakt().getTelephone(),is(kontaktTel));
+        assertThat(responseUser.getArzt().getName(),is(arztName));
+        assertThat(responseUser.getArzt().getAddress(),is(arztAdresse));
+        assertThat(responseUser.getArzt().getTelephone(),is(arztTel));
     }
 }

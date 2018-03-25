@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.method.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.format.DateTimeFormatter;
@@ -147,6 +146,24 @@ public class BackendController {
                 teilnehmerRepository.save(teilnehmer);
                 LOG.info("Successfully removed item from list of allergies");
                 return  true;
+            case medikamente:
+                if (teilnehmer.getMedikamente().size() <= itemPosition) {
+                    LOG.info("Position of item to delete exceeds list size for position " + itemPosition);
+                    return false;
+                }
+                teilnehmer.getMedikamente().remove(itemPosition);
+                teilnehmerRepository.save(teilnehmer);
+                LOG.info("Successfully removed item from list of drug limitations");
+                return true;
+            case hitzeempfindlichkeit:
+                if (teilnehmer.getHitzeempfindlichkeiten().size() <= itemPosition) {
+                    LOG.info("Position of item to delete exceeds list size for position " + itemPosition);
+                    return false;
+                }
+                teilnehmer.getHitzeempfindlichkeiten().remove(itemPosition);
+                teilnehmerRepository.save(teilnehmer);
+                LOG.info("Successfully removed item from list of heat problems");
+                return true;
             default:
                 LOG.info("Failed to find an according list type for the given id " + delete_information.get("item"));
                 return false;
@@ -298,12 +315,47 @@ public class BackendController {
 
     //UPDATE USER
     @RequestMapping(path = "/updateUser")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public @ResponseBody
     Teilnehmer updateUser(@RequestParam Long userId, @RequestParam String vorname, @RequestParam String nachname,
-                          @RequestParam String geburtsdarum, @RequestParam String strasse, @RequestParam String plz,
-                          @RequestParam String ort, @RequestParam String tel, @RequestParam String kvn) {
-        return teilnehmerRepository.findOne(userId);
+                          @RequestParam String geburtsdatum, @RequestParam String strasse, @RequestParam String plz,
+                          @RequestParam String stadt, @RequestParam String tel, @RequestParam String krankenkasse,
+                          @RequestParam String kontaktName, @RequestParam String kontaktAdresse,
+                          @RequestParam String kontaktTel, @RequestParam String arztName, @RequestParam String arztAdresse,
+                          @RequestParam String arztTel) {
+        Teilnehmer teilnehmer = teilnehmerRepository.findOne(userId);
+        if (teilnehmer == null) {
+            LOG.info("Could not update user with id: " + userId + " because there is no entry in the database.");
+            return null;
+        }
+        //Basic data
+        teilnehmer.setVorname(vorname);
+        teilnehmer.setNachname(nachname);
+        String[] dateRaw = geburtsdatum.split(",");
+        teilnehmer.setGeburtsdatum(LocalDate.of(Integer.valueOf(dateRaw[0]), Integer.valueOf(dateRaw[1]), Integer.valueOf(dateRaw[2])));
+        teilnehmer.setStrasse(strasse);
+        teilnehmer.setPostleitzahl(plz);
+        teilnehmer.setStadt(stadt);
+        teilnehmer.setTelefon(tel);
+        teilnehmer.setKrankenkasse(krankenkasse);
+
+        //Emergency contact
+        Kontakt kontakt = teilnehmer.getNotfallKontakt();
+        kontakt.setAddress(kontaktAdresse);
+        kontakt.setName(kontaktName);
+        kontakt.setTelephone(kontaktTel);
+        teilnehmer.setNotfallKontakt(kontakt);
+
+        //Medical contact
+        Arzt arzt = teilnehmer.getArzt();
+        arzt.setAddress(arztAdresse);
+        arzt.setName(arztName);
+        arzt.setTelephone(arztTel);
+        teilnehmer.setArzt(arzt);
+
+        teilnehmerRepository.save(teilnehmer);
+        LOG.info("Successfully updated Teilnehmer " + nachname);
+        return teilnehmer;
     }
 
 

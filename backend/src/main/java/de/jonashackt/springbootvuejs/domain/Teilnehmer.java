@@ -1,9 +1,6 @@
 package de.jonashackt.springbootvuejs.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -30,7 +27,7 @@ public class Teilnehmer {
     private String stadt;
     private String postleitzahl;
     private String telefon;
-    private String notrufnummer;
+    private String krankenkasse;
     private boolean erlaubeMedikamentation;
 
     @ManyToOne(cascade=CascadeType.ALL)
@@ -39,8 +36,10 @@ public class Teilnehmer {
     private boolean darfAlleinNachHause;
     private boolean darfReiten;
     private boolean darfSchwimmen;
+    private String schwimmAbzeichen;
     private boolean bezahlt;
     private boolean aktiv;
+    private boolean darfBehandeltWerden;
 
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="arzt_id")
@@ -48,6 +47,12 @@ public class Teilnehmer {
 
     @ManyToMany(cascade=CascadeType.ALL)
     private List<Allergie> allergien = new ArrayList<>();
+
+    @ManyToMany(cascade=CascadeType.ALL)
+    private List<Medikament> medikamente = new ArrayList<>();
+
+    @ManyToMany(cascade=CascadeType.ALL)
+    private List<Hitzeempfindlichkeit> hitzeempfindlichkeiten = new ArrayList<>();
 
     @ManyToMany(cascade=CascadeType.ALL)
     private List<Krankheit> krankheiten = new ArrayList<>();
@@ -69,32 +74,38 @@ public class Teilnehmer {
                 ", Vorname='" + getVorname() + '\'' +
                 ", Nachname='" + getNachname() + '\'' +
                 ", Geburtsdatum=" + getGeburtsdatum() +
-                ", Registrierungsdatum=" + getRegistrierungsdatum() +
+                ", Registrierungsdatum=" + getRegistrierungsdatum() + '\'' +
                 ", Straße='" + getStrasse() + '\'' +
                 ", Stadt='" + getStadt() + '\'' +
                 ", Postleitzahl='" + getPostleitzahl() + '\'' +
                 ", Telefon='" + getTelefon() + '\'' +
-                ", Notrufnummer='" + getNotrufnummer() + '\'' +
-                ", erlaube Medikamentation=" + isErlaubeMedikamentation() +
+                ", Notrufnummer='" + getKrankenkasse() + '\'' +
+                ", erlaube Medikamentation=" + isErlaubeMedikamentation() + '\'' +
                 ", Notfallkontakt='" + getNotfallKontakt() + '\'' +
-                ", darf allein nach Hause=" + isDarfAlleinNachHause() +
-                ", darf Reiten=" + isDarfReiten() +
-                ", darf Schwimmen=" + isDarfSchwimmen() +
-                ", bezahlt=" + isBezahlt() +
-                ", Arzt=" + getArzt() +
-                ", liegt Beeinträchtigung vor=" + isLiegtBehinderungVor() +
-                ", Behinderung=" + getBehinderung() +
-                ", Krankheiten=" + getKrankheiten() +
-                ", Essenslimitierungen=" + getEssenLimitierungen() +
-                ", Allergien=" + getAllergien() +
+                ", darf allein nach Hause=" + isDarfAlleinNachHause() + '\'' +
+                ", darf Reiten=" + isDarfReiten() + '\'' +
+                ", darf Schwimmen=" + isDarfSchwimmen() + '\'' +
+                ", Schwimmabzeichen=" +getSchwimmAbzeichen() + '\'' +
+                ", darf behandelt werden=" + isDarfBehandeltWerden() + '\'' +
+                ", bezahlt=" + isBezahlt() + '\'' +
+                ", Arzt=" + getArzt()+ '\'' +
+                ", liegt Beeinträchtigung vor=" + isLiegtBehinderungVor()+ '\'' +
+                ", Behinderung=" + getBehinderung()+ '\'' +
+                ", Krankheiten=" + getKrankheiten()+ '\'' +
+                ", Essenslimitierungen=" + getEssenLimitierungen()+ '\'' +
+                ", Allergien=" + getAllergien()+ '\'' +
+                ", Medikamente=" + getMedikamente()+ '\'' +
+                ", Hitzeempfindlichkeiten=" + getHitzeempfindlichkeiten() + '\'' +
                 '}';
     }
 
     public Teilnehmer() {}
 
-    public Teilnehmer(String firstName, String lastName, LocalDate birthDate, LocalDate registerDate, String street, String city, String postcode, String telephone, String healthcareNr,
-                      boolean allowTreatment, Kontakt emergencyContact, boolean allowHomeAlone, boolean allowRiding, boolean allowSwimming, boolean hasPayed, Arzt doctor,
-                      List<Allergie> allergien, List<EssenLimitierung> essenLimitierungen, List<Krankheit> krankheiten, boolean beeintraechtigt, Behinderung behinderung) {
+    public Teilnehmer(String firstName, String lastName, LocalDate birthDate, LocalDate registerDate, String street, String city, String postcode, String telephone, String krankenkasse,
+                      boolean allowTreatment, Kontakt emergencyContact, boolean allowHomeAlone, boolean allowRiding, boolean allowSwimming, String schwimmAbzeichen, boolean hasPayed,
+                      boolean darfBehandeltWerden, Arzt doctor,
+                      List<Allergie> allergien, List<EssenLimitierung> essenLimitierungen, List<Krankheit> krankheiten, boolean beeintraechtigt, Behinderung behinderung,
+                      List<Hitzeempfindlichkeit> hitzempfindlichkeiten, List<Medikament> medikamente) {
 
         this.setVorname(firstName);
         this.setNachname(lastName);
@@ -104,12 +115,13 @@ public class Teilnehmer {
         this.setStadt(city);
         this.setPostleitzahl(postcode);
         this.setTelefon(telephone);
-        this.setNotrufnummer(healthcareNr);
+        this.setKrankenkasse(krankenkasse);
         this.setErlaubeMedikamentation(allowTreatment);
         this.setNotfallKontakt(emergencyContact);
         this.setDarfAlleinNachHause(allowHomeAlone);
         this.setDarfReiten(allowRiding);
         this.setDarfSchwimmen(allowSwimming);
+        this.setSchwimmAbzeichen(schwimmAbzeichen);
         this.setBezahlt(hasPayed);
         this.setArzt(doctor);
         this.setAllergien(allergien);
@@ -118,6 +130,9 @@ public class Teilnehmer {
         this.setLiegtBehinderungVor(beeintraechtigt);
         this.setBehinderung(behinderung);
         this.setAktiv(true);
+        this.setMedikamente(medikamente);
+        this.setHitzeempfindlichkeiten(hitzempfindlichkeiten);
+        this.setDarfBehandeltWerden(darfBehandeltWerden);
     }
 
     public long getId() {
@@ -192,12 +207,12 @@ public class Teilnehmer {
         this.telefon = telefon;
     }
 
-    public String getNotrufnummer() {
-        return notrufnummer;
+    public String getKrankenkasse() {
+        return krankenkasse;
     }
 
-    public void setNotrufnummer(String notrufnummer) {
-        this.notrufnummer = notrufnummer;
+    public void setKrankenkasse(String krankenkasse) {
+        this.krankenkasse = krankenkasse;
     }
 
     public boolean isErlaubeMedikamentation() {
@@ -303,5 +318,37 @@ public class Teilnehmer {
 
     public void setLiegtBehinderungVor(boolean liegtBehinderungVor) {
         this.liegtBehinderungVor = liegtBehinderungVor;
+    }
+
+    public String getSchwimmAbzeichen() {
+        return schwimmAbzeichen;
+    }
+
+    public void setSchwimmAbzeichen(String schwimmAbzeichen) {
+        this.schwimmAbzeichen = schwimmAbzeichen;
+    }
+
+    public List<Medikament> getMedikamente() {
+        return medikamente;
+    }
+
+    public void setMedikamente(List<Medikament> medikamente) {
+        this.medikamente = medikamente;
+    }
+
+    public List<Hitzeempfindlichkeit> getHitzeempfindlichkeiten() {
+        return hitzeempfindlichkeiten;
+    }
+
+    public void setHitzeempfindlichkeiten(List<Hitzeempfindlichkeit> hitzeempfindlichkeiten) {
+        this.hitzeempfindlichkeiten = hitzeempfindlichkeiten;
+    }
+
+    public boolean isDarfBehandeltWerden() {
+        return darfBehandeltWerden;
+    }
+
+    public void setDarfBehandeltWerden(boolean darfBehandeltWerden) {
+        this.darfBehandeltWerden = darfBehandeltWerden;
     }
 }

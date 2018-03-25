@@ -44,10 +44,15 @@ public class FerienpassAdminApplication implements CommandLineRunner{
 		Krankheit krank = new Krankheit("Grippe", "Muss oft Husten", "Hustenbonbons");
 		krankheiten.add(krank);
 		List<Allergie> allergien = new ArrayList<Allergie>();
-		allergien.add(new Allergie("Heuschnupfen","Nasenspray","nur 2x am Tag"));
+		allergien.add(new Allergie("Heuschnupfen","braucht Nasenspray, siehe Medikamente"));
 		Behinderung behinderung = new Behinderung();
 		behinderung.setRollstuhlNutzungNotwendig(true);
 		behinderung.setMerkzeichen_Taubblind_TBL(true);
+		String schwimmAbzeichen = "Seepferdchen";
+		List<Hitzeempfindlichkeit> hitze = new ArrayList<>();
+		hitze.add(new Hitzeempfindlichkeit("Wärme","bis 25 Grad okay"));
+		List<Medikament> medikamente = new ArrayList<>();
+		medikamente.add(new Medikament("Nasentropfen","maximal 2x am Tag ein Schub"));
 
 		Teilnehmer user = new Teilnehmer(
 		        "Gary",
@@ -63,13 +68,17 @@ public class FerienpassAdminApplication implements CommandLineRunner{
 				true,
                 false,
                 false,
+                schwimmAbzeichen,
+                false,
                 false,
                 arzt,
                 allergien,
                 essenLimitierungen,
                 krankheiten,
                 true,
-                behinderung);
+                behinderung,
+				hitze,
+				medikamente);
 
 		teilnehmerRepository.save(user);
 
