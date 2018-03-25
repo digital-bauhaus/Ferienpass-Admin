@@ -31,7 +31,7 @@
          <td>{{user.geburtsdatum}}</td>
          <td>
            <router-link :to="{path: '../TeilnehmerEdit', query: {id: user.id }}" class="fakebutton">Bearbeiten</router-link>
-           <span class="fakebutton"><a>als PDF exportieren</a></span>
+           <span class="fakebutton"><a>PDF</a></span>
          </td>
        </tr>
      </table>
@@ -193,23 +193,6 @@ export default {
         })
       })
       return result
-    },
-    getProjectNameOld (userId) {
-      axios.get('http://localhost:8088/api/projectsofid', {
-        params: {
-          userID: userId
-        }
-      })
-          .then(response => {
-            this.projectsOfUser = response.data
-          })
-          .catch(e => {
-            this.errors.push(e)
-          })
-      if (this.projectsOfUser == null) {
-        return 'Keine Registrierungen'
-      }
-      return this.getProjectNames(this.projectsOfUser)
     },
     getProjectNames (projectList) {
       var result = ''

@@ -97,7 +97,7 @@
         </tr>
         </table>
         </div>
-
+        </div>
 
       <h2>Angemeldete Projekte</h2>
       <div v-if="projectsOfUser">
@@ -132,7 +132,7 @@
       </table>
       </div>
       <input type="submit" value="Update">
-      </form>
+    </form>
     </main>
       <div :class="popupClass">✔ Erfolgreich!</div>
     </html>
@@ -148,6 +148,7 @@ export default {
       user: [],
       projectsOfUser: [],
       allAvailableProjects: [],
+      allRawProjects: [],
       canceldProjectsOfUser: [],
       popupClass: 'fadeOut',
       errors: []
@@ -155,8 +156,8 @@ export default {
   },
   created () {
     this.getUserData()
-    this.getAllProjects()
     this.getProjectsOfUser()
+    this.getAllProjects()
   },
   methods: {
     postProject () {
@@ -282,6 +283,7 @@ export default {
           .catch(e => {
             this.errors.push(e)
           })
+      this.getProjectsOfUser()
     },
     getUserData () {
       var id = parseInt(this.$route.query.id);
@@ -296,11 +298,18 @@ export default {
     getAllProjects () {
       axios.get('http://localhost:8088/api/allprojects')
         .then(response => {
-          this.allAvailableProjects = response.data
+          this.allRawProjects = response.data
         })
         .catch(e => {
           this.errors.push(e)
         })
+      for (var i = 0; i < this.allRawProjects.length; i++) {
+        this.projectsOfUser.forEach(function (project) {
+          if (project.id === this.allAvailableProjects[i].id) {
+            this.allAvailableProjects[this.allAvailableProjects.length] = project
+          }
+        })
+      }
     },
     getProjectsOfUser () {
       var id = parseInt(this.$route.query.id);

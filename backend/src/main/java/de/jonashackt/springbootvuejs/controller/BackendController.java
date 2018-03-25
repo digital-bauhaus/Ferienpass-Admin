@@ -295,4 +295,16 @@ public class BackendController {
         LOG.info("Returning " + projekt.getAnmeldungen().size() + " registered participants for project " + projekt.getName());
         return projekt.getAnmeldungen();
     }
+
+    //UPDATE USER
+    @RequestMapping(path = "/updateUser")
+    @ResponseStatus(HttpStatus.CREATED)
+    public @ResponseBody
+    Teilnehmer updateUser(@RequestParam Long userId, @RequestParam String vorname, @RequestParam String nachname,
+                          @RequestParam String geburtsdarum, @RequestParam String strasse, @RequestParam String plz,
+                          @RequestParam String ort, @RequestParam String tel, @RequestParam String kvn) {
+        return teilnehmerRepository.findOne(userId);
+    }
+
+
 }
