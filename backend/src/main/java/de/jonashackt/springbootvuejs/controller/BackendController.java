@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.method.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.format.DateTimeFormatter;
@@ -80,24 +81,25 @@ public class BackendController {
     Boolean assignProjectToUser(@RequestBody Map<String, Long> ids) {
         Long user_id = ids.get("user");
         Long projekt_id = ids.get("project");
-        LOG.info(user_id + " " + projekt_id);
+        LOG.info("Assigning project with id: " + projekt_id + " for user id: " + user_id);
         Teilnehmer teilnehmer = teilnehmerRepository.findOne(user_id);
         if (teilnehmer == null)
             return false;
-        List<Projekt> currentProjects = new ArrayList<Projekt>(teilnehmer.getAngemeldeteProjekte());
         Projekt projekt = projektRepository.findOne(projekt_id);
         if (projekt == null)
             return false;
-        currentProjects.add(projekt);
-        teilnehmer.setAngemeldeteProjekte(currentProjects);
-        if(teilnehmer.getStornierungen().contains(projekt)) {
-            List<Projekt> temp = new ArrayList<>(teilnehmer.getStornierungen());
-            temp.remove(projekt);
-            teilnehmer.setStornierungen(temp);
-        }
-        teilnehmerRepository.save(teilnehmer);
 
-        LOG.info("Successfully assigned project " + projekt.toString() + " to user " + teilnehmer.toString());
+        List<Teilnehmer> registrierteTeilnehmer = projekt.getAnmeldungen();
+        if(projekt.getAnmeldungen().size() >= projekt.getSlotsGesamt() - projekt.getSlotsReserviert()) {
+            LOG.info("Could not assign " + teilnehmer.getNachname() + " to project " + projekt.getName() + " because all free slots are taken.");
+            return false;
+        }
+        if(!registrierteTeilnehmer.contains(teilnehmer))
+            registrierteTeilnehmer.add(teilnehmer);
+        projekt.setAnmeldungen(registrierteTeilnehmer);
+        projektRepository.save(projekt);
+
+        LOG.info("Successfully assigned project " + projekt.getName() + " to user " + teilnehmer.getNachname());
 
         return true;
     }
@@ -118,24 +120,6 @@ public class BackendController {
             return false;
         }
         switch (typeOfList) {
-            case angemeldeteProjekte:
-                if (teilnehmer.getAngemeldeteProjekte().size() <= itemPosition){
-                    LOG.info("Position of item to delete exceeds list size for position " + itemPosition);
-                    return false;
-                }
-                teilnehmer.getAngemeldeteProjekte().remove(itemPosition);
-                teilnehmerRepository.save(teilnehmer);
-                LOG.info("Successfully removed project in booked projects");
-                return true;
-            case stornierteProjekte:
-                if (teilnehmer.getStornierungen().size() <= itemPosition){
-                    LOG.info("Position of item to delete exceeds list size for position " + itemPosition);
-                    return false;
-                }
-                teilnehmer.getStornierungen().remove(itemPosition);
-                teilnehmerRepository.save(teilnehmer);
-                LOG.info("Successfully removed project in canceled projects");
-                return  true;
             case krankheiten:
                 if (teilnehmer.getKrankheiten().size() <= itemPosition){
                 LOG.info("Position of item to delete exceeds list size for position " + itemPosition);
@@ -202,11 +186,35 @@ public class BackendController {
 
     // Retrieve all projects for a user's first and last name
     @RequestMapping(path = "/projectsof")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public @ResponseBody
     List<Projekt> showProjectsOfUser(@RequestParam String vorname, @RequestParam String nachname) {
         LOG.info("GET called on /projectsof resource");
-        return teilnehmerRepository.findProjektsByVornameAndNachname(vorname, nachname);
+        List<Projekt> resultList = new ArrayList<>();
+        for (Projekt p:projektRepository.findAll()) {
+            for (Teilnehmer t: p.getAnmeldungen()) {
+                if(t.getVorname().equals(vorname) && t.getNachname().equals(nachname))
+                    resultList.add(p);
+            }
+        }
+        return resultList;
+    }
+
+    // Retrieve all projects for a user's ID
+    @RequestMapping(path = "/projectsofid")
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody
+    List<Projekt> showProjectsOfUserById(@RequestParam Long userID) {
+        LOG.info("GET called on /projectsofid resource with userID: " + userID);
+        List<Projekt> resultList = new ArrayList<>();
+        for (Projekt p:projektRepository.findAll()) {
+            for (Teilnehmer t: p.getAnmeldungen()) {
+                if(t.getId() == userID)
+                    resultList.add(p);
+            }
+        }
+        LOG.info("Returning list with size of " + resultList.size());
+        return resultList;
     }
 
     // CREATE NEW PROJECT
@@ -274,5 +282,29 @@ public class BackendController {
     Projekt getProjectById(@PathVariable("projekt_id") Long projekt_id) {
         return projektRepository.findOne(projekt_id);
     }
+
+    //Get all users (Teilnehmer) for a given project by ID
+    @GetMapping(path = "/projectRegistrations/{projekt_id}")
+    public @ResponseBody
+    List<Teilnehmer> getRegisteredUsersByProjectId(@PathVariable("projekt_id") Long projekt_id) {
+        Projekt projekt = projektRepository.findOne(projekt_id);
+        if (projekt == null) {
+            LOG.info("Did not found project for id: " + projekt_id);
+            return null;
+        }
+        LOG.info("Returning " + projekt.getAnmeldungen().size() + " registered participants for project " + projekt.getName());
+        return projekt.getAnmeldungen();
+    }
+
+    //UPDATE USER
+    @RequestMapping(path = "/updateUser")
+    @ResponseStatus(HttpStatus.CREATED)
+    public @ResponseBody
+    Teilnehmer updateUser(@RequestParam Long userId, @RequestParam String vorname, @RequestParam String nachname,
+                          @RequestParam String geburtsdarum, @RequestParam String strasse, @RequestParam String plz,
+                          @RequestParam String ort, @RequestParam String tel, @RequestParam String kvn) {
+        return teilnehmerRepository.findOne(userId);
+    }
+
 
 }

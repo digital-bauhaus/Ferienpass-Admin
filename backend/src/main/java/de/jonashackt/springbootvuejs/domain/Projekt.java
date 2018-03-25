@@ -1,5 +1,8 @@
 package de.jonashackt.springbootvuejs.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -20,12 +23,16 @@ public class Projekt {
     private int slotsReserviert;
     private String webLink;
     private boolean aktiv;
+    //@ManyToMany(cascade= CascadeType.ALL)
+    //@JoinTable(name="project_user",
+    //        joinColumns = @JoinColumn(name="projekt_id"),
+    //        inverseJoinColumns = @JoinColumn(name="id")
+    //)
     @ManyToMany(cascade= CascadeType.ALL)
-    @JoinTable(name="project_user",
-            joinColumns = @JoinColumn(name="projekt_id"),
-            inverseJoinColumns = @JoinColumn(name="id")
-    )
     private List<Teilnehmer> anmeldungen = new ArrayList<>();
+
+    @ManyToMany(cascade= CascadeType.ALL)
+    private List<Teilnehmer> stornierteTeilnehmer = new ArrayList<>();
 
     protected Projekt() {}
 
@@ -134,6 +141,17 @@ public class Projekt {
     }
 
     public void setAnmeldungen(List<Teilnehmer> anmeldungen) {
+        if(anmeldungen.size() >= this.getSlotsGesamt() - this.getSlotsReserviert())
+            return;
+        this.setSlotsFrei(this.getSlotsGesamt() - this.getSlotsReserviert() - anmeldungen.size());
         this.anmeldungen = anmeldungen;
+    }
+
+    public List<Teilnehmer> getStornierteTeilnehmer() {
+        return stornierteTeilnehmer;
+    }
+
+    public void setStornierteTeilnehmer(List<Teilnehmer> stornierteTeilnehmer) {
+        this.stornierteTeilnehmer = stornierteTeilnehmer;
     }
 }

@@ -29,16 +29,13 @@ public class FerienpassAdminApplication implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 		createSampleUser();
-		createSampleProject("Ball Werfen", 2);
+		createSampleProject("Ball Werfen", 3);
 	}
 
 	private void createSampleUser() {
 		Arzt arzt = new Arzt("Eich", "Route 1 Alabastia, 39829",
 				"555-6891");
 		Kontakt kontact = new Kontakt("Igor Eich", "Route 4 Neuborkia  96825", "555-2532");
-
-		List<Projekt> projects = new ArrayList<Projekt>();
-		projects.add(new Projekt("Ball werfen", LocalDate.now(), 10, 20, 5, 1, "www.google.com", new ArrayList<>()));
 
 		List<EssenLimitierung> essenLimitierungen = new ArrayList<EssenLimitierung>();
 		EssenLimitierung laktose = new EssenLimitierung("Laktoseintoleranz", "");
@@ -68,13 +65,11 @@ public class FerienpassAdminApplication implements CommandLineRunner{
                 false,
                 false,
                 arzt,
-                projects,
                 allergien,
                 essenLimitierungen,
                 krankheiten,
                 true,
-                behinderung,
-                new ArrayList<Projekt>());
+                behinderung);
 
 		teilnehmerRepository.save(user);
 
@@ -99,7 +94,7 @@ public class FerienpassAdminApplication implements CommandLineRunner{
 		return new WebMvcConfigurerAdapter() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/api/*").allowedOrigins("http://localhost:8080");
+				registry.addMapping("/**").allowedOrigins("http://localhost:8080");
 			}
 		};
 	}

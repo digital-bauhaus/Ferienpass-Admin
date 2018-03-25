@@ -14,21 +14,24 @@
        <tr>
          <th v-on:click="sortTable(0)" class="clickable">Status</th>
          <th v-on:click="sortTable(1)" class="clickable">Name</th>
+         <th>Projekte</th>
          <th v-on:click="sortDate()" class="clickable">Buchung</th>
          <th>Addresse</th>
          <th>Telefon</th>
+         <th>Geburtsdatum</th>
          <th>Bearbeiten</th>
        </tr>
        <tr v-for="user of allusers">
          <td :id="user.bezahlt"><span :id="user.bezahlt">{{user.bezahlt}}</span></td>
          <td>{{user.nachname}}, {{user.vorname}}</td>
-         <td>{{user.geburtsdatum}}</td>
+         <td><div v-html="getProjectName(user.id)"></div></td>
+         <td>{{user.registrierungsdatum}}</td>
          <td>{{user.strasse}}, {{user.stadt}}</td>
          <td>{{user.telefon}}</th>
-
-         <td><span v-on:click="kill($event)" class="fakebutton"><a>stornieren</a></span>
+         <td>{{user.geburtsdatum}}</td>
+         <td>
            <router-link :to="{path: '../TeilnehmerEdit', query: {id: user.id }}" class="fakebutton">Bearbeiten</router-link>
-           <span class="fakebutton"><a>als PDF exportieren</a></span>
+           <span class="fakebutton"><a>PDF</a></span>
          </td>
        </tr>
      </table>
@@ -56,13 +59,22 @@ export default {
   data () {
     return {
       allusers: [],
-      errors: []
+      errors: [],
+      projectsOfUser: [],
+      allAvailableProjects: []
     };
   },
   created () {
     axios.get('http://localhost:8088/api/allusers')
     .then(response => {
       this.allusers = response.data
+    })
+    .catch(e => {
+      this.errors.push(e)
+    })
+    axios.get('http://localhost:8088/api/allprojects')
+    .then(response => {
+      this.allAvailableProjects = response.data
     })
     .catch(e => {
       this.errors.push(e)
@@ -164,6 +176,30 @@ export default {
     closeModal () {
       var modal = document.getElementById('delete');
       modal.style.display = 'none';
+    },
+    computeAge (dateOfBirth, projectDate) {
+      var projectDateFormat = new Date(dateOfBirth)
+      var dateOfBirthFormat = new Date(projectDate)
+      var diff = projectDateFormat - dateOfBirthFormat
+      return diff
+    },
+    getProjectName (userId) {
+      var result = ''
+      this.allAvailableProjects.forEach(function (project) {
+        project.anmeldungen.forEach(function (teilnehmer) {
+          if (userId === teilnehmer.id) {
+            result += project.name + ' '
+          }
+        })
+      })
+      return result
+    },
+    getProjectNames (projectList) {
+      var result = ''
+      projectList.forEach(function (project) {
+        result += '<div v-for=project in projectList>' + project.name + '</div>'
+      })
+      return result
     }
   }
 }
