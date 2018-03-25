@@ -143,7 +143,7 @@ public class AnmeldungToAdmin {
 
         teilnehmer.setNotfallKontakt(mappeNotfallKontakt(anmeldungJson));
         //TODO: Warum muss die Notrufnummer zweimal gesetzt werden?
-        teilnehmer.setNotrufnummer(anmeldungJson.getConditionsEmergencyPhoneNumber());
+        teilnehmer.setKrankenkasse(anmeldungJson.getConditionsEmergencyPhoneNumber());
 
         teilnehmer.setArzt(mappeArzt(anmeldungJson));
     }
@@ -190,11 +190,11 @@ public class AnmeldungToAdmin {
 
         // TODO: Aktuell haben wir keine Zuordnung im Anmeldefrontend von Allergien zu Medikamenten!
         return Arrays.asList(
-                new Allergie(anmeldungJson.getConditionsAllergies0(), null, null),
-                new Allergie(anmeldungJson.getConditionsAllergies1(), null, null),
-                new Allergie(anmeldungJson.getConditionsAllergies2(), null, null),
-                new Allergie(anmeldungJson.getConditionsAllergies3(), null, null),
-                new Allergie(anmeldungJson.getConditionsAllergies4(), null, null)
+                new Allergie(anmeldungJson.getConditionsAllergies0(), null),
+                new Allergie(anmeldungJson.getConditionsAllergies1(), null),
+                new Allergie(anmeldungJson.getConditionsAllergies2(), null),
+                new Allergie(anmeldungJson.getConditionsAllergies3(), null),
+                new Allergie(anmeldungJson.getConditionsAllergies4(), null)
         );
     }
 

@@ -11,12 +11,10 @@ public class Allergie {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long allergie_id;
     private String name;
-    private String medikamente;
     private String zusatzInformation;
 
-    public  Allergie(String name, String medikamente, String zusatzInformation) {
+    public  Allergie(String name, String zusatzInformation) {
         this.name = name;
-        this.medikamente = medikamente;
         this.zusatzInformation = zusatzInformation;
     }
 
@@ -25,8 +23,8 @@ public class Allergie {
     @Override
     public String toString() {
         return String.format(
-                "Allergie[id=%d, name='%s', information='%s', medikamente='%s']",
-                allergie_id, name, zusatzInformation, medikamente);
+                "Allergie[id=%d, name='%s', information='%s']",
+                allergie_id, name, zusatzInformation);
     }
 
 
@@ -36,14 +34,6 @@ public class Allergie {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getMedikamente() {
-        return medikamente;
-    }
-
-    public void setMedikamente(String medikamente) {
-        this.medikamente = medikamente;
     }
 
     public String getZusatzInformation() {

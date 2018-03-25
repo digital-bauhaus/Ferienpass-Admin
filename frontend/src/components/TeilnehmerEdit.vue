@@ -10,95 +10,209 @@
       <h1>Teilnehmerbearbeitung</h1>
       <form method="post" v-on:submit.prevent="updateUser">
         <h2>Allgemeine Informationen</h2>
-        <label for ="lastName">Nachname: </label>
-        <input type="text" id ="lastName" placeholder="Nachname" v-model="user.nachname" :value="user.nachname">
-        <label for ="firstName">Vorname: </label>
-        <input type="text" id="firstName" placeholder="Vorname" v-model="user.vorname" :value="user.vorname">
-        <label for ="birthDate">Geburtstag: </label>
-        <input type="text" id="birthDate" placeholder="Geburtstag" v-model="user.geburtsdatum" :value="user.geburtsdatum">
-        <label for ="street">Straße: </label>
-        <input type="text" id="street" placeholder="Straße" v-model="user.strasse" :value="user.strasse">
-        <label for ="postcode">Postleitzahl: </label>
-        <input type="text" id="postcode" placeholder="Postleitzahl" v-model="user.postleitzahl" :value="user.postleitzahl">
-        <label for ="city">Stadt: </label>
-        <input type="text" id="city" placeholder="Stadt" v-model="user.stadt" :value="user.stadt">
-        <label for ="telephone">Telefonnummer: </label>
-        <input type="text" id="telephone" placeholder="Telefonnummer" v-model="user.telefon" :value="user.telefon">
-        <label for ="healthcare">Krankenversicherungsnummer: </label>
-        <input type="text" id="healthcare" placeholder="Krankenversicherungsnummer" v-model="user.notrufnummer" :value="user.notrufnummer">
-
-          <fieldset>
-              <label><input v-model="user.erlaubeMedikamentation" type="checkbox" id="check">Darf behandelt werden</label><br/>
-              <label><input v-model="user.darfAlleinNachHause" type="checkbox" id="check">Darf schwimmen</label><br/>
-              <label><input v-model="user.darfReiten" type="checkbox" id="check">Darf reiten</label><br/>
-              <label><input v-model="user.darfSchwimmen" type="checkbox" id="check">Darf alleine nach Hause gehen</label><br/>
-              <label><input v-model="user.hatBezahlt" type="checkbox" id="check">Hat bezahlt</label><br/>
-          </fieldset>
-
+        <table border="0">
+        <tr>
+        <td><label for ="firstName">Vorname: </label></td>
+        <td><input type="text" id="firstName" placeholder="Vorname" v-model="user.vorname" :value="user.vorname"></td>
+        <td><label for ="street">Straße: </label></td>
+        <td><input type="text" id="street" placeholder="Straße" v-model="user.strasse" :value="user.strasse"></td>
+        </tr><tr>
+        <td><label for ="lastName">Nachname: </label></td>
+        <td><input type="text" id ="lastName" placeholder="Nachname" v-model="user.nachname" :value="user.nachname"></td>
+        <td><label for ="city">Stadt: </label></td>
+        <td><input type="text" id="city" placeholder="Stadt" v-model="user.stadt" :value="user.stadt"></td>
+        </tr><tr>
+        <td><label for ="birthDate">Geburtsdatum (Jahr,Monat,Tag): </label></td>
+        <td><input type="text" id="birthDate" placeholder="Geburtstag" v-model="user.geburtsdatum" :value="user.geburtsdatum"></td>
+        <td><label for ="postcode">Postleitzahl: </label></td>
+        <td><input type="text" id="postcode" placeholder="Postleitzahl" v-model="user.postleitzahl" :value="user.postleitzahl"></td>
+        </tr><tr>
+        <td><label for ="telephone">Telefonnummer: </label></td>
+        <td><input type="text" id="telephone" placeholder="Telefonnummer" v-model="user.telefon" :value="user.telefon"></td>
+        <td><label for ="healthcare">Krankenkasse: </label></td>
+        <td><input type="text" id="healthcare" v-model="user.krankenkasse" :value="user.krankenkasse"></td>
+        </tr>
+        </table>
+        <br />
+        <hr />
+        <h2>Weitere Angaben:</h2>
+        <table><tr>
+        <td><label><input v-model="user.erlaubeMedikamentation" type="checkbox" id="check">Darf behandelt werden</label></td>
+        <td><label><input v-model="user.darfAlleinNachHause" type="checkbox" id="check">Darf alleine nach Hause gehen</label></td>
+        <td><label><input v-model="user.darfReiten" type="checkbox" id="check">Darf reiten</label><br/></td>
+        </tr><tr>
+        <td><label><input v-model="user.darfSchwimmen" type="checkbox" id="check">Darf schwimmen</label><br/></td>
+        <td>Schwimmabzeichen:</td><td><input type="text" id="schwimmabzeichen" v-model="user.schwimmabzeichen" :value="user.schwimmabzeichen"></td>
+        </tr><tr>
+        <td><label><input v-model="user.hatBezahlt" type="checkbox" id="check">Hat bezahlt</label></td><td />
+        <td><label><input v-model="user.darfBehandeltWerden" type="checkbox" id="check">Behandlungserlaubnis bei Erkrankungen und Unfällen</label></td><td />
+        </tr>
+        </table>
+<br />
+<hr />
         <h2>Notfallkontaktdaten</h2>
-        <label for ="user.notfallKontakt.name">Name, Vorname:</label>
-        <input type="text" v-if="user.notfallKontakt.name" id="contactname" v-model="user.notfallKontakt.name" placeholder="Name" :value="user.notfallKontakt.name">
-        <label for ="user.notfallKontakt.address">Addresse:</label>
-        <input type="text" id="contactaddress" v-model="user.notfallKontakt.address" placeholder="Addresse" :value="user.notfallKontakt.address">
-        <label for ="user.notfallKontakt.telephone">Telefon:</label>
-        <input type="text" id="contacttelephone" v-model="user.notfallKontakt.telephone" placeholder="Telefon" :value="user.notfallKontakt.telephone">
+        <table><tr><th colspan="2">Notfallkontakt</th><th colspan="2">Arzt</th></tr>
+        <tr>
+        <td colspan="2">
+        <table>
+        <tr>
+        <td><label for ="user.notfallKontakt.name">Name, Vorname:</label></td>
+        <td><input type="text" v-model="user.notfallKontakt.name" :value="user.notfallKontakt.name"></td>
+        </tr><tr>
+        <td><label for ="user.notfallKontakt.address">Addresse:</label></td>
+        <td><input type="text" id="contactaddress" v-model="user.notfallKontakt.address" :value="user.notfallKontakt.address"></td>
+        </tr><tr>
+        <td><label for ="user.notfallKontakt.telephone">Telefon:</label></td>
+        <td><input type="text" id="contacttelephone" v-model="user.notfallKontakt.telephone" :value="user.notfallKontakt.telephone"></td>
+        </tr>
+        </table></td>
+        <td colspan="2">
+        <table><tr>
+        <td><label for ="user.arzt.name">Name, Vorname:</label></td>
+        <td><input type="text" id="doctorname" placeholder="Name" v-model="user.arzt.name" :value="user.arzt.name"></td>
+        </tr><tr>
+        <td><label for ="user.arzt.address">Adresse:</label></td>
+        <td><input type="text" id="doctoraddress" v-model="user.arzt.address" placeholder="Addresse" :value="user.arzt.address"></td>
+        </tr><tr>
+        <td><label for ="user.arzt.telephone">Telefon:</label></td>
+        <td><input type="text" id="doctortelephone" v-model="user.arzt.telephone" placeholder="Telefon" :value="user.arzt.telephone"></td>
+        </tr></table></td>
+        </tr></table>
 
-        <h2>Arztdaten</h2>
-        <label for ="user.arzt.name">Name, Vorname:</label>
-        <input type="text" id="doctorname" placeholder="Name" v-model="user.arzt.name" :value="user.arzt.name">
-        <label for ="user.arzt.address">Adresse:</label>
-        <input type="text" id="doctoraddress" v-model="user.arzt.address" placeholder="Addresse" :value="user.arzt.address">
-        <label for ="user.arzt.telephone">Telefon:</label>
-        <input type="text" id="doctortelephone" v-model="user.arzt.telephone" placeholder="Telefon" :value="user.arzt.telephone">
-
+        <input type="submit" value="Änderung speichern">
+        </form>
+        <br />
+        <hr />
+        <form>
         <h2>Einschränkungen</h2>
-        <h3>Allergien</h3>
-        <div v-if="user.allergien">
+        <table><tr>
+        <th>Allergien</th><th>Krankheiten</th></tr>
+        <tr>
+        <td>
         <table>
         <tr><th>Name</th><th>Information</th><th>Löschen</th></tr>
          <tr v-for="(allergie, index) of user.allergien">
-         <td><input type="text" id="allergie_n" placeholder="Keine Allergie" v-model="allergie.name" :value="allergie.name"></td>
-         <td><input type="text" id="allergie_info" placeholder="-" v-model="allergie.information" :value="allergie.information"></td>
+         <td><input type="text" id="allergie_n" v-model="allergie.name" :value="allergie.name"></td>
+         <td><input type="text" id="allergie_info" v-model="allergie.zusatzInformation" :value="allergie.zusatzInformation"></td>
          <td><button v-on:click="deleteListItem(user.id,5,index)">Löschen</button></td>
         </tr>
-        </table>
-        </div>
-        <h3>Krankheiten</h3>
-        <div v-if="user.krankheiten">
+        <tr><td><input type="text" id="newAllergie" v-model="newAllergie.name" :value="newAllergie.name"></td>
+         <td><input type="text" id="allergie_info" v-model="newAllergie.information" :value="newAllergie.information"></td>
+         <td><button v-on:click="addListItem(user.id,5,index)">Hinzufügen</button></td>
+         </tr>
+        </table></td><td>
         <table>
         <tr><th>Name</th><th>Information</th><th>Löschen</th></tr>
         <tr v-for="(krankheit, index) of user.krankheiten">
         <td><input type="text" id="krankheit_n" placeholder="Keine Krankheit" v-model="krankheit.name" :value="krankheit.name"></td>
-        <td><input type="text" id="krankheit_info" placeholder="-" v-model="krankheit.information" :value="krankheit.information"></td>
+        <td><input type="text" id="krankheit_info" v-model="krankheit.information" :value="krankheit.information"></td>
         <td><button v-on:click="deleteListItem(user.id,2,index)">Löschen</button></td>
         </tr>
+        <tr><td><input type="text" id="newKrankheit" v-model="newKrankheit.name" :value="newKrankheit.name"></td>
+         <td><input type="text" id="newKrankheit" v-model="newKrankheit.information" :value="newKrankheit.information"></td>
+         <td><button v-on:click="addListItem(user.id,2,index)">Hinzufügen</button></td>
+         </tr>
         </table>
-        </div>
-        <h3>Behinderungen</h3>
-        <div v-if="user.behinderungen">
+        </td></tr>
+        </table>
+
+        <table><tr>
+        <th>Hitzeempfindlichkeit</th><th>Medikamente</th></tr>
+        <tr>
+        <td>
         <table>
-        <tr><th>Name</th><th>Information</th><th>Code</th><th>Löschen</th></tr>
-        <tr v-for="(behinderung, index) of user.behinderungen">
-        <td><input type="text" id="behinderung_n" placeholder="Keine Behinderung" v-model="behinderung.name" :value="behinderung.name"></td>
-        <td><input type="text" id="behinderung_info" placeholder="-" v-model="behinderung.information" :value="behinderung.information"></td>
-        <td><input type="text" id="behinderung_code" placeholder="-" v-model="behinderung.code.d_code" :value="behinderung.code.d_code"></td>
-        <td><button v-on:click="deleteListItem(user.id,3,index)">Löschen</button></td>
+        <tr><th>Name</th><th>Information</th><th>Löschen</th></tr>
+        <tr v-for="(hitzeempfindlichkeit, index) of user.hitzeempfindlichkeiten">
+        <td><input type="text" id="hitze_n" v-model="hitzeempfindlichkeit.name" :value="hitzeempfindlichkeit.name"></td>
+        <td><input type="text" id="hitze_info" v-model="hitzeempfindlichkeit.information" :value="hitzeempfindlichkeit.information"></td>
+        <td><button v-on:click="deleteListItem(user.id,7,index)">Löschen</button></td>
+        </tr>
+        <tr><td><input type="text" id="newHitze" v-model="newHitze.name" :value="newHitze.name"></td>
+        <td><input type="text" id="newHitze_info" v-model="newHitze.information" :value="newHitze.information"></td>
+        <td><button v-on:click="addListItem(user.id,7,index)">Hinzufügen</button></td>
+        </tr>
+        </table></td><td>
+        <table>
+        <tr><th>Name</th><th>Information</th><th>Löschen</th></tr>
+        <tr v-for="(medikamente, index) of user.medikamente">
+        <td><input type="text" id="medikamente_n" placeholder="Keine Krankheit" v-model="medikamente.name" :value="medikamente.name"></td>
+        <td><input type="text" id="medikamente_info" v-model="medikamente.information" :value="medikamente.information"></td>
+        <td><button v-on:click="deleteListItem(user.id,6,index)">Löschen</button></td>
+        </tr>
+        <tr><td><input type="text" id="newMedikamente" v-model="newMedikamente.name" :value="newMedikamente.name"></td>
+        <td><input type="text" id="newMedikamenteI" v-model="newMedikamente.information" :value="newMedikamente.information"></td>
+        <td><button v-on:click="addListItem(user.id,6,index)">Hinzufügen</button></td>
         </tr>
         </table>
-        </div>
-        <h3>Essensbesonderheiten</h3>
-        <div v-if="user.essenLimitierungen">
+        </td></tr>
+        </table>
+
+        <table><tr><th>Ernährungsbesonderheiten</th></tr><tr><td>
         <table>
         <tr><th>Name</th><th>Information</th><th>Löschen</th></tr>
         <tr v-for="(essen, index) of user.essenLimitierungen">
-        <td><input type="text" id="essen_n" placeholder="Keine Besonderheiten" v-model="essen.name" :value="essen.name"></td>
-        <td><input type="text" id="essen_info" placeholder="-" v-model="essen.information" :value="essen.information"></td>
+        <td><input type="text" id="essen_n" v-model="essen.name" :value="essen.name"></td>
+        <td><input type="text" id="essen_info" v-model="essen.information" :value="essen.information"></td>
         <td><button v-on:click="deleteListItem(user.id,4,index)">Löschen</button></td>
         </tr>
+        <tr><td><input type="text" id="newEssensbesonderheit" v-model="newEssensbesonderheit.name" :value="newEssensbesonderheit.name"></td>
+        <td><input type="text" id="newEssensbesonderheit" v-model="newEssensbesonderheit.information" :value="newEssensbesonderheit.information"></td>
+        <td><button v-on:click="addListItem(user.id,4,index)">Hinzufügen</button></td>
+        </tr>
         </table>
-        </div>
-        </div>
+        </td></tr></table>
+<br />
+<hr />
 
+      <h3>Behinderungen</h3>
+      <label><b>Behinderungsausweis liegt vor:</b><input v-model="user.liegtBehinderungVor" type="checkbox" id="check"></label> <br />
+      <table>
+      <tr><th colspan="4">Art der Behinderung</th></tr>
+      <tr>
+      <td><label><input v-model="user.behinderung.merkzeichen_ErheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G" type="checkbox" id="check">„G“ (erhebliche Gehbehinderung) </label></td>
+      <td><label><input v-model="user.behinderung.merkzeichen_Hilflosigkeit_H" type="checkbox" id="check">„H“ (Hilflosigkeit) </label></td>
+      <td><label><input v-model="user.behinderung.merkzeichen_AussergewoehnlicheGehbehinderung_aG" type="checkbox" id="check">„aG“ (außergewöhnliche Gehbehinderung) </label></td>
+      </tr><tr>
+      <td><label><input v-model="user.behinderung.merkzeichen_Blind_Bl" type="checkbox" id="check">„Bl“ (Blindheit) </label></td>
+      <td><label><input v-model="user.behinderung.merkzeichen_Gehoerlos_Gl" type="checkbox" id="check">„Gl“ (Gehörlosigkeit) </label></td>
+      <td><label><input v-model="user.behinderung.merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B" type="checkbox" id="check">„B“ (Berechtigung zur Mitnahme einer Begleitperson) </label></td>
+      </tr><tr>
+      <td><label><input v-model="user.behinderung.merkzeichen_Taubblind_TBL" type="checkbox" id="check">„TBL“ (Taubblindheit)</label></td>
+      <td><label><input v-model="user.behinderung.rollstuhlNutzungNotwendig" type="checkbox" id="check">Rollstuhlnutzung </label></td>
+      <td>anderes Hilfsmittel:<input type="text" id="hilfsmittel" v-model="user.behinderung.weitereHilfsmittel" :value="user.behinderung.weitereHilfsmittel"></td></tr>
+      </table>
+      <br />
+      </form>
+      <form>
+      <label><b>Wertmarke vorhanden:</b><input v-model="user.behinderung.wertmarkeVorhanden" type="checkbox" id="check"></label> <br />
+      <br />
+      <label><b>Begleitung notwending:</b><input v-model="user.behinderung.begleitungNotwendig" type="checkbox" id="check"></label> <br />
+
+      <div v-if="user.behinderung.begleitungNotwendig">
+      <table><tr>
+      <td><label><input v-model="user.behinderung.begleitpersonPflege" type="checkbox" id="check">Pflege </label></td>
+      <td><label><input v-model="user.behinderung.begleitpersonMedizinischeVersorgung" type="checkbox" id="check">Medizinische Versorgung </label></td>
+      <td><label><input v-model="user.behinderung.begleitpersonMobilitaet" type="checkbox" id="check">Mobilität</label></td>
+      </tr><tr>
+      <td><label><input v-model="user.behinderung.begleitpersonOrientierung" type="checkbox" id="check">Orientierung</label></td>
+      <td><label><input v-model="user.behinderung.begleitpersonSozialeBegleitung" type="checkbox" id="check">Soziale Begleitung</label></td>
+      <td><label>Sinneswahrnehmung</label><input type="text" v-model="user.behinderung.eingeschraenkteSinne"></td>
+      </tr>
+      </table>
+      </div>
+      <br />
+      <table><tr><td>Hinweise zum Umgang mit Kind</td><td><textarea rows="4" cols="50" v-model="user.behinderung.hinweiseZumUmgangMitDemKind" /></td></tr></table>
+      <br />
+      <label><b>Benötigt Unterstützung bei der Organisation der Begleitperson</b><input v-model="user.behinderung.unterstuetzungSucheBegleitpersonNotwendig" type="checkbox" id="check"></label> <br />
+
+      <div v-if="user.behinderung.unterstuetzungSucheBegleitpersonNotwendig">
+      <table><tr>
+      <td>Kontaktdaten des regulären Dienstes:</td><td><textarea rows="4" cols="50" v-model="user.behinderung.gewohnterBegleitpersonenDienstleister" /></td></tr></table>
+      </div>
+      <br />
+      <label><b>Beantragung der Kostenübernahme</b><input v-model="user.behinderung.beantragungKostenuebernahmeBegleitpersonNotwendig" type="checkbox" id="check"></label> <br />
+<br />
+<hr />
       <h2>Angemeldete Projekte</h2>
       <div v-if="projectsOfUser">
       <table>
@@ -120,7 +234,8 @@
       </tr>
       </table>
       </div>
-
+<br />
+<hr />
       <h2>Zu folgendem Projekt eintragen:</h2>
       <div v-if="projectsOfUser">
       <table>
@@ -131,8 +246,9 @@
       </tr>
       </table>
       </div>
-      <input type="submit" value="Update">
-    </form>
+      </form>
+<br />
+<hr />
     </main>
       <div :class="popupClass">✔ Erfolgreich!</div>
     </html>
@@ -150,6 +266,12 @@ export default {
       allAvailableProjects: [],
       allRawProjects: [],
       canceldProjectsOfUser: [],
+      newAllergie: [],
+      newKrankheit: [],
+      newBehinderung: [],
+      newEssensbesonderheit: [],
+      newHitze: [],
+      newMedikamente: [],
       popupClass: 'fadeOut',
       errors: []
     };
@@ -160,35 +282,27 @@ export default {
     this.getAllProjects()
   },
   methods: {
-    postProject () {
+    updateUser () {
       var params = new URLSearchParams();
       var id = parseInt(this.$route.query.id);
-      params.append('id', id);
-      params.append('firstName', this.userFirstname);
-      params.append('lastName', this.userLastname);
-      params.append('birthDate', this.userBirthdate);
-      params.append('street', this.userStreet);
-      params.append('city', this.userCity);
-      params.append('postcode', this.userPostcode);
-      params.append('telephone', this.userTelephone);
-      params.append('healthcareNr', this.userHealthcarenr);
-      var treatment = (this.userAllowtreatment === true);
-      var homealone = (this.userAllowhomealone === true);
-      var riding = (this.userAllowride === true);
-      var swimming = (this.userAllowswim === true);
-      var payed = (this.userHaspayed === true);
-      params.append('allowTreatment', treatment);
-      params.append('allowHomeAlone', homealone);
-      params.append('allowRiding', riding);
-      params.append('allowSwimming', swimming);
-      params.append('hasPayed', payed);
-      params.append('contactName', this.userContactname);
-      params.append('contactAddress', this.userContactaddress);
-      params.append('contactTelephone', this.userContacttelephone);
-      params.append('doctorName', this.userDoctorname);
-      params.append('doctorAddress', this.userDoctoraddress);
-      params.append('doctorTelephone', this.userDoctortelephone);
-      axios.post('http://localhost:8088/api/updateuser', params)
+      params.append('userId', id);
+      params.append('vorname', this.user.vorname);
+      params.append('nachname', this.user.nachname);
+      params.append('geburtsdatum', this.user.geburtsdatum);
+      params.append('strasse', this.user.strasse);
+      params.append('stadt', this.user.stadt);
+      params.append('plz', this.user.postleitzahl);
+      params.append('tel', this.user.telefon);
+      params.append('krankenkasse', this.user.krankenkasse);
+      params.append('kontaktName', this.user.notfallKontakt.name);
+      params.append('kontaktAdresse', this.user.notfallKontakt.address);
+      params.append('kontaktTel', this.user.notfallKontakt.telephone);
+
+      params.append('arztName', this.user.arzt.name);
+      params.append('arztAdresse', this.user.arzt.address);
+      params.append('arztTel', this.user.arzt.telephone);
+
+      axios.post('http://localhost:8088/api/updateUser', params)
       .then(response => {
         this.popupClass = 'fadeIn'
         var self = this;
@@ -199,40 +313,6 @@ export default {
       .catch(e => {
         this.errors.push(e)
       })
-    },
-    updateUser () {
-      axios.post('http://localhost:8088/api/cancelproject', {
-        user_id: this.user.id,
-        vorname: this.user.vorname,
-        nachname: this.user.nachname,
-        geburtsdatum: this.user.geburtsdatum,
-        strasse: this.user.strasse,
-        stadt: this.user.stadt,
-        postleitzahlt: this.user.postleitzahl,
-        telefon: this.user.telefon,
-        notrufnummer: this.user.notrufnummer,
-        medikamente: this.user.erlaubeMedikamentation,
-        nachHause: this.user.darfAlleinNachHause,
-        reiten: this.user.darfReiten,
-        schwimmen: this.user.darfSchwimmen,
-        bezahlt: this.user.bezahlt,
-        kname: this.user.notfallKontakt.name,
-        kaddress: this.user.notfallKontakt.address,
-        ktelefon: this.user.notfallKontakt.telephone,
-        aname: this.user.arzt.name,
-        aaddress: this.user.arzt.address,
-        atel: this.user.arzt.telephone
-      })
-        .then(response => {
-          this.popupClass = 'fadeIn'
-          var self = this;
-          setTimeout(function () {
-            self.popupClass = 'fadeOut';
-          }, 2000);
-        })
-          .catch(e => {
-            this.errors.push(e)
-          })
     },
     deleteListItem (id, typeList, itemPos) {
     /* note that the numbers of variable typeList correspond to the index value of the enumeration ListType in the backend */
@@ -298,18 +378,19 @@ export default {
     getAllProjects () {
       axios.get('http://localhost:8088/api/allprojects')
         .then(response => {
-          this.allRawProjects = response.data
+          this.allAvailableProjects = response.data
         })
         .catch(e => {
           this.errors.push(e)
         })
-      for (var i = 0; i < this.allRawProjects.length; i++) {
+      console.log(this.allRawProjects)
+      /* for (var i = 0; i < this.allRawProjects.length; i++) {
         this.projectsOfUser.forEach(function (project) {
           if (project.id === this.allAvailableProjects[i].id) {
             this.allAvailableProjects[this.allAvailableProjects.length] = project
           }
         })
-      }
+      } */
     },
     getProjectsOfUser () {
       var id = parseInt(this.$route.query.id);

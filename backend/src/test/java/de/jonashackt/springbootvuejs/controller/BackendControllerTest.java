@@ -77,8 +77,8 @@ public class BackendControllerTest {
         Teilnehmer user = teilnehmerRepositoryTest.createUser();
 
         //add some allergies
-        Allergie a1 = new Allergie("Arbeiten","Viele Aufgaben","Viel reden");
-        Allergie a2 = new Allergie("Freizeit","Urlaub","Spaß haben");
+        Allergie a1 = new Allergie("Arbeiten","Viele Aufgaben und viel reden");
+        Allergie a2 = new Allergie("Freizeit","Urlaub und Spaß haben");
         user.setAllergien(new ArrayList<>());
         user.getAllergien().add(a1);
         user.getAllergien().add(a2);
@@ -99,6 +99,20 @@ public class BackendControllerTest {
         user.getKrankheiten().add(k1);
         user.getKrankheiten().add(k2);
         assertThat(user.getKrankheiten().size(), is(2));
+
+        //add some drugs
+        Medikament m1 = new Medikament("Nasentropfen","2x am Tag");
+        Medikament m2 = new Medikament("Hustensaft", "nach dem Essen");
+        user.setMedikamente(new ArrayList<>());
+        user.getMedikamente().add(m1);
+        user.getMedikamente().add(m2);
+        assertThat(user.getMedikamente().size(),is(2));
+
+        //add some heat problems
+        Hitzeempfindlichkeit h1 = new Hitzeempfindlichkeit("heiss","ausschlag muss behandelt werden");
+        user.setHitzeempfindlichkeiten(new ArrayList<>());
+        user.getHitzeempfindlichkeiten().add(h1);
+        assertThat(user.getHitzeempfindlichkeiten().size(),is(1));
 
 
         Long userId =
@@ -125,6 +139,8 @@ public class BackendControllerTest {
         assertThat(responseUser.getAllergien().size(), is(2));
         assertThat(responseUser.getEssenLimitierungen().size(), is(2));
         assertThat(responseUser.getKrankheiten().size(), is(2));
+        assertThat(responseUser.getHitzeempfindlichkeiten().size(),is(1));
+        assertThat(responseUser.getMedikamente().size(),is(2));
 
         //Begin with test
 
@@ -208,6 +224,59 @@ public class BackendControllerTest {
                         .extract().as(Teilnehmer.class);
         assertThat(responseUser.getKrankheiten().size(),is(1));
         assertThat(responseUser.getKrankheiten().get(0).getName(),is(k1.getName()));
+
+        //Remove second drug
+        newID_Map = new HashMap<String, Long>();
+        newID_Map.put("user_id",userId);
+        newID_Map.put("type", new Integer(ListType.medikamente.ordinal()).longValue());
+        newID_Map.put("item", new Long(1));
+        success =
+                given()
+                        .body(newID_Map)
+                        .contentType(ContentType.JSON)
+                        .when()
+                        .post(BASE_URL+"/deletelistitem")
+                        .then()
+                        .statusCode(HttpStatus.SC_OK)
+                        .extract().as(Boolean.class);
+        assertThat(success,is(true));
+        responseUser =
+                given()
+                        .pathParam("id", userId)
+                        .when()
+                        .get(BASE_URL + "/user/{id}")
+                        .then()
+                        .statusCode(HttpStatus.SC_OK)
+                        .assertThat()
+                        .extract().as(Teilnehmer.class);
+        assertThat(responseUser.getMedikamente().size(),is(1));
+        assertThat(responseUser.getMedikamente().get(0).getName(),is(m1.getName()));
+
+        //Remove hitzeempfindlichkeit
+        newID_Map = new HashMap<String, Long>();
+        newID_Map.put("user_id",userId);
+        newID_Map.put("type", new Integer(ListType.hitzeempfindlichkeit.ordinal()).longValue());
+        newID_Map.put("item", new Long(0));
+        success =
+                given()
+                        .body(newID_Map)
+                        .contentType(ContentType.JSON)
+                        .when()
+                        .post(BASE_URL+"/deletelistitem")
+                        .then()
+                        .statusCode(HttpStatus.SC_OK)
+                        .extract().as(Boolean.class);
+        assertThat(success,is(true));
+        responseUser =
+                given()
+                        .pathParam("id", userId)
+                        .when()
+                        .get(BASE_URL + "/user/{id}")
+                        .then()
+                        .statusCode(HttpStatus.SC_OK)
+                        .assertThat()
+                        .extract().as(Teilnehmer.class);
+        assertThat(responseUser.getHitzeempfindlichkeiten().size(),is(0));
 
     }
 
