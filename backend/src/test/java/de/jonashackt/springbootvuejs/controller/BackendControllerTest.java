@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.function.Predicate;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -376,6 +377,19 @@ public class BackendControllerTest {
                         .assertThat()
                         .extract().as(Teilnehmer.class);
 
+        assertBasisInformationen(responseUser);
+
+        assertProjekte(responseUser);
+
+        assertAllergienKrankheitenNotfallkontaktEtc(responseUser);
+
+        assertDatenZuBehinderungen(responseUser);
+
+        assertErklaerung(responseUser);
+
+    }
+
+    private void assertBasisInformationen(Teilnehmer responseUser) {
         assertThat(responseUser.getVorname(), is("Paul"));
         assertThat(responseUser.getNachname(), is("Siegmund"));
         assertThat(responseUser.getGeburtsdatum(), is(LocalDate.of(2019,1,10)));
@@ -383,7 +397,19 @@ public class BackendControllerTest {
         assertThat(responseUser.getPostleitzahl(), is("99423"));
         assertThat(responseUser.getStadt(), is("Weimar"));
         assertThat(responseUser.getTelefon(), is("03643 / 123456"));
+    }
 
+    private void assertProjekte(Teilnehmer responseUser) {
+        List<Projekt> angemeldeteProjekte = responseUser.getAngemeldeteProjekte();
+        //assertThat(listeEnthaeltEinProjektMitGleicherId(angemeldeteProjekte, 1), is(true));
+    }
+
+    private boolean listeEnthaeltEinProjektMitGleicherId(List<Projekt> angemeldeteProjekte, long projektId) {
+        Predicate<Projekt> projektPredicate = angemeldetedProjekt -> angemeldetedProjekt.getId() == projektId;
+        return angemeldeteProjekte.stream().anyMatch(projektPredicate);
+    }
+
+    private void assertAllergienKrankheitenNotfallkontaktEtc(Teilnehmer responseUser) {
         List<Allergie> allergien = responseUser.getAllergien();
         assertThat(allergien.get(0).getName(), is("Heuschnupfen"));
         assertThat(allergien.get(1).getName(), is("Hausstaub"));
@@ -420,7 +446,9 @@ public class BackendControllerTest {
         assertThat(hausarzt.getName(), is("Dr. Martin Schreiber"));
         assertThat(hausarzt.getAddress(), is("Amadeusstrasse 2"));
         assertThat(hausarzt.getTelephone(), is("0364 / 0123456"));
+    }
 
+    private void assertDatenZuBehinderungen(Teilnehmer responseUser) {
         assertThat(responseUser.isLiegtBehinderungVor(), is(true));
         Behinderung behinderung = responseUser.getBehinderung();
 
@@ -451,11 +479,12 @@ public class BackendControllerTest {
         assertThat(behinderung.isUnterstuetzungSucheBegleitpersonNotwendig(), is(true));
         assertThat(behinderung.getGewohnterBegleitpersonenDienstleister(), is("Mensch im Mittelpunkt e.V."));
         assertThat(behinderung.isBeantragungKostenuebernahmeBegleitpersonNotwendig(), is(false));
+    }
 
+    private void assertErklaerung(Teilnehmer responseUser) {
         assertThat(responseUser.isDarfAlleinNachHause(), is(true));
         assertThat(responseUser.isDarfReiten(), is(false));
         assertThat(responseUser.isDarfSchwimmen(), is(false));
-
     }
 
 
@@ -464,10 +493,10 @@ public class BackendControllerTest {
      ****************************/
     @Test
     public void addNewProjectAndetrieveItBack() {
-        Projekt p = TeilnehmerRepositoryTest.createSingleProject();
+        Projekt projekt = TeilnehmerRepositoryTest.createSingleProject();
         Long projectID =
                 given()
-                .body(p)
+                .body(projekt)
                 .contentType(ContentType.JSON)
                 .when()
                 .post(BASE_URL+"/addproject")
@@ -476,7 +505,7 @@ public class BackendControllerTest {
                 .extract()
                 .body().as(Long.class);
 
-        Projekt p_retrieved =
+        Projekt responseProjekt =
                 given()
                 .pathParam("projekt_id", projectID)
                 .when()
@@ -485,15 +514,15 @@ public class BackendControllerTest {
                 .statusCode(HttpStatus.SC_OK)
                 .assertThat()
                 .extract().as(Projekt.class);
-        assertThat(projectID, is(p_retrieved.getId()));
-        assertThat(p_retrieved.getName(), is(p.getName()));
-        assertThat(p_retrieved.getSlotsFrei(), is(p.getSlotsFrei()));
-        assertThat(p_retrieved.getKosten(), is(p.getKosten()));
-        assertThat(p_retrieved.getAlterLimitierung(), is(p.getAlterLimitierung()));
-        assertThat(p_retrieved.getDatum(), is(p.getDatum()));
-        assertThat(p_retrieved.getSlotsGesamt(), is(p.getSlotsGesamt()));
-        assertThat(p_retrieved.getWebLink(), is(p.getWebLink()));
-        assertThat(p_retrieved.getAnmeldungen(), is(p.getAnmeldungen()));
+        assertThat(projectID, is(responseProjekt.getId()));
+        assertThat(responseProjekt.getName(), is(projekt.getName()));
+        assertThat(responseProjekt.getSlotsFrei(), is(projekt.getSlotsFrei()));
+        assertThat(responseProjekt.getKosten(), is(projekt.getKosten()));
+        assertThat(responseProjekt.getAlterLimitierung(), is(projekt.getAlterLimitierung()));
+        assertThat(responseProjekt.getDatum(), is(projekt.getDatum()));
+        assertThat(responseProjekt.getSlotsGesamt(), is(projekt.getSlotsGesamt()));
+        assertThat(responseProjekt.getWebLink(), is(projekt.getWebLink()));
+        assertThat(responseProjekt.getAnmeldungen(), is(projekt.getAnmeldungen()));
     }
 
 

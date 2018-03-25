@@ -44,6 +44,25 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "projects__id-19",
         "projects__id-20",
         "projects__id-21",
+        "projects__id-22",
+        "projects__id-23",
+        "projects__id-24",
+        "projects__id-25",
+        "projects__id-26",
+        "projects__id-27",
+        "projects__id-28",
+        "projects__id-29",
+        "projects__id-30",
+        "projects__id-31",
+        "projects__id-32",
+        "projects__id-33",
+        "projects__id-34",
+        "projects__id-35",
+        "projects__id-36",
+        "projects__id-37",
+        "projects__id-38",
+        "projects__id-39",
+        "projects__id-40",
         "conditions__allergies-0",
         "conditions__allergies-1",
         "conditions__allergies-2",
@@ -171,6 +190,44 @@ public class AnmeldungJson {
     private Boolean projectsId20;
     @JsonProperty("projects__id-21")
     private Boolean projectsId21;
+    @JsonProperty("projects__id-22")
+    private Boolean projectsId22;
+    @JsonProperty("projects__id-23")
+    private Boolean projectsId23;
+    @JsonProperty("projects__id-24")
+    private Boolean projectsId24;
+    @JsonProperty("projects__id-25")
+    private Boolean projectsId25;
+    @JsonProperty("projects__id-26")
+    private Boolean projectsId26;
+    @JsonProperty("projects__id-27")
+    private Boolean projectsId27;
+    @JsonProperty("projects__id-28")
+    private Boolean projectsId28;
+    @JsonProperty("projects__id-29")
+    private Boolean projectsId29;
+    @JsonProperty("projects__id-30")
+    private Boolean projectsId30;
+    @JsonProperty("projects__id-31")
+    private Boolean projectsId31;
+    @JsonProperty("projects__id-32")
+    private Boolean projectsId32;
+    @JsonProperty("projects__id-33")
+    private Boolean projectsId33;
+    @JsonProperty("projects__id-34")
+    private Boolean projectsId34;
+    @JsonProperty("projects__id-35")
+    private Boolean projectsId35;
+    @JsonProperty("projects__id-36")
+    private Boolean projectsId36;
+    @JsonProperty("projects__id-37")
+    private Boolean projectsId37;
+    @JsonProperty("projects__id-38")
+    private Boolean projectsId38;
+    @JsonProperty("projects__id-39")
+    private Boolean projectsId39;
+    @JsonProperty("projects__id-40")
+    private Boolean projectsId40;
     @JsonProperty("conditions__allergies-0")
     private String conditionsAllergies0;
     @JsonProperty("conditions__allergies-1")
@@ -606,6 +663,196 @@ public class AnmeldungJson {
     @JsonProperty("projects__id-21")
     public void setProjectsId21(Boolean projectsId21) {
         this.projectsId21 = projectsId21;
+    }
+
+    @JsonProperty("projects__id-22")
+    public Boolean getProjectsId22() {
+        return projectsId22;
+    }
+
+    @JsonProperty("projects__id-22")
+    public void setProjectsId22(Boolean projectsId22) {
+        this.projectsId22 = projectsId22;
+    }
+
+    @JsonProperty("projects__id-23")
+    public Boolean getProjectsId23() {
+        return projectsId23;
+    }
+
+    @JsonProperty("projects__id-23")
+    public void setProjectsId23(Boolean projectsId23) {
+        this.projectsId23 = projectsId23;
+    }
+
+    @JsonProperty("projects__id-24")
+    public Boolean getProjectsId24() {
+        return projectsId24;
+    }
+
+    @JsonProperty("projects__id-24")
+    public void setProjectsId24(Boolean projectsId24) {
+        this.projectsId24 = projectsId24;
+    }
+
+    @JsonProperty("projects__id-25")
+    public Boolean getProjectsId25() {
+        return projectsId25;
+    }
+
+    @JsonProperty("projects__id-25")
+    public void setProjectsId25(Boolean projectsId25) {
+        this.projectsId25 = projectsId25;
+    }
+
+    @JsonProperty("projects__id-26")
+    public Boolean getProjectsId26() {
+        return projectsId26;
+    }
+
+    @JsonProperty("projects__id-26")
+    public void setProjectsId26(Boolean projectsId26) {
+        this.projectsId26 = projectsId26;
+    }
+
+    @JsonProperty("projects__id-27")
+    public Boolean getProjectsId27() {
+        return projectsId27;
+    }
+
+    @JsonProperty("projects__id-27")
+    public void setProjectsId27(Boolean projectsId27) {
+        this.projectsId27 = projectsId27;
+    }
+
+    @JsonProperty("projects__id-28")
+    public Boolean getProjectsId28() {
+        return projectsId28;
+    }
+
+    @JsonProperty("projects__id-28")
+    public void setProjectsId28(Boolean projectsId28) {
+        this.projectsId28 = projectsId28;
+    }
+
+    @JsonProperty("projects__id-29")
+    public Boolean getProjectsId29() {
+        return projectsId29;
+    }
+
+    @JsonProperty("projects__id-29")
+    public void setProjectsId29(Boolean projectsId29) {
+        this.projectsId29 = projectsId29;
+    }
+
+    @JsonProperty("projects__id-30")
+    public Boolean getProjectsId30() {
+        return projectsId30;
+    }
+
+    @JsonProperty("projects__id-30")
+    public void setProjectsId30(Boolean projectsId30) {
+        this.projectsId30 = projectsId30;
+    }
+
+    @JsonProperty("projects__id-31")
+    public Boolean getProjectsId31() {
+        return projectsId31;
+    }
+
+    @JsonProperty("projects__id-31")
+    public void setProjectsId31(Boolean projectsId31) {
+        this.projectsId31 = projectsId31;
+    }
+
+    @JsonProperty("projects__id-32")
+    public Boolean getProjectsId32() {
+        return projectsId32;
+    }
+
+    @JsonProperty("projects__id-32")
+    public void setProjectsId32(Boolean projectsId32) {
+        this.projectsId32 = projectsId32;
+    }
+
+    @JsonProperty("projects__id-33")
+    public Boolean getProjectsId33() {
+        return projectsId33;
+    }
+
+    @JsonProperty("projects__id-33")
+    public void setProjectsId33(Boolean projectsId33) {
+        this.projectsId33 = projectsId33;
+    }
+
+    @JsonProperty("projects__id-34")
+    public Boolean getProjectsId34() {
+        return projectsId34;
+    }
+
+    @JsonProperty("projects__id-34")
+    public void setProjectsId34(Boolean projectsId34) {
+        this.projectsId34 = projectsId34;
+    }
+
+    @JsonProperty("projects__id-35")
+    public Boolean getProjectsId35() {
+        return projectsId35;
+    }
+
+    @JsonProperty("projects__id-35")
+    public void setProjectsId35(Boolean projectsId35) {
+        this.projectsId35 = projectsId35;
+    }
+
+    @JsonProperty("projects__id-36")
+    public Boolean getProjectsId36() {
+        return projectsId36;
+    }
+
+    @JsonProperty("projects__id-36")
+    public void setProjectsId36(Boolean projectsId36) {
+        this.projectsId36 = projectsId36;
+    }
+
+    @JsonProperty("projects__id-37")
+    public Boolean getProjectsId37() {
+        return projectsId37;
+    }
+
+    @JsonProperty("projects__id-37")
+    public void setProjectsId37(Boolean projectsId37) {
+        this.projectsId37 = projectsId37;
+    }
+
+    @JsonProperty("projects__id-38")
+    public Boolean getProjectsId38() {
+        return projectsId38;
+    }
+
+    @JsonProperty("projects__id-38")
+    public void setProjectsId38(Boolean projectsId38) {
+        this.projectsId38 = projectsId38;
+    }
+
+    @JsonProperty("projects__id-39")
+    public Boolean getProjectsId39() {
+        return projectsId39;
+    }
+
+    @JsonProperty("projects__id-39")
+    public void setProjectsId39(Boolean projectsId39) {
+        this.projectsId39 = projectsId39;
+    }
+
+    @JsonProperty("projects__id-40")
+    public Boolean getProjectsId40() {
+        return projectsId40;
+    }
+
+    @JsonProperty("projects__id-40")
+    public void setProjectsId40(Boolean projectsId40) {
+        this.projectsId40 = projectsId40;
     }
 
     @JsonProperty("conditions__allergies-0")

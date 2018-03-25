@@ -9,13 +9,13 @@ import java.util.List;
 
 public class AnmeldungToAdmin {
 
-    public static Teilnehmer mapAnmeldedataToTeilnehmer(AnmeldungJson anmeldungJson) {
+    public static Teilnehmer mapAnmeldedataToTeilnehmer(AnmeldungJson anmeldungJson, List<Projekt> alleProjekte) {
 
         Teilnehmer teilnehmer = new Teilnehmer();
 
         mappeBasisInformationen(anmeldungJson, teilnehmer);
 
-        // TODO: map projects
+        mappeProjekte(anmeldungJson, teilnehmer, alleProjekte);
 
         mappeAllergienKrankheitenNotfallkontaktEtc(anmeldungJson, teilnehmer);
 
@@ -26,6 +26,21 @@ public class AnmeldungToAdmin {
         // TODO: Kein Feld für Datenschutzerklärung!!!
 
         return teilnehmer;
+    }
+
+    private static void mappeProjekte(AnmeldungJson anmeldungJson, Teilnehmer teilnehmer, List<Projekt> alleProjekte) {
+
+        List<Projekt> angemeldeteProjekte = new ArrayList<>();
+//        if(anmeldungJson.getProjectsId1()) {
+//            alleProjekte.stream().map(einesVonAllenProjekten -> {
+//                if(einesVonAllenProjekten.getId() == 1) {
+//                    angemeldeteProjekte.add(einesVonAllenProjekten);
+//                }
+//                return null;
+//            });
+//        }
+
+        teilnehmer.setAngemeldeteProjekte(angemeldeteProjekte);
     }
 
     private static void mappeErklaerung(AnmeldungJson anmeldungJson, Teilnehmer teilnehmer) {
