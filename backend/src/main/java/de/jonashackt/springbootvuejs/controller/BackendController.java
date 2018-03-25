@@ -180,7 +180,7 @@ public class BackendController {
 
         LOG.info("New POST request from Ferienpass-Anmeldung Microservice containing new Teilnehmer");
 
-        Teilnehmer neuAngemeldeterTeilnehmer = AnmeldungToAdmin.mapAnmeldedataToTeilnehmer(anmeldungJson);
+        Teilnehmer neuAngemeldeterTeilnehmer = AnmeldungToAdmin.mapAnmeldedataToTeilnehmer(anmeldungJson, projektRepository.findAllProjects());
 
         Teilnehmer savedTeilnehmer = teilnehmerRepository.save(neuAngemeldeterTeilnehmer);
 
