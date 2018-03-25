@@ -87,8 +87,7 @@ main {
 main form {
   margin: auto;
   top: 40px; left: 0; bottom: 0; right: 0;
-  width: 450px;
-  height: 480px;
+  width: 90%;
 }
 
 main form .caption {
@@ -98,15 +97,19 @@ main form .caption {
 
 main form input[type=text]{
   font-size: 16px;
-  width: 100%;
+  width: 200;
   height: 30px;
-  margin-bottom: 15px;
+  margin-bottom: 0px;
   display: block;
+  background-color: #FAEBD7;
+  border-radius:5px;
+  -moz-border-radius:5px;
+  -webkit-border-radius:5px;
 }
 
 
 main form label {
-  margin: 0px;
+  margin: 5px;
   float: left;
   display: block;
 }
@@ -124,13 +127,14 @@ fieldset label {
   position: relative;
   display:block;
   font-size: 15px;
-  margin: 20px;
+  margin: 25px;
 }
 
-fieldset input[type=checkbox]{
+input[type=checkbox]{
   height: 15px;
   width: 20px;
   vertical-align: bottom;
+  margin:5px;
 }
 
 input[type=submit] {
@@ -196,15 +200,15 @@ input[type=submit] {
 /* Modal Content/Box */
 .modal-content {
     background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
+    margin: 10% auto; /* 15% from the top and centered */
     padding: 20px;
     border: 1px solid #888;
     width: 80%;  /*Could be more or less, depending on screen size */
-    max-width: 700px;
+    max-width: 1200px;
 }
 .center {
     margin: auto;
-    width: 60%;
+    width: 80%;
     padding: 10px;
     text-align: center;
 }
@@ -212,7 +216,10 @@ input[type=submit] {
   font-size: 20px;
   margin: 0px 10px 0px
 }
-
+th, td {
+  min-width: 150px;
+  padding: 10px 20px;
+}
 
 /*
 Test.vue
@@ -262,6 +269,7 @@ table {
   margin-right: auto;
   width: 80%;
   border-radius: 15px;
+  border: 0px;
 }
 
 th {
@@ -285,6 +293,7 @@ td, th {
   padding: 6px;
   border: 1px solid #ccc;
   text-align: left;
+  border: 0px;
 }
 
 tr:nth-child(even) {
