@@ -176,8 +176,8 @@ public class BackendController {
      * API for projects (Projekte) functionality
      ******************************************/
     //Retrieve all projects
-    @RequestMapping(path = "/allprojects")
-    @ResponseStatus(HttpStatus.CREATED)
+    @RequestMapping(path = "/allprojects", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
     public @ResponseBody
     List<Projekt> showAllProjects() {
         LOG.info("GET called on /allprojects resource");
