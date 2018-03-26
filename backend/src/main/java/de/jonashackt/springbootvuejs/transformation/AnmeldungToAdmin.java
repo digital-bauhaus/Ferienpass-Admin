@@ -58,10 +58,9 @@ public class AnmeldungToAdmin {
     private static void mappeDatenZuBehinderungen(AnmeldungJson anmeldungJson, Teilnehmer teilnehmer) {
 
         teilnehmer.setLiegtBehinderungVor(anmeldungJson.getDisabilitiesDisabilityExistent());
+        Behinderung behinderung = new Behinderung();
 
         if(anmeldungJson.getDisabilitiesDisabilityExistent()) {
-            Behinderung behinderung = new Behinderung();
-
             mappeMerkzeichen(anmeldungJson, behinderung);
 
             behinderung.setRollstuhlNutzungNotwendig(anmeldungJson.getDisabilitiesWheelchair());
@@ -72,9 +71,8 @@ public class AnmeldungToAdmin {
             behinderung.setEingeschraenkteSinne(mappeEingeschraenkteSinne(anmeldungJson));
 
             behinderung.setHinweiseZumUmgangMitDemKind(anmeldungJson.getDisabilitiesCompanionAdditionalNotes());
-
-            teilnehmer.setBehinderung(behinderung);
         }
+        teilnehmer.setBehinderung(behinderung);
     }
 
     private static String mappeEingeschraenkteSinne(AnmeldungJson anmeldungJson) {

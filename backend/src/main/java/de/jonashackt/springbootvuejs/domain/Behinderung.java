@@ -212,8 +212,29 @@ public class Behinderung {
         return id;
     }
 
-    public Behinderung() {}
-
+    public Behinderung() {
+        this.merkzeichen_AussergewoehnlicheGehbehinderung_aG = false;
+        this.merkzeichen_Hilflosigkeit_H = false;
+        this.merkzeichen_Blind_Bl = false;
+        this.merkzeichen_Gehoerlos_Gl = false;
+        this.merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B = false;
+        this.merkzeichen_ErheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G = false;
+        this.merkzeichen_Taubblind_TBL = false;
+        this.rollstuhlNutzungNotwendig = false;
+        this.weitereHilfsmittel = "";
+        this.wertmarkeVorhanden = false;
+        this.begleitungNotwendig = false;
+        this.begleitpersonPflege = false;
+        this.begleitpersonMedizinischeVersorgung = false;
+        this.begleitpersonMobilitaet = false;
+        this.begleitpersonOrientierung = false;
+        this.begleitpersonSozialeBegleitung = false;
+        this.eingeschraenkteSinne = "";
+        this.hinweiseZumUmgangMitDemKind = "";
+        this.unterstuetzungSucheBegleitpersonNotwendig = false;
+        this.gewohnterBegleitpersonenDienstleister = "";
+        this.beantragungKostenuebernahmeBegleitpersonNotwendig = false;
+    }
 
 
 }
