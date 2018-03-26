@@ -37,14 +37,14 @@
         <hr />
         <h2>Weitere Angaben:</h2>
         <table><tr>
-        <td><label><input v-model="user.erlaubeMedikamentation" type="checkbox" id="check">Darf behandelt werden</label></td>
+        <td><label><input v-model="user.erlaubeMedikamentation" type="checkbox" id="check">Erlaube Medikation</label></td>
         <td><label><input v-model="user.darfAlleinNachHause" type="checkbox" id="check">Darf alleine nach Hause gehen</label></td>
         <td><label><input v-model="user.darfReiten" type="checkbox" id="check">Darf reiten</label><br/></td>
         </tr><tr>
         <td><label><input v-model="user.darfSchwimmen" type="checkbox" id="check">Darf schwimmen</label><br/></td>
-        <td>Schwimmabzeichen:</td><td><input type="text" id="schwimmabzeichen" v-model="user.schwimmabzeichen" :value="user.schwimmabzeichen"></td>
+        <td>Schwimmstufe:</td><td><input type="text" id="schwimmAbzeichen" v-model="user.schwimmAbzeichen" :value="user.schwimmAbzeichen"></td>
         </tr><tr>
-        <td><label><input v-model="user.hatBezahlt" type="checkbox" id="check">Hat bezahlt</label></td><td />
+        <td><label><input v-model="user.bezahlt" type="checkbox" id="check">Hat bezahlt</label></td><td />
         <td><label><input v-model="user.darfBehandeltWerden" type="checkbox" id="check">Behandlungserlaubnis bei Erkrankungen und Unfällen</label></td><td />
         </tr>
         </table>
@@ -162,8 +162,9 @@
         </table>
         </td></tr></table>
 <br />
+</form>
 <hr />
-
+<form method="post" v-on:submit.prevent="updateUser">
       <h3>Behinderungen</h3>
       <label><b>Behinderungsausweis liegt vor:</b><input v-model="user.liegtBehinderungVor" type="checkbox" id="check"></label> <br />
       <table>
@@ -182,8 +183,6 @@
       <td>anderes Hilfsmittel:<input type="text" id="hilfsmittel" v-model="user.behinderung.weitereHilfsmittel" :value="user.behinderung.weitereHilfsmittel"></td></tr>
       </table>
       <br />
-      </form>
-      <form>
       <label><b>Wertmarke vorhanden:</b><input v-model="user.behinderung.wertmarkeVorhanden" type="checkbox" id="check"></label> <br />
       <br />
       <label><b>Begleitung notwending:</b><input v-model="user.behinderung.begleitungNotwendig" type="checkbox" id="check"></label> <br />
@@ -212,6 +211,8 @@
       <br />
       <label><b>Beantragung der Kostenübernahme</b><input v-model="user.behinderung.beantragungKostenuebernahmeBegleitpersonNotwendig" type="checkbox" id="check"></label> <br />
 <br />
+<input type="submit" value="Änderung speichern">
+</form>
 <hr />
       <h2>Angemeldete Projekte</h2>
       <div v-if="projectsOfUser">
@@ -294,6 +295,7 @@ export default {
       params.append('plz', this.user.postleitzahl);
       params.append('tel', this.user.telefon);
       params.append('krankenkasse', this.user.krankenkasse);
+
       params.append('kontaktName', this.user.notfallKontakt.name);
       params.append('kontaktAdresse', this.user.notfallKontakt.address);
       params.append('kontaktTel', this.user.notfallKontakt.telephone);
@@ -301,6 +303,39 @@ export default {
       params.append('arztName', this.user.arzt.name);
       params.append('arztAdresse', this.user.arzt.address);
       params.append('arztTel', this.user.arzt.telephone);
+
+      params.append('erlaubeMedikamentation', (this.user.erlaubeMedikamentation === true));
+      params.append('darfSchwimmen', (this.user.darfSchwimmen === true));
+      params.append('darfAlleinNachHause', (this.user.darfAlleinNachHause === true));
+      params.append('darfReiten', (this.user.darfReiten === true));
+      params.append('schwimmAbzeichen', this.user.schwimmAbzeichen);
+      params.append('bezahlt', (this.user.bezahlt === true));
+      params.append('darfBehandeltWerden', (this.user.darfBehandeltWerden === true));
+
+      params.append('liegtBehinderungVor', (this.user.liegtBehinderungVor === true));
+      params.append('behinderungG', (this.user.behinderung.merkzeichen_ErheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G === true));
+      params.append('behinderungH', (this.user.behinderung.merkzeichen_Hilflosigkeit_H === true));
+      params.append('behinderungAG', (this.user.behinderung.merkzeichen_AussergewoehnlicheGehbehinderung_aG === true));
+      params.append('behinderungB1', (this.user.behinderung.merkzeichen_Blind_Bl === true));
+      params.append('behinderungG1', (this.user.behinderung.merkzeichen_Gehoerlos_Gl === true));
+      params.append('behinderungB', (this.user.behinderung.merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B === true));
+      params.append('behinderungTBL', (this.user.behinderung.merkzeichen_Taubblind_TBL === true));
+      params.append('rollstuhl', (this.user.behinderung.rollstuhlNutzungNotwendig === true));
+      params.append('behinderungHilfsmittel', this.user.behinderung.weitereHilfsmittel);
+
+      params.append('wertMarke', (this.user.behinderung.wertmarkeVorhanden === true));
+      params.append('begleitungNotwending', (this.user.behinderung.begleitungNotwendig === true));
+      params.append('begleitPflege', (this.user.behinderung.begleitpersonPflege === true));
+      params.append('begleitMedVor', (this.user.behinderung.begleitpersonMedizinischeVersorgung === true));
+      params.append('begleitMobilität', (this.user.behinderung.begleitpersonMobilitaet === true));
+      params.append('begleitOrientierung', (this.user.behinderung.begleitpersonOrientierung === true));
+      params.append('begleitSozial', (this.user.behinderung.begleitpersonSozialeBegleitung === true));
+      params.append('eingeschränkteSinne', this.user.behinderung.eingeschraenkteSinne);
+
+      params.append('hinweiseZumUmgang', this.user.behinderung.hinweiseZumUmgangMitDemKind);
+      params.append('behinderungUnterstützung', (this.user.behinderung.unterstuetzungSucheBegleitpersonNotwendig === true));
+      params.append('untersützungKontakt', this.user.behinderung.gewohnterBegleitpersonenDienstleister);
+      params.append('kostenÜbernahme', (this.user.behinderung.beantragungKostenuebernahmeBegleitpersonNotwendig === true));
 
       axios.post('http://localhost:8088/api/updateUser', params)
       .then(response => {
