@@ -349,6 +349,8 @@ public class BackendControllerTest {
                         .extract()
                         .body().as(Long.class);
 
+
+
         Teilnehmer responseUser =
                 given()
                         .pathParam("id", userId)
@@ -366,6 +368,16 @@ public class BackendControllerTest {
         assertThat(responseUser.getPostleitzahl(), is("99423"));
         assertThat(responseUser.getStadt(), is("Weimar"));
         assertThat(responseUser.getTelefon(), is("03643 / 123456"));
+
+
+        // Ist der User in Projekt 1 & 3 angemeldet?
+        List<Teilnehmer> anmeldungenProjekt1 = getProjekt("1").getAnmeldungen();
+        assertThat(containsTeilnehmerWithVorname(responseUser.getVorname(), anmeldungenProjekt1), is(true));
+        List<Teilnehmer> anmeldungenProjekt2 = getProjekt("2").getAnmeldungen();
+        assertThat(containsTeilnehmerWithVorname(responseUser.getVorname(), anmeldungenProjekt2), is(false));
+        List<Teilnehmer> anmeldungenProjekt3 = getProjekt("3").getAnmeldungen();
+        assertThat(containsTeilnehmerWithVorname(responseUser.getVorname(), anmeldungenProjekt3), is(true));
+
 
         List<Allergie> allergien = responseUser.getAllergien();
         assertThat(allergien.get(0).getName(), is("Heuschnupfen"));
@@ -440,6 +452,27 @@ public class BackendControllerTest {
         assertThat(responseUser.isDarfSchwimmen(), is(false));
 
 
+    }
+
+    private boolean containsTeilnehmerWithVorname(String vorname, List<Teilnehmer> anmeldungen) {
+        for (int i = 0; i < anmeldungen.size(); i++) {
+            if (anmeldungen.get(i).getVorname().equals(vorname)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private Projekt getProjekt(String projektId) {
+        return given()
+            .pathParam("projekt_id", projektId)
+        .when()
+            .get(BASE_URL + "/project/{projekt_id}")
+        .then()
+            .statusCode(HttpStatus.SC_OK)
+            .assertThat()
+                .extract()
+                    .as(Projekt.class);
     }
 
 

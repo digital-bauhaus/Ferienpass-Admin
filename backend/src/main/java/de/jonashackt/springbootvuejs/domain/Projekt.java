@@ -147,6 +147,10 @@ public class Projekt {
         this.anmeldungen = anmeldungen;
     }
 
+    public void addAnmeldung(Teilnehmer teilnehmer) {
+        this.anmeldungen.add(teilnehmer);
+    }
+
     public List<Teilnehmer> getStornierteTeilnehmer() {
         return stornierteTeilnehmer;
     }

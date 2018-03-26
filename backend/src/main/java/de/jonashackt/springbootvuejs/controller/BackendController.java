@@ -1,5 +1,7 @@
 package de.jonashackt.springbootvuejs.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import de.jonashackt.springbootvuejs.domain.*;
 import de.jonashackt.springbootvuejs.repository.ProjektRepository;
 import de.jonashackt.springbootvuejs.repository.TeilnehmerRepository;
@@ -176,9 +178,11 @@ public class BackendController {
 
     @RequestMapping(path = "/register", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody Long registerNewTeilnehmer(@RequestBody AnmeldungJson anmeldungJson) {
+    public @ResponseBody Long registerNewTeilnehmer(@RequestBody AnmeldungJson anmeldungJson) throws JsonProcessingException {
 
         LOG.info("New POST request from Ferienpass-Anmeldung Microservice containing new Teilnehmer");
+        ObjectMapper mapper = new ObjectMapper();
+        LOG.info("The anmeldungJson looks like: " + mapper.writeValueAsString(anmeldungJson));
 
         Teilnehmer neuAngemeldeterTeilnehmer = AnmeldungToAdmin.mapAnmeldedataToTeilnehmer(anmeldungJson, projektRepository.findAllProjects());
 

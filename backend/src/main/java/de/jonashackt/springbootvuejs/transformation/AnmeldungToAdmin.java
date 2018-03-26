@@ -30,17 +30,15 @@ public class AnmeldungToAdmin {
 
     private static void mappeProjekte(AnmeldungJson anmeldungJson, Teilnehmer teilnehmer, List<Projekt> alleProjekte) {
 
-        List<Projekt> angemeldeteProjekte = new ArrayList<>();
-//        if(anmeldungJson.getProjectsId1()) {
-//            alleProjekte.stream().map(einesVonAllenProjekten -> {
-//                if(einesVonAllenProjekten.getId() == 1) {
-//                    angemeldeteProjekte.add(einesVonAllenProjekten);
-//                }
-//                return null;
-//            });
-//        }
-
-//        teilnehmer.setAngemeldeteProjekte(angemeldeteProjekte);
+        anmeldungJson.getProjects().forEach(project -> {
+            if(project.isRegistered()){
+                alleProjekte.forEach(projekt -> {
+                    if(projekt.getId() == project.getId()) {
+                        projekt.addAnmeldung(teilnehmer);
+                    }
+                });
+            }
+        });
     }
 
     private static void mappeErklaerung(AnmeldungJson anmeldungJson, Teilnehmer teilnehmer) {
