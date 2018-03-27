@@ -12,14 +12,17 @@
   "projects": [
     {
       "id": 1,
+      "name": "Ball Werfen",
       "registered": true
     },
     {
       "id": 2,
+      "name": "Bauspielplatz",
       "registered": false
     },
     {
       "id": 3,
+      "name": "Papier-Werkstatt",
       "registered": true
     }
   ],
