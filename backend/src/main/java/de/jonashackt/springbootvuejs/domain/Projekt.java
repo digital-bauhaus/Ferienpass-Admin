@@ -36,7 +36,7 @@ public class Projekt {
 
     protected Projekt() {}
 
-    public Projekt(String name, LocalDate datum, int alterLimitierung, int kosten, int slotsGesamt, int slotsReserviert, String webLink, List<Teilnehmer> anmeldungen) {
+    public Projekt(String name, LocalDate datum, int alterLimitierung, int kosten, int slotsGesamt, int slotsReserviert, String webLink) {
         this.setName(name);
         this.setDatum(datum);
         this.setAlterLimitierung(alterLimitierung);
@@ -45,7 +45,6 @@ public class Projekt {
         this.setSlotsFrei(slotsGesamt - slotsReserviert);
         this.setSlotsReserviert(slotsReserviert);
         this.setWebLink(webLink);
-        this.setAnmeldungen(anmeldungen);
         this.setAktiv(true);
     }
 
@@ -140,17 +139,10 @@ public class Projekt {
         return anmeldungen;
     }
 
-    public void setAnmeldungen(List<Teilnehmer> anmeldungen) {
-        if(anmeldungen.size() >= this.getSlotsGesamt() - this.getSlotsReserviert())
-            return;
-        this.setSlotsFrei(this.getSlotsGesamt() - this.getSlotsReserviert() - anmeldungen.size());
-        this.anmeldungen = anmeldungen;
-    }
-
     public void addAnmeldung(Teilnehmer teilnehmer) {
-        List<Teilnehmer> anmeldungen = getAnmeldungen();
-        anmeldungen.add(teilnehmer);
-        setAnmeldungen(anmeldungen);
+        this.anmeldungen.add(teilnehmer);
+        this.setSlotsReserviert(this.slotsReserviert + 1);
+        this.setSlotsFrei(this.slotsFrei - 1);
     }
 
     public List<Teilnehmer> getStornierteTeilnehmer() {
@@ -159,5 +151,9 @@ public class Projekt {
 
     public void setStornierteTeilnehmer(List<Teilnehmer> stornierteTeilnehmer) {
         this.stornierteTeilnehmer = stornierteTeilnehmer;
+    }
+
+    public boolean isTeilnehmerNotAlreadyAsignedToProjekt(Teilnehmer teilnehmer) {
+        return !this.anmeldungen.contains(teilnehmer);
     }
 }

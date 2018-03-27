@@ -4,7 +4,6 @@ package de.jonashackt.springbootvuejs.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.jonashackt.springbootvuejs.FerienpassAdminApplication;
 import de.jonashackt.springbootvuejs.domain.*;
-import de.jonashackt.springbootvuejs.repository.TeilnehmerRepository;
 import de.jonashackt.springbootvuejs.repository.TeilnehmerRepositoryTest;
 import de.jonashackt.springbootvuejs.transformation.AnmeldungJson;
 import io.restassured.http.ContentType;
@@ -47,27 +46,9 @@ public class BackendControllerTest {
     public void addNewUserAndRetrieveItBack() {
         Teilnehmer user = teilnehmerRepositoryTest.createUser();
 
-        Long userId =
-                given()
-                        .body(user)
-                        .contentType(ContentType.JSON)
-                        .when()
-                        .post(BASE_URL + "/adduser")
-                        .then()
-                        .statusCode(is(HttpStatus.SC_CREATED))
-                        .extract()
-                        .body().as(Long.class);
+        Long userId = addUser(user);
 
-        Teilnehmer responseUser =
-                given()
-                        .pathParam("id", userId)
-                        .when()
-                        .get(BASE_URL + "/user/{id}")
-                        .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .assertThat()
-                        .extract().as(Teilnehmer.class);
-
+        Teilnehmer responseUser = getUser(userId);
         assertThat(responseUser.getVorname(), is(user.getVorname()));
         assertThat(responseUser.getNachname(), is(user.getNachname()));
     }
@@ -115,26 +96,9 @@ public class BackendControllerTest {
         assertThat(user.getHitzeempfindlichkeiten().size(),is(1));
 
 
-        Long userId =
-                given()
-                        .body(user)
-                        .contentType(ContentType.JSON)
-                        .when()
-                        .post(BASE_URL + "/adduser")
-                        .then()
-                        .statusCode(is(HttpStatus.SC_CREATED))
-                        .extract()
-                        .body().as(Long.class);
+        Long userId = addUser(user);
 
-        Teilnehmer responseUser =
-                given()
-                        .pathParam("id", userId)
-                        .when()
-                        .get(BASE_URL + "/user/{id}")
-                        .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .assertThat()
-                        .extract().as(Teilnehmer.class);
+        Teilnehmer responseUser = getUser(userId);
 
         assertThat(responseUser.getAllergien().size(), is(2));
         assertThat(responseUser.getEssenLimitierungen().size(), is(2));
@@ -159,15 +123,8 @@ public class BackendControllerTest {
                         .statusCode(HttpStatus.SC_OK)
                         .extract().as(Boolean.class);
         assertThat(success,is(true));
-        responseUser =
-                given()
-                        .pathParam("id", userId)
-                        .when()
-                        .get(BASE_URL + "/user/{id}")
-                        .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .assertThat()
-                        .extract().as(Teilnehmer.class);
+
+        responseUser = getUser(userId);
         assertThat(responseUser.getAllergien().size(),is(1));
         assertThat(responseUser.getAllergien().get(0).getName(),is(a1.getName()));
 
@@ -186,15 +143,8 @@ public class BackendControllerTest {
                         .statusCode(HttpStatus.SC_OK)
                         .extract().as(Boolean.class);
         assertThat(success,is(true));
-        responseUser =
-                given()
-                        .pathParam("id", userId)
-                        .when()
-                        .get(BASE_URL + "/user/{id}")
-                        .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .assertThat()
-                        .extract().as(Teilnehmer.class);
+
+        responseUser = getUser(userId);
         assertThat(responseUser.getEssenLimitierungen().size(),is(1));
         assertThat(responseUser.getEssenLimitierungen().get(0).getName(),is(e2.getName()));
 
@@ -213,15 +163,8 @@ public class BackendControllerTest {
                         .statusCode(HttpStatus.SC_OK)
                         .extract().as(Boolean.class);
         assertThat(success,is(true));
-        responseUser =
-                given()
-                        .pathParam("id", userId)
-                        .when()
-                        .get(BASE_URL + "/user/{id}")
-                        .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .assertThat()
-                        .extract().as(Teilnehmer.class);
+
+        responseUser = getUser(userId);
         assertThat(responseUser.getKrankheiten().size(),is(1));
         assertThat(responseUser.getKrankheiten().get(0).getName(),is(k1.getName()));
 
@@ -239,16 +182,9 @@ public class BackendControllerTest {
                         .then()
                         .statusCode(HttpStatus.SC_OK)
                         .extract().as(Boolean.class);
+
         assertThat(success,is(true));
-        responseUser =
-                given()
-                        .pathParam("id", userId)
-                        .when()
-                        .get(BASE_URL + "/user/{id}")
-                        .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .assertThat()
-                        .extract().as(Teilnehmer.class);
+        responseUser = getUser(userId);
         assertThat(responseUser.getMedikamente().size(),is(1));
         assertThat(responseUser.getMedikamente().get(0).getName(),is(m1.getName()));
 
@@ -266,60 +202,21 @@ public class BackendControllerTest {
                         .then()
                         .statusCode(HttpStatus.SC_OK)
                         .extract().as(Boolean.class);
+
         assertThat(success,is(true));
-        responseUser =
-                given()
-                        .pathParam("id", userId)
-                        .when()
-                        .get(BASE_URL + "/user/{id}")
-                        .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .assertThat()
-                        .extract().as(Teilnehmer.class);
+        responseUser = getUser(userId);
         assertThat(responseUser.getHitzeempfindlichkeiten().size(),is(0));
 
     }
 
     @Test
     public void addTwoUsersAndCheckWhetherAllUsersAreComplete() {
-        List<Teilnehmer> allUsers_initial =
-                Arrays.asList(given()
-                        .when()
-                        .get(BASE_URL + "/allusers")
-                        .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .extract().as(Teilnehmer[].class));
-        int initialSize = allUsers_initial.size();
+        int initialSize = getAllUsers().size();
 
-        Teilnehmer user = teilnehmerRepositoryTest.createUser();
+        Long userId = addUser(teilnehmerRepositoryTest.createUser());
+        Long userId2 = addUser(teilnehmerRepositoryTest.createUser());
 
-        Long userId =
-                given()
-                        .body(user)
-                        .contentType(ContentType.JSON)
-                        .when()
-                        .post(BASE_URL + "/adduser")
-                        .then()
-                        .statusCode(is(HttpStatus.SC_CREATED))
-                        .extract()
-                        .body().as(Long.class);
-        Long userId2 =
-                given()
-                        .body(user)
-                        .contentType(ContentType.JSON)
-                        .when()
-                        .post(BASE_URL + "/adduser")
-                        .then()
-                        .statusCode(is(HttpStatus.SC_CREATED))
-                        .extract()
-                        .body().as(Long.class);
-        List<Teilnehmer> allUsers =
-                Arrays.asList(given()
-                        .when()
-                        .get(BASE_URL + "/allusers")
-                        .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .extract().as(Teilnehmer[].class));
+        List<Teilnehmer> allUsers = getAllUsers();
 
         assertThat(allUsers.size()-initialSize, is(2));
         long id1 = allUsers.get(initialSize).getId();
@@ -338,28 +235,9 @@ public class BackendControllerTest {
 
         AnmeldungJson anmeldungJson = objectMapper.readValue(anmeldungJsonFile.getInputStream(), AnmeldungJson.class);
 
-        Long userId =
-                given()
-                        .contentType(ContentType.JSON)
-                        .body(anmeldungJson)
-                .when()
-                        .post(BASE_URL + "/register")
-                .then()
-                        .statusCode(is(HttpStatus.SC_CREATED))
-                        .extract()
-                        .body().as(Long.class);
+        Long userId = registerNewUserFromAnmeldungFrontend(anmeldungJson);
 
-
-
-        Teilnehmer responseUser =
-                given()
-                        .pathParam("id", userId)
-                .when()
-                        .get(BASE_URL + "/user/{id}")
-                .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .assertThat()
-                        .extract().as(Teilnehmer.class);
+        Teilnehmer responseUser = getUser(userId);
 
         assertThat(responseUser.getVorname(), is("Paul"));
         assertThat(responseUser.getNachname(), is("Siegmund"));
@@ -370,15 +248,7 @@ public class BackendControllerTest {
         assertThat(responseUser.getTelefon(), is("03643 / 123456"));
 
 
-        List<Projekt> allProjects =
-                Arrays.asList(given()
-                        .contentType(ContentType.JSON)
-                        .when()
-                        .get(BASE_URL + "/allprojects")
-                        .then()
-                        .statusCode(is(HttpStatus.SC_OK))
-                        .extract()
-                        .body().as(Projekt[].class));
+        List<Projekt> allProjects = getAllProjects();
 
         allProjects.forEach(projekt -> System.out.println(projekt.getId() + ", Name: " + projekt.getName()));
         allProjects.forEach(projekt -> {
@@ -503,26 +373,9 @@ public class BackendControllerTest {
     @Test
     public void addNewProjectAndetrieveItBack() {
         Projekt projekt = teilnehmerRepositoryTest.createSingleProject();
-        Long projectID =
-                given()
-                .body(projekt)
-                .contentType(ContentType.JSON)
-                .when()
-                .post(BASE_URL+"/addproject")
-                .then()
-                .statusCode(is(HttpStatus.SC_CREATED))
-                .extract()
-                .body().as(Long.class);
+        Long projectID = addProjekt(projekt);
 
-        Projekt responeProjekt =
-                given()
-                .pathParam("projekt_id", projectID)
-                .when()
-                .get(BASE_URL + "/project/{projekt_id}")
-                .then()
-                .statusCode(HttpStatus.SC_OK)
-                .assertThat()
-                .extract().as(Projekt.class);
+        Projekt responeProjekt = getProjekt(projectID);
         assertThat(projectID, is(responeProjekt.getId()));
         assertThat(responeProjekt.getName(), is(projekt.getName()));
         assertThat(responeProjekt.getSlotsFrei(), is(projekt.getSlotsFrei()));
@@ -537,76 +390,21 @@ public class BackendControllerTest {
 
     @Test
     public void addProjectAndUserAndAssignProjectToUserAndRetrieveAllProjectsForThisUser() {
-        Projekt projekt = teilnehmerRepositoryTest.createSingleProject();
-        Long projectID =
-                given()
-                        .body(projekt)
-                        .contentType(ContentType.JSON)
-                        .when()
-                        .post(BASE_URL+"/addproject")
-                        .then()
-                        .statusCode(is(HttpStatus.SC_CREATED))
-                        .extract()
-                        .body().as(Long.class);
+        Long projectID = addProjekt(teilnehmerRepositoryTest.createSingleProject());
 
-        Teilnehmer user = teilnehmerRepositoryTest.createUser();
-        Long userId =
-                given()
-                        .body(user)
-                        .contentType(ContentType.JSON)
-                        .when()
-                        .post(BASE_URL + "/adduser")
-                        .then()
-                        .statusCode(is(HttpStatus.SC_CREATED))
-                        .extract()
-                        .body().as(Long.class);
-
-        List<Teilnehmer> allUsers =
-                Arrays.asList(given()
-                .when()
-                .get(BASE_URL + "/allusers")
-                .then()
-                .statusCode(HttpStatus.SC_OK)
-                .extract().as(Teilnehmer[].class));
+        Long userId = addUser(teilnehmerRepositoryTest.createUser());
+        List<Teilnehmer> allUsers = getAllUsers();
 
         assertThat(allUsers.get(allUsers.size()-1).getId(), is(userId));
 
-        Map<String,Long> newID_Map = new HashMap<String, Long>();
-        newID_Map.put("user",userId);
-        newID_Map.put("project", projectID);
-        Boolean success =
-                given()
-                    .body(newID_Map)
-                    .contentType(ContentType.JSON)
-                    .when()
-                    .post(BASE_URL+"/assignProject")
-                    .then()
-                    .statusCode(HttpStatus.SC_OK)
-                    .extract().as(Boolean.class);
-        assertThat(success,is(true));
+        assertThat(assignUser2Projekt(projectID, userId),is(true));
 
         //Verify that the added user has now the project assigned
-        Teilnehmer responseUser =
-                given()
-                        .pathParam("id", userId)
-                        .when()
-                        .get(BASE_URL + "/user/{id}")
-                        .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .assertThat()
-                        .extract().as(Teilnehmer.class);
+        Teilnehmer responseUser = getUser(userId);
 
-        Projekt p_retrieved =
-                given()
-                        .pathParam("projekt_id", projectID)
-                        .when()
-                        .get(BASE_URL + "/project/{projekt_id}")
-                        .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .assertThat()
-                        .extract().as(Projekt.class);
-        assertThat(p_retrieved.getAnmeldungen().size(), is(1));
-        assertThat(p_retrieved.getAnmeldungen().get(0).getId(), is(responseUser.getId()));
+        Projekt responseProjekt = getProjekt(projectID);
+        assertThat(responseProjekt.getAnmeldungen().size(), is(1));
+        assertThat(responseProjekt.getAnmeldungen().get(0).getId(), is(responseUser.getId()));
     }
 
     @Test
@@ -628,15 +426,7 @@ public class BackendControllerTest {
                 .assertThat()
                 .extract().as(Long.class);
 
-        Projekt responseProjekt =
-                given()
-                        .pathParam("projekt_id", projectID)
-                        .when()
-                        .get(BASE_URL + "/project/{projekt_id}")
-                        .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .assertThat()
-                        .extract().as(Projekt.class);
+        Projekt responseProjekt = getProjekt(projectID);
 
         assertThat(projectID, is(responseProjekt.getId()));
         assertThat(responseProjekt.getName(), is(projekt.getName()));
@@ -651,85 +441,47 @@ public class BackendControllerTest {
 
     @Test
     public void addProjectAndSetItToInactive() {
-        //Createi a project
-        Projekt p = teilnehmerRepositoryTest.createSingleProject();
-        Long projectID =
-                given()
-                        .body(p)
-                        .contentType(ContentType.JSON)
-                        .when()
-                        .post(BASE_URL+"/addproject")
-                        .then()
-                        .statusCode(is(HttpStatus.SC_CREATED))
-                        .extract()
-                        .body().as(Long.class);
-        assertThat(p.isAktiv(),is(true));
+        //Create a project
+        Projekt projekt = teilnehmerRepositoryTest.createSingleProject();
+        Long projectID =addProjekt(projekt);
+        assertThat(projekt.isAktiv(),is(true));
 
         //set project inactive
-        Boolean inactive =
-                given()
-                .param("project_id", projectID)
-                .when()
-                .get(BASE_URL + "/deleteproject")
-                .then()
-                .statusCode(HttpStatus.SC_CREATED)
-                .assertThat()
-                .extract().as(Boolean.class);
+        assertThat(setProjektInactive(projectID), is(true));
 
         //retrieve project
-        Projekt p_retrieved =
-                given()
-                        .pathParam("projekt_id", projectID)
-                        .when()
-                        .get(BASE_URL + "/project/{projekt_id}")
-                        .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .assertThat()
-                        .extract().as(Projekt.class);
+        Projekt responseProjekt = getProjekt(projectID);
 
-        assertThat(projectID, is(p_retrieved.getId()));
-        assertThat(p.getName(), is(p_retrieved.getName()));
-        assertThat(p_retrieved.isAktiv(),is(false));
+        assertThat(projectID, is(responseProjekt.getId()));
+        assertThat(projekt.getName(), is(responseProjekt.getName()));
+        assertThat(responseProjekt.isAktiv(),is(false));
+    }
+
+    private Projekt getProjekt(Long projectID) {
+        return given()
+                .pathParam("projekt_id", projectID)
+                .when()
+                .get(BASE_URL + "/project/{projekt_id}")
+                .then()
+                .statusCode(HttpStatus.SC_OK)
+                .assertThat()
+                .extract().as(Projekt.class);
     }
 
     @Test
     public void assignProjektToUserAndRetrieveAllProjectsForTheUsers() {
         //Make sure we have a user in the DB
-        List<Teilnehmer> allUsers =
-                Arrays.asList(given()
-                        .when()
-                        .get(BASE_URL + "/allusers")
-                        .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .extract().as(Teilnehmer[].class));
+        List<Teilnehmer> allUsers = getAllUsers();
 
         Long userId = 0L;
 
         if(allUsers.size() <= 0) {
-            Teilnehmer user = teilnehmerRepositoryTest.createUser();
-            userId =
-                    given()
-                            .body(user)
-                            .contentType(ContentType.JSON)
-                            .when()
-                            .post(BASE_URL + "/adduser")
-                            .then()
-                            .statusCode(is(HttpStatus.SC_CREATED))
-                            .extract()
-                            .body().as(Long.class);
+            userId = addUser(teilnehmerRepositoryTest.createUser());
         } else
             userId = allUsers.get(0).getId();
 
         //Make sure we have a project in the DB
-        List<Projekt> allProjects =
-                Arrays.asList(given()
-                        .contentType(ContentType.JSON)
-                        .when()
-                        .get(BASE_URL + "/allprojects")
-                        .then()
-                        .statusCode(is(HttpStatus.SC_OK))
-                        .extract()
-                        .body().as(Projekt[].class));
+        List<Projekt> allProjects = getAllProjects();
         Long projectID = 0L;
         if(allProjects.size() <= 0) {
             Projekt projekt = teilnehmerRepositoryTest.createSingleProject();
@@ -752,196 +504,120 @@ public class BackendControllerTest {
             projectID = allProjects.get(0).getId();
 
         //Assign user to project
-        Map<String,Long> newID_Map = new HashMap<String, Long>();
-        newID_Map.put("user",userId);
-        newID_Map.put("project", projectID);
-        Boolean success =
-                given()
-                        .body(newID_Map)
-                        .contentType(ContentType.JSON)
-                        .when()
-                        .post(BASE_URL+"/assignProject")
-                        .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .extract().as(Boolean.class);
-        assertThat(success,is(true));
+        assertThat(assignUser2Projekt(projectID, userId),is(true));
 
         //Get the user again
-        Teilnehmer responseUser =
-                given()
-                        .pathParam("id", userId)
-                        .when()
-                        .get(BASE_URL + "/user/{id}")
-                        .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .assertThat()
-                        .extract().as(Teilnehmer.class);
+        Teilnehmer responseUser = getUser(userId);
 
         //Get all projects fo the userID
-        List<Projekt> projectsOfUserID =
-                Arrays.asList(
-                        given()
-                                .param("userID", responseUser.getId())
-                                .when()
-                                .get(BASE_URL+"/projectsofid")
-                                .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .assertThat()
-                        .extract().as(Projekt[].class));
+        List<Projekt> projectsOfUserID = getAllProjekteWhereUserIsAssigned(responseUser);
         assertThat(projectsOfUserID.size(),is(1));
         assertThat(projectsOfUserID.get(0).getId(), is(projectID));
-
-        //"/projectRegistrations/{projekt_id}
 
     }
 
     @Test
     public void testConsistencyOfRegisteredProjectsOfTeilnehmerAndRegisteredTeilnehmerOfProjects() {
-        Projekt[] responseProjects = given()
-                .contentType(ContentType.JSON)
-                .when()
-                .get(BASE_URL + "/allprojects")
-                .then()
-                .statusCode(is(HttpStatus.SC_OK))
-                .extract()
-                .body().as(Projekt[].class);
+        List<Projekt> allProjects = getAllProjects();
+        int numberOfProjects = allProjects.size();
+        System.out.println("Number of projects at start: " + numberOfProjects);
 
-        List<Projekt> allProjects = Arrays.asList(responseProjects);
-        int nbProjects = allProjects.size();
-        System.out.println("Number of projects at start: " + nbProjects);
-
-        //number of registered Teilnehmer in all projects should be equal to number of registered projects of all Teilnehmer
+        // number of registered Teilnehmer in all projects should be equal
+        // to number of registered projects of all Teilnehmer
         Projekt projekt1 = teilnehmerRepositoryTest.createSingleProject();
-        Long projectID1 =
-                given()
-                        .body(projekt1)
-                        .contentType(ContentType.JSON)
-                        .when()
-                        .post(BASE_URL+"/addproject")
-                        .then()
-                        .statusCode(is(HttpStatus.SC_CREATED))
-                        .extract()
-                        .body().as(Long.class);
+        Long projectID1 = addProjekt(projekt1);
         assertThat(projekt1.isAktiv(),is(true));
 
         Projekt projekt2 = teilnehmerRepositoryTest.createSingleProject();
-        Long projectID2 =
-                given()
-                        .body(projekt2)
-                        .contentType(ContentType.JSON)
-                        .when()
-                        .post(BASE_URL+"/addproject")
-                        .then()
-                        .statusCode(is(HttpStatus.SC_CREATED))
-                        .extract()
-                        .body().as(Long.class);
+        Long projectID2 = addProjekt(projekt2);
         assertThat(projekt2.isAktiv(),is(true));
 
         Teilnehmer user1 = teilnehmerRepositoryTest.createUser();
-        Long userId1 =
-                given()
-                        .body(user1)
-                        .contentType(ContentType.JSON)
-                        .when()
-                        .post(BASE_URL + "/adduser")
-                        .then()
-                        .statusCode(is(HttpStatus.SC_CREATED))
-                        .extract()
-                        .body().as(Long.class);
+        Long userId1 = addUser(user1);
 
         Teilnehmer user2 = teilnehmerRepositoryTest.createUser();
-        Long userId2 =
-                given()
-                        .body(user2)
-                        .contentType(ContentType.JSON)
-                        .when()
-                        .post(BASE_URL + "/adduser")
-                        .then()
-                        .statusCode(is(HttpStatus.SC_CREATED))
-                        .extract()
-                        .body().as(Long.class);
+        Long userId2 = addUser(user2);
 
-        allProjects =
-                Arrays.asList(given()
-                .contentType(ContentType.JSON)
-                .when()
-                .get(BASE_URL + "/allprojects")
-                .then()
-                .statusCode(is(HttpStatus.SC_OK))
-                .extract()
-                .body().as(Projekt[].class));
+        allProjects = getAllProjects();
 
         System.out.println("Number of projects after adding two: " + allProjects.size());
-        assertThat(allProjects.size(), is(nbProjects+2));
+        assertThat(allProjects.size(), is(numberOfProjects+2));
 
-        nbProjects = allProjects.size();
+        numberOfProjects = allProjects.size();
         int sumOfRegisteredTeilnehmer = 0;
-        for (Projekt p: allProjects) {
-            sumOfRegisteredTeilnehmer += p.getAnmeldungen().size();
+        for (Projekt projekt: allProjects) {
+            sumOfRegisteredTeilnehmer += projekt.getAnmeldungen().size();
         }
         System.out.println("Number of registered participants of all projects: " + sumOfRegisteredTeilnehmer);
 
-
         //Assign some projects to users
-        Map<String,Long> newID_Map = new HashMap<String, Long>();
-        newID_Map.put("user",userId1);
-        newID_Map.put("project", projectID1);
-        Boolean success =
+        assertThat(assignUser2Projekt(projectID1, userId1),is(true));
+        assertThat(assignUser2Projekt(projectID2, userId1),is(true));
+        assertThat(assignUser2Projekt(projectID1, userId2),is(true));
+        assertThat(assignUser2Projekt(projectID2, userId2),is(true));
+
+        allProjects = getAllProjects();
+        System.out.println("Number of projects after assignment: " + allProjects.size());
+        assertThat(allProjects.size(), is(numberOfProjects));
+
+        int newSumOfRegisteredTeilnehmer = 0;
+        for (Projekt projekt: allProjects) {
+            newSumOfRegisteredTeilnehmer += projekt.getAnmeldungen().size();
+        }
+        //4 Assignments
+        assertThat(newSumOfRegisteredTeilnehmer,is(sumOfRegisteredTeilnehmer+4));
+    }
+
+    private List<Projekt> getAllProjekteWhereUserIsAssigned(Teilnehmer responseUser) {
+        return Arrays.asList(
                 given()
-                        .body(newID_Map)
-                        .contentType(ContentType.JSON)
+                        .param("userID", responseUser.getId())
                         .when()
-                        .post(BASE_URL+"/assignProject")
+                        .get(BASE_URL+"/projectsofid")
                         .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .extract().as(Boolean.class);
-        assertThat(success,is(true));
+                .statusCode(HttpStatus.SC_OK)
+                .assertThat()
+                .extract().as(Projekt[].class));
+    }
 
-        newID_Map = new HashMap<String, Long>();
-        newID_Map.put("user",userId1);
-        newID_Map.put("project", projectID2);
-        success =
-                given()
-                        .body(newID_Map)
-                        .contentType(ContentType.JSON)
-                        .when()
-                        .post(BASE_URL+"/assignProject")
-                        .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .extract().as(Boolean.class);
-        assertThat(success,is(true));
+    private Long addUser(Teilnehmer teilnehmer) {
+        return given()
+                .body(teilnehmer)
+                .contentType(ContentType.JSON)
+                .when()
+                .post(BASE_URL + "/adduser")
+                .then()
+                .statusCode(is(HttpStatus.SC_CREATED))
+                .extract()
+                .body().as(Long.class);
+    }
 
-        newID_Map = new HashMap<String, Long>();
-        newID_Map.put("user",userId2);
-        newID_Map.put("project",projectID1);
-        success =
-                given()
-                        .body(newID_Map)
-                        .contentType(ContentType.JSON)
-                        .when()
-                        .post(BASE_URL+"/assignProject")
-                        .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .extract().as(Boolean.class);
-        assertThat(success,is(true));
+    private Long registerNewUserFromAnmeldungFrontend(AnmeldungJson anmeldungJson) {
+        return given()
+                .contentType(ContentType.JSON)
+                .body(anmeldungJson)
+                .when()
+                .post(BASE_URL + "/register")
+                .then()
+                .statusCode(is(HttpStatus.SC_CREATED))
+                .extract()
+                .body().as(Long.class);
+    }
 
-        newID_Map = new HashMap<String, Long>();
-        newID_Map.put("user",userId2);
-        newID_Map.put("project", projectID2);
-        success =
-                given()
-                        .body(newID_Map)
-                        .contentType(ContentType.JSON)
-                        .when()
-                        .post(BASE_URL+"/assignProject")
-                        .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .extract().as(Boolean.class);
-        assertThat(success,is(true));
+    private Long addProjekt(Projekt projekt) {
+        return given()
+                .body(projekt)
+                .contentType(ContentType.JSON)
+                .when()
+                .post(BASE_URL+"/addproject")
+                .then()
+                .statusCode(is(HttpStatus.SC_CREATED))
+                .extract()
+                .body().as(Long.class);
+    }
 
-
-        allProjects =
-                Arrays.asList(given()
+    private List<Projekt> getAllProjects() {
+        return Arrays.asList(given()
                         .contentType(ContentType.JSON)
                         .when()
                         .get(BASE_URL + "/allprojects")
@@ -949,15 +625,50 @@ public class BackendControllerTest {
                         .statusCode(is(HttpStatus.SC_OK))
                         .extract()
                         .body().as(Projekt[].class));
-        System.out.println("Number of projects after assignment: " + allProjects.size());
-        assertThat(allProjects.size(), is(nbProjects));
+    }
 
+    private List<Teilnehmer> getAllUsers() {
+        return Arrays.asList(given()
+                .when()
+                .get(BASE_URL + "/allusers")
+                .then()
+                .statusCode(HttpStatus.SC_OK)
+                .extract().as(Teilnehmer[].class));
+    }
 
-        int newSumOfRegisteredTeilnehmer = 0;
-        for (Projekt p: allProjects) {
-            newSumOfRegisteredTeilnehmer += p.getAnmeldungen().size();
-        }
-        //4 Assignments
-        assertThat(newSumOfRegisteredTeilnehmer,is(sumOfRegisteredTeilnehmer+4));
+    private Boolean assignUser2Projekt(Long projektId, Long userId) {
+        Map<String,Long> newID_Map = new HashMap<String, Long>();
+        newID_Map.put("user",userId);
+        newID_Map.put("project", projektId);
+        return given()
+                .body(newID_Map)
+                .contentType(ContentType.JSON)
+                .when()
+                .post(BASE_URL+"/assignProject")
+                .then()
+                .statusCode(HttpStatus.SC_OK)
+                .extract().as(Boolean.class);
+    }
+
+    private Teilnehmer getUser(Long userId) {
+        return given()
+                .pathParam("id", userId)
+                .when()
+                .get(BASE_URL + "/user/{id}")
+                .then()
+                .statusCode(HttpStatus.SC_OK)
+                .assertThat()
+                .extract().as(Teilnehmer.class);
+    }
+
+    private boolean setProjektInactive(Long projectID) {
+        return given()
+                .param("project_id", projectID)
+                .when()
+                .get(BASE_URL + "/deleteproject")
+                .then()
+                .statusCode(HttpStatus.SC_CREATED)
+                .assertThat()
+                .extract().as(Boolean.class);
     }
 }

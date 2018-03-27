@@ -42,7 +42,7 @@ public class TeilnehmerRepositoryTest {
 
     private Teilnehmer user = createUser();
 
-    public Teilnehmer createUser() {
+    public static Teilnehmer createUser() {
         LocalDate registerDate = LocalDate.now();
         Arzt arzt = new Arzt("Eich", "Route 1 Alabastia, 39829",
                 "555-6891");
@@ -77,13 +77,13 @@ public class TeilnehmerRepositoryTest {
     public List<Projekt> createProjects(int numberOfProjects) {
         ArrayList<Projekt> result = new ArrayList<Projekt>();
         for (int i = addedProjects; i < addedProjects+numberOfProjects; i++){
-            Projekt p = new Projekt("Testprojekt " + i, LocalDate.now(), 5+i, 20, 3+i, 1,"www.google.com", new ArrayList<>());
+            Projekt p = new Projekt("Testprojekt " + i, LocalDate.now(), 5+i, 20, 3+i, 1,"www.google.com");
             result.add(p);}
         return result;
     }
 
     public Projekt createSingleProject() {
-       Projekt p = new Projekt("Schwimmen im See", LocalDate.now(), 15, 12, 10, 5,"www.google.com", new ArrayList<>());
+       Projekt p = new Projekt("Schwimmen im See", LocalDate.now(), 15, 12, 10, 5,"www.google.com");
        return p;
     }
 

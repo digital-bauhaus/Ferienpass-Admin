@@ -1,6 +1,5 @@
 package de.jonashackt.springbootvuejs.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.jonashackt.springbootvuejs.domain.*;
 import de.jonashackt.springbootvuejs.repository.ProjektRepository;
@@ -14,11 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+
 import static java.lang.Math.toIntExact;
 
 @RestController()
@@ -91,23 +91,24 @@ public class BackendController {
         if (projekt == null)
             return false;
 
-        List<Teilnehmer> registrierteTeilnehmer = projekt.getAnmeldungen();
         if (hasProjektFreeSlots(projekt)) {
-            if(!registrierteTeilnehmer.contains(teilnehmer)) {
-                registrierteTeilnehmer.add(teilnehmer);
-                projekt.setAnmeldungen(registrierteTeilnehmer);
-                projektRepository.save(projekt);
+            return assignUserToProjektWhenNotAlreadyAssigned(teilnehmer, projekt);
 
-                LOG.info("Successfully assigned project " + projekt.getName() + " to user " + teilnehmer.getNachname());
-            } else {
-                LOG.info("Teilnehmer " + teilnehmer.getNachname() + " already assigned to project " + projekt.getName() + ".");
-            }
-
-            return true;
         } else {
             LOG.info("Could not assign " + teilnehmer.getNachname() + " to project " + projekt.getName() + " because all free slots are taken.");
             return false;
         }
+    }
+
+    private Boolean assignUserToProjektWhenNotAlreadyAssigned(Teilnehmer teilnehmer, Projekt projekt) {
+        if(projekt.isTeilnehmerNotAlreadyAsignedToProjekt(teilnehmer)) {
+            projekt.addAnmeldung(teilnehmer);
+            projektRepository.save(projekt);
+            LOG.info("Successfully assigned project " + projekt.getName() + " to user " + teilnehmer.getNachname());
+        } else {
+            LOG.info("Teilnehmer " + teilnehmer.getNachname() + " already assigned to project " + projekt.getName() + ".");
+        }
+        return true;
     }
 
 
@@ -257,10 +258,10 @@ public class BackendController {
     List<Projekt> showProjectsOfUserById(@RequestParam Long userID) {
         LOG.info("GET called on /projectsofid resource with userID: " + userID);
         List<Projekt> resultList = new ArrayList<>();
-        for (Projekt p:projektRepository.findAll()) {
-            for (Teilnehmer t: p.getAnmeldungen()) {
-                if(t.getId() == userID)
-                    resultList.add(p);
+        for (Projekt projekt : projektRepository.findAll()) {
+            for (Teilnehmer teilnehmer: projekt.getAnmeldungen()) {
+                if(teilnehmer.getId() == userID)
+                    resultList.add(projekt);
             }
         }
         LOG.info("Returning list with size of " + resultList.size());
@@ -274,7 +275,7 @@ public class BackendController {
     Long addNewProject(@RequestParam String name, @RequestParam String date, @RequestParam int age, @RequestParam int price, @RequestParam int slots,
                        @RequestParam int slotsReserved, @RequestParam String weblink) {
         LocalDate d = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-        Projekt project = new Projekt(name, d, age, price, slots, slotsReserved, weblink, new ArrayList<>());
+        Projekt project = new Projekt(name, d, age, price, slots, slotsReserved, weblink);
         projektRepository.save(project);
         LOG.info(project.toString() + "successfully saved into DB");
 
@@ -304,7 +305,7 @@ public class BackendController {
     Long addNewProject() {
         // EXAMPLE Project
         LocalDate localDate = LocalDate.of(2018, 5, 10);
-        Projekt project = new Projekt("Ball Werfen", LocalDate.of(2018, 5, 10), 10, 20, 2, 1, "www.google.com", new ArrayList<>());
+        Projekt project = new Projekt("Ball Werfen", LocalDate.of(2018, 5, 10), 10, 20, 2, 1, "www.google.com");
         projektRepository.save(project);
 
         LOG.info(project.toString() + " successfully saved into DB");
@@ -312,17 +313,16 @@ public class BackendController {
         return project.getId();
     }
 
-    //Add a new user (Teilnehmer) based on a user object
     @RequestMapping(path = "/addproject", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
-    Long addNewProject(@RequestBody Projekt p) {
+    Long addNewProject(@RequestBody Projekt projekt) {
 
-        projektRepository.save(p);
+        projektRepository.save(projekt);
 
-        LOG.info(p.toString() + " successfully saved into DB");
+        LOG.info(projekt.toString() + " successfully saved into DB");
 
-        return p.getId();
+        return projekt.getId();
     }
 
 
