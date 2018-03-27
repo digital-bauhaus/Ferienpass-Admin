@@ -148,7 +148,9 @@ public class Projekt {
     }
 
     public void addAnmeldung(Teilnehmer teilnehmer) {
-        this.anmeldungen.add(teilnehmer);
+        List<Teilnehmer> anmeldungen = getAnmeldungen();
+        anmeldungen.add(teilnehmer);
+        setAnmeldungen(anmeldungen);
     }
 
     public List<Teilnehmer> getStornierteTeilnehmer() {

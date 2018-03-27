@@ -7,6 +7,7 @@ import de.jonashackt.springbootvuejs.repository.ProjektRepository;
 import de.jonashackt.springbootvuejs.repository.TeilnehmerRepository;
 import de.jonashackt.springbootvuejs.transformation.AnmeldungJson;
 import de.jonashackt.springbootvuejs.transformation.AnmeldungToAdmin;
+import de.jonashackt.springbootvuejs.transformation.Project;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,17 +92,27 @@ public class BackendController {
             return false;
 
         List<Teilnehmer> registrierteTeilnehmer = projekt.getAnmeldungen();
-        if(projekt.getAnmeldungen().size() >= projekt.getSlotsGesamt() - projekt.getSlotsReserviert()) {
-            LOG.info("Could not assign " + teilnehmer.getNachname() + " to project " + projekt.getName() + " because all free slots are taken.");
-            return false;
-        }
-        if(!registrierteTeilnehmer.contains(teilnehmer))
+        if (!hasProjektFreeSlots(projekt)) return false;
+
+        LOG.info("Could not assign " + teilnehmer.getNachname() + " to project " + projekt.getName() + " because all free slots are taken.");
+        if(!registrierteTeilnehmer.contains(teilnehmer)) {
             registrierteTeilnehmer.add(teilnehmer);
+        } else {
+            LOG.info("Teilnehmer " + teilnehmer.getNachname() + " already assigned to project " + projekt.getName() + ".");
+        }
         projekt.setAnmeldungen(registrierteTeilnehmer);
         projektRepository.save(projekt);
 
         LOG.info("Successfully assigned project " + projekt.getName() + " to user " + teilnehmer.getNachname());
 
+        return true;
+    }
+
+    private boolean hasProjektFreeSlots(Projekt projekt) {
+        if(projekt.getAnmeldungen().size() >= projekt.getSlotsGesamt() - projekt.getSlotsReserviert()) {
+            LOG.info("All free slots of " + projekt.getName() + " are already taken.");
+            return false;
+        }
         return true;
     }
 
@@ -178,19 +189,34 @@ public class BackendController {
 
     @RequestMapping(path = "/register", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody Long registerNewTeilnehmer(@RequestBody AnmeldungJson anmeldungJson) throws JsonProcessingException {
+    public @ResponseBody Long registerNewTeilnehmer(@RequestBody AnmeldungJson anmeldungJson) throws Exception {
 
         LOG.info("New POST request from Ferienpass-Anmeldung Microservice containing new Teilnehmer");
         ObjectMapper mapper = new ObjectMapper();
         LOG.info("The anmeldungJson looks like: " + mapper.writeValueAsString(anmeldungJson));
 
-        Teilnehmer neuAngemeldeterTeilnehmer = AnmeldungToAdmin.mapAnmeldedataToTeilnehmer(anmeldungJson, projektRepository.findAllProjects());
+        Teilnehmer neuAngemeldeterTeilnehmer = AnmeldungToAdmin.mapAnmeldedataToTeilnehmer(anmeldungJson);
+
+        for (Project project : anmeldungJson.getProjects()) {
+            if(project.isRegistered()) {
+                assignTeilnehmer2Projekt(neuAngemeldeterTeilnehmer, project);
+            }
+        }
 
         Teilnehmer savedTeilnehmer = teilnehmerRepository.save(neuAngemeldeterTeilnehmer);
 
         LOG.info("Successfully saved new Teilnehmer " + neuAngemeldeterTeilnehmer.toString() + " into Admin-Backend-DB");
 
         return savedTeilnehmer.getId();
+    }
+
+    private void assignTeilnehmer2Projekt(Teilnehmer neuAngemeldeterTeilnehmer, Project project) throws Exception {
+        Projekt projekt = projektRepository.findOne(project.getId().longValue());
+        if(hasProjektFreeSlots(projekt)) {
+            projekt.addAnmeldung(neuAngemeldeterTeilnehmer);
+        } else {
+            throw new Exception("Das Projekt " + projekt.getName() + " hat leider keine freien Slots mehr!");
+        }
     }
 
     /*******************************************
