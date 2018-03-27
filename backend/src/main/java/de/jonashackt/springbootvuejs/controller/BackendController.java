@@ -92,21 +92,24 @@ public class BackendController {
             return false;
 
         List<Teilnehmer> registrierteTeilnehmer = projekt.getAnmeldungen();
-        if (!hasProjektFreeSlots(projekt)) return false;
+        if (hasProjektFreeSlots(projekt)) {
+            if(!registrierteTeilnehmer.contains(teilnehmer)) {
+                registrierteTeilnehmer.add(teilnehmer);
+                projekt.setAnmeldungen(registrierteTeilnehmer);
+                projektRepository.save(projekt);
 
-        LOG.info("Could not assign " + teilnehmer.getNachname() + " to project " + projekt.getName() + " because all free slots are taken.");
-        if(!registrierteTeilnehmer.contains(teilnehmer)) {
-            registrierteTeilnehmer.add(teilnehmer);
+                LOG.info("Successfully assigned project " + projekt.getName() + " to user " + teilnehmer.getNachname());
+            } else {
+                LOG.info("Teilnehmer " + teilnehmer.getNachname() + " already assigned to project " + projekt.getName() + ".");
+            }
+
+            return true;
         } else {
-            LOG.info("Teilnehmer " + teilnehmer.getNachname() + " already assigned to project " + projekt.getName() + ".");
+            LOG.info("Could not assign " + teilnehmer.getNachname() + " to project " + projekt.getName() + " because all free slots are taken.");
+            return false;
         }
-        projekt.setAnmeldungen(registrierteTeilnehmer);
-        projektRepository.save(projekt);
-
-        LOG.info("Successfully assigned project " + projekt.getName() + " to user " + teilnehmer.getNachname());
-
-        return true;
     }
+
 
     private boolean hasProjektFreeSlots(Projekt projekt) {
         if(projekt.getAnmeldungen().size() >= projekt.getSlotsGesamt() - projekt.getSlotsReserviert()) {

@@ -370,13 +370,37 @@ public class BackendControllerTest {
         assertThat(responseUser.getTelefon(), is("03643 / 123456"));
 
 
+        List<Projekt> allProjects =
+                Arrays.asList(given()
+                        .contentType(ContentType.JSON)
+                        .when()
+                        .get(BASE_URL + "/allprojects")
+                        .then()
+                        .statusCode(is(HttpStatus.SC_OK))
+                        .extract()
+                        .body().as(Projekt[].class));
+
+        allProjects.forEach(projekt -> System.out.println(projekt.getId() + ", Name: " + projekt.getName()));
+        allProjects.forEach(projekt -> {
+            projekt.getAnmeldungen().forEach(teilnehmer -> System.out.println(projekt.getId() + ", Teilnehmer: " + teilnehmer.getVorname() ));
+
+        });
+        System.out.println("Projekte " + allProjects);
+
+
         // Ist der User in Projekt 1 & 3 angemeldet?
-        List<Teilnehmer> anmeldungenProjekt1 = getProjekt("1").getAnmeldungen();
-        assertThat(containsTeilnehmerWithVorname(responseUser.getVorname(), anmeldungenProjekt1), is(true));
-        List<Teilnehmer> anmeldungenProjekt2 = getProjekt("2").getAnmeldungen();
-        assertThat(containsTeilnehmerWithVorname(responseUser.getVorname(), anmeldungenProjekt2), is(false));
-        List<Teilnehmer> anmeldungenProjekt3 = getProjekt("3").getAnmeldungen();
-        assertThat(containsTeilnehmerWithVorname(responseUser.getVorname(), anmeldungenProjekt3), is(true));
+//        List<Teilnehmer> anmeldungenProjekt1 = getProjekt(allProjects,"Ball Werfen").getAnmeldungen();
+//        System.out.println("Projekt 1 contains User? " + containsTeilnehmer(responseUser, anmeldungenProjekt1));
+//        System.out.println("Projekt 1 " + anmeldungenProjekt1);
+//        assertThat(containsTeilnehmer(responseUser, anmeldungenProjekt1), is(true));
+
+        List<Teilnehmer> anmeldungenProjekt2 = getProjekt(allProjects,"Bauspielplatz").getAnmeldungen();
+        System.out.println("Projekt 2 contains User? " + containsTeilnehmer(responseUser, anmeldungenProjekt2));
+        assertThat(containsTeilnehmer(responseUser, anmeldungenProjekt2), is(false));
+
+        List<Teilnehmer> anmeldungenProjekt3 = getProjekt(allProjects,"Papier-Werkstatt").getAnmeldungen();
+        System.out.println("Projekt 3 contains User? " + containsTeilnehmer(responseUser, anmeldungenProjekt3));
+        assertThat(containsTeilnehmer(responseUser, anmeldungenProjekt3), is(true));
 
 
         List<Allergie> allergien = responseUser.getAllergien();
@@ -454,25 +478,22 @@ public class BackendControllerTest {
 
     }
 
-    private boolean containsTeilnehmerWithVorname(String vorname, List<Teilnehmer> anmeldungen) {
-        for (int i = 0; i < anmeldungen.size(); i++) {
-            if (anmeldungen.get(i).getVorname().equals(vorname)) {
+    private boolean containsTeilnehmer(Teilnehmer teilnehmer, List<Teilnehmer> anmeldungen) {
+        for (Teilnehmer angemeldeterTeilnehmer : anmeldungen) {
+            if(angemeldeterTeilnehmer.getId() == teilnehmer.getId())
                 return true;
-            }
         }
         return false;
     }
 
-    private Projekt getProjekt(String projektId) {
-        return given()
-            .pathParam("projekt_id", projektId)
-        .when()
-            .get(BASE_URL + "/project/{projekt_id}")
-        .then()
-            .statusCode(HttpStatus.SC_OK)
-            .assertThat()
-                .extract()
-                    .as(Projekt.class);
+    private Projekt getProjekt(List<Projekt> projekte, String projektname) {
+        for (Projekt projekt : projekte) {
+            System.out.println("Projekt: " + projekt.getName());
+            if(projektname.equals(projekt.getName())) {
+                return projekt;
+            }
+        }
+        return null;
     }
 
 
@@ -481,10 +502,10 @@ public class BackendControllerTest {
      ****************************/
     @Test
     public void addNewProjectAndetrieveItBack() {
-        Projekt p = teilnehmerRepositoryTest.createSingleProject();
+        Projekt projekt = teilnehmerRepositoryTest.createSingleProject();
         Long projectID =
                 given()
-                .body(p)
+                .body(projekt)
                 .contentType(ContentType.JSON)
                 .when()
                 .post(BASE_URL+"/addproject")
@@ -493,7 +514,7 @@ public class BackendControllerTest {
                 .extract()
                 .body().as(Long.class);
 
-        Projekt p_retrieved =
+        Projekt responeProjekt =
                 given()
                 .pathParam("projekt_id", projectID)
                 .when()
@@ -502,24 +523,24 @@ public class BackendControllerTest {
                 .statusCode(HttpStatus.SC_OK)
                 .assertThat()
                 .extract().as(Projekt.class);
-        assertThat(projectID, is(p_retrieved.getId()));
-        assertThat(p_retrieved.getName(), is(p.getName()));
-        assertThat(p_retrieved.getSlotsFrei(), is(p.getSlotsFrei()));
-        assertThat(p_retrieved.getKosten(), is(p.getKosten()));
-        assertThat(p_retrieved.getAlterLimitierung(), is(p.getAlterLimitierung()));
-        assertThat(p_retrieved.getDatum(), is(p.getDatum()));
-        assertThat(p_retrieved.getSlotsGesamt(), is(p.getSlotsGesamt()));
-        assertThat(p_retrieved.getWebLink(), is(p.getWebLink()));
-        assertThat(p_retrieved.getAnmeldungen(), is(p.getAnmeldungen()));
+        assertThat(projectID, is(responeProjekt.getId()));
+        assertThat(responeProjekt.getName(), is(projekt.getName()));
+        assertThat(responeProjekt.getSlotsFrei(), is(projekt.getSlotsFrei()));
+        assertThat(responeProjekt.getKosten(), is(projekt.getKosten()));
+        assertThat(responeProjekt.getAlterLimitierung(), is(projekt.getAlterLimitierung()));
+        assertThat(responeProjekt.getDatum(), is(projekt.getDatum()));
+        assertThat(responeProjekt.getSlotsGesamt(), is(projekt.getSlotsGesamt()));
+        assertThat(responeProjekt.getWebLink(), is(projekt.getWebLink()));
+        assertThat(responeProjekt.getAnmeldungen(), is(projekt.getAnmeldungen()));
     }
 
 
     @Test
     public void addProjectAndUserAndAssignProjectToUserAndRetrieveAllProjectsForThisUser() {
-        Projekt p = teilnehmerRepositoryTest.createSingleProject();
+        Projekt projekt = teilnehmerRepositoryTest.createSingleProject();
         Long projectID =
                 given()
-                        .body(p)
+                        .body(projekt)
                         .contentType(ContentType.JSON)
                         .when()
                         .post(BASE_URL+"/addproject")
@@ -590,16 +611,16 @@ public class BackendControllerTest {
 
     @Test
     public void addProjectUsingParametersAndTestForSuccess() {
-        Projekt p = teilnehmerRepositoryTest.createSingleProject();
+        Projekt projekt = teilnehmerRepositoryTest.createSingleProject();
         Long projectID =
                 given()
-                        .param("name", p.getName())
-                        .param("date",p.getDatum().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))
-                        .param("age",p.getAlterLimitierung())
-                        .param("price",p.getKosten())
-                        .param("slots",p.getSlotsGesamt())
-                        .param("slotsReserved",p.getSlotsReserviert())
-                        .param("weblink",p.getWebLink())
+                        .param("name", projekt.getName())
+                        .param("date",projekt.getDatum().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))
+                        .param("age",projekt.getAlterLimitierung())
+                        .param("price",projekt.getKosten())
+                        .param("slots",projekt.getSlotsGesamt())
+                        .param("slotsReserved",projekt.getSlotsReserviert())
+                        .param("weblink",projekt.getWebLink())
                 .when()
                 .get(BASE_URL + "/createproject")
                 .then()
@@ -607,7 +628,7 @@ public class BackendControllerTest {
                 .assertThat()
                 .extract().as(Long.class);
 
-        Projekt p_retrieved =
+        Projekt responseProjekt =
                 given()
                         .pathParam("projekt_id", projectID)
                         .when()
@@ -617,15 +638,15 @@ public class BackendControllerTest {
                         .assertThat()
                         .extract().as(Projekt.class);
 
-        assertThat(projectID, is(p_retrieved.getId()));
-        assertThat(p_retrieved.getName(), is(p.getName()));
-        assertThat(p_retrieved.getSlotsFrei(), is(p.getSlotsFrei()));
-        assertThat(p_retrieved.getKosten(), is(p.getKosten()));
-        assertThat(p_retrieved.getAlterLimitierung(), is(p.getAlterLimitierung()));
-        assertThat(p_retrieved.getDatum(), is(p.getDatum()));
-        assertThat(p_retrieved.getSlotsGesamt(), is(p.getSlotsGesamt()));
-        assertThat(p_retrieved.getWebLink(), is(p.getWebLink()));
-        assertThat(p_retrieved.getAnmeldungen(), is(p.getAnmeldungen()));
+        assertThat(projectID, is(responseProjekt.getId()));
+        assertThat(responseProjekt.getName(), is(projekt.getName()));
+        assertThat(responseProjekt.getSlotsFrei(), is(projekt.getSlotsFrei()));
+        assertThat(responseProjekt.getKosten(), is(projekt.getKosten()));
+        assertThat(responseProjekt.getAlterLimitierung(), is(projekt.getAlterLimitierung()));
+        assertThat(responseProjekt.getDatum(), is(projekt.getDatum()));
+        assertThat(responseProjekt.getSlotsGesamt(), is(projekt.getSlotsGesamt()));
+        assertThat(responseProjekt.getWebLink(), is(projekt.getWebLink()));
+        assertThat(responseProjekt.getAnmeldungen(), is(projekt.getAnmeldungen()));
     }
 
     @Test
@@ -711,16 +732,16 @@ public class BackendControllerTest {
                         .body().as(Projekt[].class));
         Long projectID = 0L;
         if(allProjects.size() <= 0) {
-            Projekt p = teilnehmerRepositoryTest.createSingleProject();
+            Projekt projekt = teilnehmerRepositoryTest.createSingleProject();
             projectID =
                     given()
-                            .param("name", p.getName())
-                            .param("date",p.getDatum().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))
-                            .param("age",p.getAlterLimitierung())
-                            .param("price",p.getKosten())
-                            .param("slots",p.getSlotsGesamt())
-                            .param("slotsReserved",p.getSlotsReserviert())
-                            .param("weblink",p.getWebLink())
+                            .param("name", projekt.getName())
+                            .param("date",projekt.getDatum().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))
+                            .param("age",projekt.getAlterLimitierung())
+                            .param("price",projekt.getKosten())
+                            .param("slots",projekt.getSlotsGesamt())
+                            .param("slotsReserved",projekt.getSlotsReserviert())
+                            .param("weblink",projekt.getWebLink())
                             .when()
                             .get(BASE_URL + "/createproject")
                             .then()
@@ -790,10 +811,10 @@ public class BackendControllerTest {
         System.out.println("Number of projects at start: " + nbProjects);
 
         //number of registered Teilnehmer in all projects should be equal to number of registered projects of all Teilnehmer
-        Projekt p1 = teilnehmerRepositoryTest.createSingleProject();
+        Projekt projekt1 = teilnehmerRepositoryTest.createSingleProject();
         Long projectID1 =
                 given()
-                        .body(p1)
+                        .body(projekt1)
                         .contentType(ContentType.JSON)
                         .when()
                         .post(BASE_URL+"/addproject")
@@ -801,11 +822,12 @@ public class BackendControllerTest {
                         .statusCode(is(HttpStatus.SC_CREATED))
                         .extract()
                         .body().as(Long.class);
-        assertThat(p1.isAktiv(),is(true));
-        Projekt p2 = teilnehmerRepositoryTest.createSingleProject();
+        assertThat(projekt1.isAktiv(),is(true));
+
+        Projekt projekt2 = teilnehmerRepositoryTest.createSingleProject();
         Long projectID2 =
                 given()
-                        .body(p2)
+                        .body(projekt2)
                         .contentType(ContentType.JSON)
                         .when()
                         .post(BASE_URL+"/addproject")
@@ -813,7 +835,7 @@ public class BackendControllerTest {
                         .statusCode(is(HttpStatus.SC_CREATED))
                         .extract()
                         .body().as(Long.class);
-        assertThat(p2.isAktiv(),is(true));
+        assertThat(projekt2.isAktiv(),is(true));
 
         Teilnehmer user1 = teilnehmerRepositoryTest.createUser();
         Long userId1 =
@@ -826,6 +848,7 @@ public class BackendControllerTest {
                         .statusCode(is(HttpStatus.SC_CREATED))
                         .extract()
                         .body().as(Long.class);
+
         Teilnehmer user2 = teilnehmerRepositoryTest.createUser();
         Long userId2 =
                 given()
@@ -850,6 +873,7 @@ public class BackendControllerTest {
 
         System.out.println("Number of projects after adding two: " + allProjects.size());
         assertThat(allProjects.size(), is(nbProjects+2));
+
         nbProjects = allProjects.size();
         int sumOfRegisteredTeilnehmer = 0;
         for (Projekt p: allProjects) {
@@ -872,6 +896,7 @@ public class BackendControllerTest {
                         .statusCode(HttpStatus.SC_OK)
                         .extract().as(Boolean.class);
         assertThat(success,is(true));
+
         newID_Map = new HashMap<String, Long>();
         newID_Map.put("user",userId1);
         newID_Map.put("project", projectID2);
@@ -899,6 +924,7 @@ public class BackendControllerTest {
                         .statusCode(HttpStatus.SC_OK)
                         .extract().as(Boolean.class);
         assertThat(success,is(true));
+
         newID_Map = new HashMap<String, Long>();
         newID_Map.put("user",userId2);
         newID_Map.put("project", projectID2);
