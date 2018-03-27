@@ -215,6 +215,36 @@ public class TeilnehmerRepositoryTest {
         String arztName = "Doktor Who";
         String arztAdresse = "Arzthaus 1";
         String arztTel = "5555";
+        boolean erlaubeMedikamentation = false;
+        boolean darfSchwimmen = true;
+        boolean darfReiten = false;
+        boolean darfAlleinNachHause = true;
+        String schwimmAbzeichen = "Seepferdchen";
+        boolean bezahlt = false;
+        boolean darfBehandeltWerden = true;
+        boolean liegtBehinderungVor = true;
+        boolean behinderungG = false;
+        boolean behinderungH = true;
+        boolean behinderungAG = false;
+        boolean behinderungB1 = false;
+        boolean behinderungG1 = false;
+        boolean behinderungB = false;
+        boolean behinderungTBL = false;
+        boolean rollstuhl = true;
+        String behinderungHilfsmittel = "";
+        boolean wertMarke = true;
+        boolean begleitungNotwending = false;
+        boolean begleitPflege = false;
+        boolean begleitMedVor = false;
+        boolean begleitMobilität = false;
+        boolean begleitOrientierung = false;
+        boolean begleitSozial = false;
+        String eingeschränkteSinne = "";
+        String hinweiseZumUmgang = "";
+        boolean behinderungUnterstützung = false;
+        String untersützungKontakt = "";
+        boolean kostenÜbernahme = true;
+
         Teilnehmer updatedTeilnehmer =
                 given()
                         .param("userId", userId)
@@ -232,6 +262,35 @@ public class TeilnehmerRepositoryTest {
                         .param("arztName",arztName)
                         .param("arztAdresse",arztAdresse)
                         .param("arztTel",arztTel)
+                        .param("erlaubeMedikamentation", erlaubeMedikamentation)
+                        .param("darfSchwimmen", darfSchwimmen)
+                        .param("darfReiten", darfReiten)
+                        .param("darfAlleinNachHause", darfAlleinNachHause)
+                        .param("schwimmAbzeichen", schwimmAbzeichen)
+                        .param("bezahlt", bezahlt)
+                        .param("darfBehandeltWerden", darfBehandeltWerden)
+                        .param("liegtBehinderungVor", liegtBehinderungVor)
+                        .param("behinderungG", behinderungG)
+                        .param("behinderungH", behinderungH)
+                        .param("behinderungAG", behinderungAG)
+                        .param("behinderungB1", behinderungB1)
+                        .param("behinderungG1", behinderungG1)
+                        .param("behinderungB", behinderungB)
+                        .param("behinderungTBL", behinderungTBL)
+                        .param("rollstuhl", rollstuhl)
+                        .param("behinderungHilfsmittel", behinderungHilfsmittel)
+                        .param("wertMarke", wertMarke)
+                        .param("begleitungNotwending", begleitungNotwending)
+                        .param("begleitPflege", begleitPflege)
+                        .param("begleitMedVor", begleitMedVor)
+                        .param("begleitMobilität", begleitMobilität)
+                        .param("begleitOrientierung", begleitOrientierung)
+                        .param("begleitSozial", begleitSozial)
+                        .param("eingeschränkteSinne", eingeschränkteSinne)
+                        .param("hinweiseZumUmgang", hinweiseZumUmgang)
+                        .param("behinderungUnterstützung", behinderungUnterstützung)
+                        .param("untersützungKontakt", untersützungKontakt)
+                        .param("kostenÜbernahme", kostenÜbernahme)
                         .when()
                         .get(BASE_URL+"/updateUser")
                         .then()
