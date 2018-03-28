@@ -127,7 +127,7 @@ public class BackendController {
 
         Teilnehmer neuAngemeldeterTeilnehmer = AnmeldungToAdmin.mapAnmeldedataToTeilnehmer(anmeldungJson);
 
-        List<Projekt> projekteOhneFreiSlots = new ArrayList<>();
+        List<Long> projekteOhneFreiSlots = new ArrayList<>();
 
         for (Project project : anmeldungJson.getProjects()) {
             if(project.isRegistered()) {
@@ -136,7 +136,7 @@ public class BackendController {
                     projekt.addAnmeldung(neuAngemeldeterTeilnehmer);
                 } else {
                     LOG.info("The Projekt " + projekt.getName() + " has no free Slots left!");
-                    projekteOhneFreiSlots.add(projekt);
+                    projekteOhneFreiSlots.add(projekt.getId());
                 }
             }
         }

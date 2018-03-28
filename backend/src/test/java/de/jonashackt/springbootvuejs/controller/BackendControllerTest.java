@@ -334,8 +334,8 @@ public class BackendControllerTest {
         // sollte die API uns einen HTTP 409 schicken und das Projekt Fussball
         // zurueckgeben als Projekt, das keinen Platz mehr frei hat
         // siehe https://github.com/digital-bauhaus/Ferienpass-Admin/issues/27
-        List<Projekt> projekteOhneFreieSlots = registerNewUserFromAnmeldungFrontendForEmptySlotProjekts(anmeldungJson);
-        assertThat(projekteOhneFreieSlots.iterator().next().getName(), is("Fussball"));
+        List<Long> projekteOhneFreieSlots = registerNewUserFromAnmeldungFrontendForEmptySlotProjekts(anmeldungJson);
+        assertThat(projekteOhneFreieSlots.iterator().next(), is(fussballId));
 
         // Wie sieht das bei mehreren Projekten aus, die nicht mehr frei sind?
         // Dafuer setzen reservieren wir auch noch alle freien Slots von Golf spielen
@@ -360,8 +360,8 @@ public class BackendControllerTest {
         projekteOhneFreieSlots = registerNewUserFromAnmeldungFrontendForEmptySlotProjekts(anmeldungJson);
 
         assertThat(projekteOhneFreieSlots.size(), is(2));
-        assertThat(projekteOhneFreieSlots.get(0).getName(), is("Fussball"));
-        assertThat(projekteOhneFreieSlots.get(1).getName(), is("Golf spielen"));
+        assertThat(projekteOhneFreieSlots.get(0), is(fussballId));
+        assertThat(projekteOhneFreieSlots.get(1), is(golfSpielenId));
 
         // Nun haben wir 2 ausgebuchte Projekte und nur Pizza backen hat noch Slots frei
         // Wenn ein Teilnehmer sich auf ausgebuchte Projekte nicht mehr anmelden kann,
@@ -737,7 +737,7 @@ public class BackendControllerTest {
                 .body().as(Long.class);
     }
 
-    private List<Projekt> registerNewUserFromAnmeldungFrontendForEmptySlotProjekts(AnmeldungJson anmeldungJson) {
+    private List<Long> registerNewUserFromAnmeldungFrontendForEmptySlotProjekts(AnmeldungJson anmeldungJson) {
         return Arrays.asList(given()
                 .contentType(ContentType.JSON)
                 .body(anmeldungJson)
@@ -746,7 +746,7 @@ public class BackendControllerTest {
                 .then()
                 .statusCode(is(HttpStatus.SC_CONFLICT))
                 .extract()
-                .body().as(Projekt[].class));
+                .body().as(Long[].class));
     }
 
     private Long addProjekt(Projekt projekt) {
