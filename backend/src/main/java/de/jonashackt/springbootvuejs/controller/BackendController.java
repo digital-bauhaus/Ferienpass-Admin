@@ -91,9 +91,8 @@ public class BackendController {
         if (projekt == null)
             return false;
 
-        if (hasProjektFreeSlots(projekt)) {
+        if (projekt.hasProjektFreeSlots()) {
             return assignUserToProjektWhenNotAlreadyAssigned(teilnehmer, projekt);
-
         } else {
             LOG.info("Could not assign " + teilnehmer.getNachname() + " to project " + projekt.getName() + " because all free slots are taken.");
             return false;
@@ -112,14 +111,42 @@ public class BackendController {
     }
 
 
-    private boolean hasProjektFreeSlots(Projekt projekt) {
-        if(projekt.getAnmeldungen().size() >= projekt.getSlotsGesamt() - projekt.getSlotsReserviert()) {
-            LOG.info("All free slots of " + projekt.getName() + " are already taken.");
-            return false;
+
+    /*******************************************
+     * API for registering from Ferienpass-Anmeldung Microservice
+     ******************************************/
+
+    @RequestMapping(path = "/register", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    public @ResponseBody Long registerNewTeilnehmer(@RequestBody AnmeldungJson anmeldungJson) throws Exception {
+
+        LOG.info("New POST request from Ferienpass-Anmeldung Microservice containing new Teilnehmer");
+        ObjectMapper mapper = new ObjectMapper();
+        LOG.info("The anmeldungJson looks like: " + mapper.writeValueAsString(anmeldungJson));
+
+        Teilnehmer neuAngemeldeterTeilnehmer = AnmeldungToAdmin.mapAnmeldedataToTeilnehmer(anmeldungJson);
+
+        for (Project project : anmeldungJson.getProjects()) {
+            if(project.isRegistered()) {
+                assignTeilnehmer2Projekt(neuAngemeldeterTeilnehmer, project);
+            }
         }
-        return true;
+
+        Teilnehmer savedTeilnehmer = teilnehmerRepository.save(neuAngemeldeterTeilnehmer);
+
+        LOG.info("Successfully saved new Teilnehmer " + neuAngemeldeterTeilnehmer.toString() + " into Admin-Backend-DB");
+
+        return savedTeilnehmer.getId();
     }
 
+    private void assignTeilnehmer2Projekt(Teilnehmer neuAngemeldeterTeilnehmer, Project project) throws Exception {
+        Projekt projekt = projektRepository.findOne(project.getId().longValue());
+        if(projekt.hasProjektFreeSlots()) {
+            projekt.addAnmeldung(neuAngemeldeterTeilnehmer);
+        } else {
+            throw new Exception("Das Projekt " + projekt.getName() + " hat leider keine freien Slots mehr!");
+        }
+    }
 
     //Delete an item from a list of a user (e.g., an illness or so)
     @RequestMapping(path="/deletelistitem", method = RequestMethod.POST)
@@ -138,8 +165,8 @@ public class BackendController {
         switch (typeOfList) {
             case krankheiten:
                 if (teilnehmer.getKrankheiten().size() <= itemPosition){
-                LOG.info("Position of item to delete exceeds list size for position " + itemPosition);
-                return false;
+                    LOG.info("Position of item to delete exceeds list size for position " + itemPosition);
+                    return false;
                 }
                 teilnehmer.getKrankheiten().remove(itemPosition);
                 teilnehmerRepository.save(teilnehmer);
@@ -147,8 +174,8 @@ public class BackendController {
                 return  true;
             case essenslimitierungen:
                 if (teilnehmer.getEssenLimitierungen().size() <= itemPosition){
-                LOG.info("Position of item to delete exceeds list size for position " + itemPosition);
-                return false;
+                    LOG.info("Position of item to delete exceeds list size for position " + itemPosition);
+                    return false;
                 }
                 teilnehmer.getEssenLimitierungen().remove(itemPosition);
                 teilnehmerRepository.save(teilnehmer);
@@ -184,42 +211,6 @@ public class BackendController {
             default:
                 LOG.info("Failed to find an according list type for the given id " + delete_information.get("item"));
                 return false;
-        }
-    }
-
-    /*******************************************
-     * API for registering from Ferienpass-Anmeldung Microservice
-     ******************************************/
-
-    @RequestMapping(path = "/register", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody Long registerNewTeilnehmer(@RequestBody AnmeldungJson anmeldungJson) throws Exception {
-
-        LOG.info("New POST request from Ferienpass-Anmeldung Microservice containing new Teilnehmer");
-        ObjectMapper mapper = new ObjectMapper();
-        LOG.info("The anmeldungJson looks like: " + mapper.writeValueAsString(anmeldungJson));
-
-        Teilnehmer neuAngemeldeterTeilnehmer = AnmeldungToAdmin.mapAnmeldedataToTeilnehmer(anmeldungJson);
-
-        for (Project project : anmeldungJson.getProjects()) {
-            if(project.isRegistered()) {
-                assignTeilnehmer2Projekt(neuAngemeldeterTeilnehmer, project);
-            }
-        }
-
-        Teilnehmer savedTeilnehmer = teilnehmerRepository.save(neuAngemeldeterTeilnehmer);
-
-        LOG.info("Successfully saved new Teilnehmer " + neuAngemeldeterTeilnehmer.toString() + " into Admin-Backend-DB");
-
-        return savedTeilnehmer.getId();
-    }
-
-    private void assignTeilnehmer2Projekt(Teilnehmer neuAngemeldeterTeilnehmer, Project project) throws Exception {
-        Projekt projekt = projektRepository.findOne(project.getId().longValue());
-        if(hasProjektFreeSlots(projekt)) {
-            projekt.addAnmeldung(neuAngemeldeterTeilnehmer);
-        } else {
-            throw new Exception("Das Projekt " + projekt.getName() + " hat leider keine freien Slots mehr!");
         }
     }
 

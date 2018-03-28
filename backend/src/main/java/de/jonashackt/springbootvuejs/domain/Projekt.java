@@ -156,4 +156,8 @@ public class Projekt {
     public boolean isTeilnehmerNotAlreadyAsignedToProjekt(Teilnehmer teilnehmer) {
         return !this.anmeldungen.contains(teilnehmer);
     }
+
+    public boolean hasProjektFreeSlots() {
+        return this.slotsFrei > 0;
+    }
 }
