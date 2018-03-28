@@ -237,6 +237,11 @@ public class TeilnehmerRepositoryTest {
         boolean behinderungUnterstützung = false;
         String untersützungKontakt = "";
         boolean kostenÜbernahme = true;
+        String allergien="Heuschnupfen";
+        String krankheiten = "Grippaler Infekt";
+        String essenLimitierungen = "Käfer";
+        String medikamete = "Bio Bier";
+        String hitzeempfindlichkeiten = "Hat er";
 
         Teilnehmer updatedTeilnehmer =
                 given()
@@ -284,6 +289,11 @@ public class TeilnehmerRepositoryTest {
                         .param("behinderungUnterstützung", behinderungUnterstützung)
                         .param("untersützungKontakt", untersützungKontakt)
                         .param("kostenÜbernahme", kostenÜbernahme)
+                        .param("allergien",allergien)
+                        .param("krankheiten",krankheiten)
+                        .param("essenLimitierungen",essenLimitierungen)
+                        .param("hitzeempfindlichkeiten",hitzeempfindlichkeiten)
+                        .param("medikamente",medikamete)
                         .when()
                         .get(BASE_URL+"/updateUser")
                         .then()
@@ -315,5 +325,11 @@ public class TeilnehmerRepositoryTest {
         assertThat(responseUser.getArzt().getName(),is(arztName));
         assertThat(responseUser.getArzt().getAddress(),is(arztAdresse));
         assertThat(responseUser.getArzt().getTelephone(),is(arztTel));
+        assertThat(responseUser.getAllergien(),is(allergien));
+        assertThat(responseUser.getKrankheiten(),is(krankheiten));
+        assertThat(responseUser.getEssenLimitierungen(),is(essenLimitierungen));
+        assertThat(responseUser.getMedikamente(),is(medikamete));
+        assertThat(responseUser.getHitzeempfindlichkeiten(),is(hitzeempfindlichkeiten));
+
     }
 }

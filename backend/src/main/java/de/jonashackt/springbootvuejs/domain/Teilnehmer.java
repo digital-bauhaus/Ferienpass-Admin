@@ -4,11 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
-//@Table(name = "[User]")
 @JsonIgnoreProperties(value= {"angemeldeteProjekte","stornierungen"})
 public class Teilnehmer {
     // PrimaryKey
@@ -45,20 +42,12 @@ public class Teilnehmer {
     @JoinColumn(name="arzt_id")
     private Arzt arzt;
 
-    //@ManyToMany(cascade=CascadeType.ALL)
-    //private List<Allergie> allergien = new ArrayList<>();
     private String allergien;
 
-    //@ManyToMany(cascade=CascadeType.ALL)
-    //private List<Medikament> medikamente = new ArrayList<>();
     private String medikamente;
 
-    //@ManyToMany(cascade=CascadeType.ALL)
-    //private List<Hitzeempfindlichkeit> hitzeempfindlichkeiten = new ArrayList<>();
     private String hitzeempfindlichkeiten;
 
-    //@ManyToMany(cascade=CascadeType.ALL)
-    //private List<Krankheit> krankheiten = new ArrayList<>();
     private String krankheiten;
 
     private String essenLimitierungen;
@@ -67,10 +56,6 @@ public class Teilnehmer {
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="behinderung_id")
     private Behinderung behinderung;
-
-//    @ManyToMany(cascade=CascadeType.ALL)
-//    private List<EssenLimitierung> essenLimitierungen= new ArrayList<>();
-
 
 
     @Override

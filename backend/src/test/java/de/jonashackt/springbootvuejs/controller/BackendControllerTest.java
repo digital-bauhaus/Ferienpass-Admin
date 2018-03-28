@@ -326,36 +326,13 @@ public class BackendControllerTest {
         //ToDo: Woher kommen die Daten dieses Users?
         String expextedAllergies = "Heuschnupfen\nHausstaub\nNussallergie\nKatzenhaarallergie\nRegenallergie";
         assertThat(responseUser.getAllergien(),is(expextedAllergies));
-        /*List<Allergie> allergien = responseUser.getAllergien();
-        assertThat(allergien.get(0).getName(), is("Heuschnupfen"));
-        assertThat(allergien.get(1).getName(), is("Hausstaub"));
-        assertThat(allergien.get(2).getName(), is("Nussallergie"));
-        assertThat(allergien.get(3).getName(), is("Katzenhaarallergie"));
-        assertThat(allergien.get(4).getName(), is("Regenallergie"));*/
 
         String expextedIllnesses = "Epilepsie\nSchnupfen\nHalschmerzen\nKopfschmerzen\nBauchschmerzen\n";
         assertThat(responseUser.getKrankheiten(),is(expextedIllnesses));
-        /*List<Krankheit> krankheiten = responseUser.getKrankheiten();
-        assertThat(krankheiten.get(0).getName(), is("Epilepsie"));
-        assertThat(krankheiten.get(1).getName(), is("Schnupfen"));
-        assertThat(krankheiten.get(2).getName(), is("Halschmerzen"));
-        assertThat(krankheiten.get(3).getName(), is("Kopfschmerzen"));
-        assertThat(krankheiten.get(4).getName(), is("Bauchschmerzen"));*/
-
 
         String expextedNutrition = "Schokoladenunverträglichkeit\nSofortiges Kotzen nach Nutellagenuss\nWasserunverträglichkeit\n" +
                 "Weizenunverträglichkeit\nBierunverträglichkeit\n";
         assertThat(responseUser.getEssenLimitierungen(),is(expextedNutrition));
-        /*List<EssenLimitierung> essenLimitierungen = responseUser.getEssenLimitierungen();
-
-        assertThat(essenLimitierungen.get(0).getName(), is("Vegetarier"));
-        assertThat(essenLimitierungen.get(1).getName(), is("Laktose-Unverträglichkeit"));
-        assertThat(essenLimitierungen.get(2).getName(), is("Eier-Unverträglichkeit"));
-        assertThat(essenLimitierungen.get(3).getName(), is("Schokoladenunverträglichkeit"));
-        assertThat(essenLimitierungen.get(4).getName(), is("Sofortiges Kotzen nach Nutellagenuss"));
-        assertThat(essenLimitierungen.get(5).getName(), is("Wasserunverträglichkeit"));
-        assertThat(essenLimitierungen.get(6).getName(), is("Weizenunverträglichkeit"));
-        assertThat(essenLimitierungen.get(7).getName(), is("Bierunverträglichkeit"));*/
 
 
         assertThat(responseUser.isErlaubeMedikamentation(), is(false));

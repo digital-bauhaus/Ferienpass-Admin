@@ -83,90 +83,35 @@
         </form>
         <br />
         <hr />
-        <form>
+        <form method="post" v-on:submit.prevent="updateUser">
         <h2>Einschränkungen</h2>
         <table><tr>
         <th>Allergien</th><th>Krankheiten</th></tr>
         <tr>
-        <td>
-        <table>
-        <tr><th>Name</th><th>Information</th><th>Löschen</th></tr>
-         <tr v-for="(allergie, index) of user.allergien">
-         <td><input type="text" id="allergie_n" v-model="allergie.name" :value="allergie.name"></td>
-         <td><input type="text" id="allergie_info" v-model="allergie.zusatzInformation" :value="allergie.zusatzInformation"></td>
-         <td><button v-on:click="deleteListItem(user.id,5,index)">Löschen</button></td>
+        <td><textarea rows="4" cols="50" v-model="user.allergien" /></td>
+        <td><textarea rows="4" cols="50" v-model="user.krankheiten" /></td>
         </tr>
-        <tr><td><input type="text" id="newAllergie" v-model="newAllergie.name" :value="newAllergie.name"></td>
-         <td><input type="text" id="allergie_info" v-model="newAllergie.information" :value="newAllergie.information"></td>
-         <td><button v-on:click="addListItem(user.id,5,index)">Hinzufügen</button></td>
-         </tr>
-        </table></td><td>
-        <table>
-        <tr><th>Name</th><th>Information</th><th>Löschen</th></tr>
-        <tr v-for="(krankheit, index) of user.krankheiten">
-        <td><input type="text" id="krankheit_n" placeholder="Keine Krankheit" v-model="krankheit.name" :value="krankheit.name"></td>
-        <td><input type="text" id="krankheit_info" v-model="krankheit.information" :value="krankheit.information"></td>
-        <td><button v-on:click="deleteListItem(user.id,2,index)">Löschen</button></td>
-        </tr>
-        <tr><td><input type="text" id="newKrankheit" v-model="newKrankheit.name" :value="newKrankheit.name"></td>
-         <td><input type="text" id="newKrankheit" v-model="newKrankheit.information" :value="newKrankheit.information"></td>
-         <td><button v-on:click="addListItem(user.id,2,index)">Hinzufügen</button></td>
-         </tr>
         </table>
-        </td></tr>
-        </table>
-
         <table><tr>
         <th>Hitzeempfindlichkeit</th><th>Medikamente</th></tr>
         <tr>
-        <td>
-        <table>
-        <tr><th>Name</th><th>Information</th><th>Löschen</th></tr>
-        <tr v-for="(hitzeempfindlichkeit, index) of user.hitzeempfindlichkeiten">
-        <td><input type="text" id="hitze_n" v-model="hitzeempfindlichkeit.name" :value="hitzeempfindlichkeit.name"></td>
-        <td><input type="text" id="hitze_info" v-model="hitzeempfindlichkeit.information" :value="hitzeempfindlichkeit.information"></td>
-        <td><button v-on:click="deleteListItem(user.id,7,index)">Löschen</button></td>
+        <td><textarea rows="4" cols="50" v-model="user.hitzeempfindlichkeiten" /></td>
+        <td><textarea rows="4" cols="50" v-model="user.medikamente" /></td>
         </tr>
-        <tr><td><input type="text" id="newHitze" v-model="newHitze.name" :value="newHitze.name"></td>
-        <td><input type="text" id="newHitze_info" v-model="newHitze.information" :value="newHitze.information"></td>
-        <td><button v-on:click="addListItem(user.id,7,index)">Hinzufügen</button></td>
-        </tr>
-        </table></td><td>
-        <table>
-        <tr><th>Name</th><th>Information</th><th>Löschen</th></tr>
-        <tr v-for="(medikamente, index) of user.medikamente">
-        <td><input type="text" id="medikamente_n" placeholder="Keine Krankheit" v-model="medikamente.name" :value="medikamente.name"></td>
-        <td><input type="text" id="medikamente_info" v-model="medikamente.information" :value="medikamente.information"></td>
-        <td><button v-on:click="deleteListItem(user.id,6,index)">Löschen</button></td>
-        </tr>
-        <tr><td><input type="text" id="newMedikamente" v-model="newMedikamente.name" :value="newMedikamente.name"></td>
-        <td><input type="text" id="newMedikamenteI" v-model="newMedikamente.information" :value="newMedikamente.information"></td>
-        <td><button v-on:click="addListItem(user.id,6,index)">Hinzufügen</button></td>
-        </tr>
-        </table>
-        </td></tr>
         </table>
 
-        <table><tr><th>Ernährungsbesonderheiten</th></tr><tr><td>
-        <table>
-        <tr><th>Name</th><th>Information</th><th>Löschen</th></tr>
-        <tr v-for="(essen, index) of user.essenLimitierungen">
-        <td><input type="text" id="essen_n" v-model="essen.name" :value="essen.name"></td>
-        <td><input type="text" id="essen_info" v-model="essen.information" :value="essen.information"></td>
-        <td><button v-on:click="deleteListItem(user.id,4,index)">Löschen</button></td>
-        </tr>
-        <tr><td><input type="text" id="newEssensbesonderheit" v-model="newEssensbesonderheit.name" :value="newEssensbesonderheit.name"></td>
-        <td><input type="text" id="newEssensbesonderheit" v-model="newEssensbesonderheit.information" :value="newEssensbesonderheit.information"></td>
-        <td><button v-on:click="addListItem(user.id,4,index)">Hinzufügen</button></td>
+        <table><tr><th>Ernährungsbesonderheiten</th></tr>
+        <tr><td><textarea rows="4" cols="50" v-model="user.essenLimitierungen" /></td>
         </tr>
         </table>
-        </td></tr></table>
+        <input type="submit" value="Änderung speichern">
 <br />
 </form>
 <hr />
 <form method="post" v-on:submit.prevent="updateUser">
       <h3>Behinderungen</h3>
       <label><b>Behinderungsausweis liegt vor:</b><input v-model="user.liegtBehinderungVor" type="checkbox" id="check"></label> <br />
+      <div v-if="user.liegtBehinderungVor">
       <table>
       <tr><th colspan="4">Art der Behinderung</th></tr>
       <tr>
@@ -198,6 +143,7 @@
       <td><label>Sinneswahrnehmung</label><input type="text" v-model="user.behinderung.eingeschraenkteSinne"></td>
       </tr>
       </table>
+      </div>
       </div>
       <br />
       <table><tr><td>Hinweise zum Umgang mit Kind</td><td><textarea rows="4" cols="50" v-model="user.behinderung.hinweiseZumUmgangMitDemKind" /></td></tr></table>
@@ -267,12 +213,7 @@ export default {
       allAvailableProjects: [],
       allRawProjects: [],
       canceldProjectsOfUser: [],
-      newAllergie: [],
-      newKrankheit: [],
       newBehinderung: [],
-      newEssensbesonderheit: [],
-      newHitze: [],
-      newMedikamente: [],
       popupClass: 'fadeOut',
       errors: []
     };
@@ -311,6 +252,12 @@ export default {
       params.append('schwimmAbzeichen', this.user.schwimmAbzeichen);
       params.append('bezahlt', (this.user.bezahlt === true));
       params.append('darfBehandeltWerden', (this.user.darfBehandeltWerden === true));
+
+      params.append('allergien', this.user.allergien);
+      params.append('krankheiten', this.user.krankheiten);
+      params.append('essenLimitierungen', this.user.essenLimitierungen);
+      params.append('medikamente', this.user.medikamente);
+      params.append('hitzeempfindlichkeiten', this.user.hitzeempfindlichkeiten);
 
       params.append('liegtBehinderungVor', (this.user.liegtBehinderungVor === true));
       params.append('behinderungG', (this.user.behinderung.merkzeichen_ErheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G === true));

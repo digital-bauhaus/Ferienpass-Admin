@@ -153,73 +153,6 @@ public class BackendController {
         return new ResponseEntity(savedTeilnehmer.getId(), HttpStatus.CREATED);
     }
 
-    /*
-    //Delete an item from a list of a user (e.g., an illness or so)
-    @RequestMapping(path="/deletelistitem", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody
-    Boolean deleteItemFromUserList(@RequestBody Map<String, Long> delete_information) {
-        Long user_id = delete_information.get("user_id");
-        ListType typeOfList = ListType.values()[toIntExact(delete_information.get("type"))];
-        int itemPosition = toIntExact(delete_information.get("item"));
-        LOG.info("user_id: " + user_id + " type: " + typeOfList + " itemPosition: " + itemPosition);
-        Teilnehmer teilnehmer = teilnehmerRepository.findOne(user_id);
-        if (teilnehmer == null) {
-            LOG.info("Failed to find user with id " + user_id);
-            return false;
-        }
-        switch (typeOfList) {
-            case krankheiten:
-                if (teilnehmer.getKrankheiten().size() <= itemPosition){
-                    LOG.info("Position of item to delete exceeds list size for position " + itemPosition);
-                    return false;
-                }
-                teilnehmer.getKrankheiten().remove(itemPosition);
-                teilnehmerRepository.save(teilnehmer);
-                LOG.info("Successfully removed an item from list of illness");
-                return  true;
-            case essenslimitierungen:
-                if (teilnehmer.getEssenLimitierungen().size() <= itemPosition){
-                    LOG.info("Position of item to delete exceeds list size for position " + itemPosition);
-                    return false;
-                }
-                teilnehmer.getEssenLimitierungen().remove(itemPosition);
-                teilnehmerRepository.save(teilnehmer);
-                LOG.info("Successfully removed item from list of food limitations");
-                return  true;
-            case allergien:
-                if (teilnehmer.getAllergien().size() <= itemPosition){
-                    LOG.info("Error: " + ListType.allergien + ": " + teilnehmer.getAllergien().size()+ ">=" + itemPosition);
-                    return false;
-                }
-                teilnehmer.getAllergien().remove(itemPosition);
-                teilnehmerRepository.save(teilnehmer);
-                LOG.info("Successfully removed item from list of allergies");
-                return  true;
-            case medikamente:
-                if (teilnehmer.getMedikamente().size() <= itemPosition) {
-                    LOG.info("Position of item to delete exceeds list size for position " + itemPosition);
-                    return false;
-                }
-                teilnehmer.getMedikamente().remove(itemPosition);
-                teilnehmerRepository.save(teilnehmer);
-                LOG.info("Successfully removed item from list of drug limitations");
-                return true;
-            case hitzeempfindlichkeit:
-                if (teilnehmer.getHitzeempfindlichkeiten().size() <= itemPosition) {
-                    LOG.info("Position of item to delete exceeds list size for position " + itemPosition);
-                    return false;
-                }
-                teilnehmer.getHitzeempfindlichkeiten().remove(itemPosition);
-                teilnehmerRepository.save(teilnehmer);
-                LOG.info("Successfully removed item from list of heat problems");
-                return true;
-            default:
-                LOG.info("Failed to find an according list type for the given id " + delete_information.get("item"));
-                return false;
-        }
-    }*/
-
     /*******************************************
      * API for projects (Projekte) functionality
      ******************************************/
@@ -362,7 +295,9 @@ public class BackendController {
                           @RequestParam Boolean begleitPflege, @RequestParam Boolean begleitMedVor, @RequestParam Boolean begleitMobilität,
                           @RequestParam Boolean begleitOrientierung, @RequestParam Boolean begleitSozial, @RequestParam String eingeschränkteSinne,
                           @RequestParam String hinweiseZumUmgang, @RequestParam Boolean behinderungUnterstützung,
-                          @RequestParam String untersützungKontakt, @RequestParam Boolean kostenÜbernahme) {
+                          @RequestParam String untersützungKontakt, @RequestParam Boolean kostenÜbernahme,
+                          @RequestParam String krankheiten, @RequestParam String allergien, @RequestParam String essenLimitierungen,
+                          @RequestParam String medikamente, @RequestParam String hitzeempfindlichkeiten) {
         Teilnehmer teilnehmer = teilnehmerRepository.findOne(userId);
         if (teilnehmer == null) {
             LOG.info("Could not update user with id: " + userId + " because there is no entry in the database.");
@@ -429,6 +364,12 @@ public class BackendController {
         teilnehmer.setErlaubeMedikamentation(erlaubeMedikamentation);
         teilnehmer.setBezahlt(bezahlt);
 
+        //Limitations
+        teilnehmer.setKrankheiten(krankheiten);
+        teilnehmer.setHitzeempfindlichkeiten(hitzeempfindlichkeiten);
+        teilnehmer.setMedikamente(medikamente);
+        teilnehmer.setAllergien(allergien);
+        teilnehmer.setEssenLimitierungen(essenLimitierungen);
 
 
 
