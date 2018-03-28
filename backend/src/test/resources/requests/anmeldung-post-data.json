@@ -12,17 +12,17 @@
   "projects": [
     {
       "id": 1,
-      "name": "Ball Werfen",
+      "name": "Pizza backen",
       "registered": true
     },
     {
       "id": 2,
-      "name": "Bauspielplatz",
+      "name": "Fussball",
       "registered": false
     },
     {
       "id": 3,
-      "name": "Papier-Werkstatt",
+      "name": "Golf spielen",
       "registered": true
     }
   ],

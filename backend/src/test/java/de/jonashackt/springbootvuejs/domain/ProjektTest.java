@@ -29,7 +29,7 @@ public class ProjektTest {
         assertThat(gartenParty.getSlotsReserviert(), is(8));
     }
 
-    private Projekt createProjekt(String projektName, LocalDate datum, int slotsgesamt, int slotsReserviert) {
+    public static Projekt createProjekt(String projektName, LocalDate datum, int slotsgesamt, int slotsReserviert) {
         return new Projekt(projektName, datum, 15, 12, slotsgesamt, slotsReserviert,"www.google.com");
     }
 

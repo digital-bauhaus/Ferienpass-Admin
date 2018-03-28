@@ -233,8 +233,19 @@ public class BackendControllerTest {
     @Test
     public void addNewTeilnehmerFromFerienpassAnmeldungMicroservice() throws IOException {
 
-        AnmeldungJson anmeldungJson = objectMapper.readValue(anmeldungJsonFile.getInputStream(), AnmeldungJson.class);
+        // Zuerst fuer klare Verhältnisse sorgen und Seiteneffekte vermeiden!
+        // Daher neue Projekte anlegen ...
+        Long pizzaBackenId = addProjekt(ProjektTest.createProjekt("Pizza backen", LocalDate.of(2018, 7, 12), 15, 3));
+        Long fussballId = addProjekt(ProjektTest.createProjekt("Fussball", LocalDate.of(2018, 8, 12), 10, 7));
+        Long golfSpielenId = addProjekt(ProjektTest.createProjekt("Golf spielen", LocalDate.of(2018, 7, 2), 18, 5));
 
+        // ... und deren Ids im anmeldung-post-data.json ueberschreiben
+        AnmeldungJson anmeldungJson = objectMapper.readValue(anmeldungJsonFile.getInputStream(), AnmeldungJson.class);
+        anmeldungJson.getProjects().get(0).setId(pizzaBackenId.intValue());
+        anmeldungJson.getProjects().get(1).setId(fussballId.intValue());
+        anmeldungJson.getProjects().get(2).setId(golfSpielenId.intValue());
+
+        // Nun den API-call aus dem Anmeldungs-Frontend ausfuehren
         Long userId = registerNewUserFromAnmeldungFrontend(anmeldungJson);
 
         Teilnehmer responseUser = getUser(userId);
@@ -247,32 +258,118 @@ public class BackendControllerTest {
         assertThat(responseUser.getStadt(), is("Weimar"));
         assertThat(responseUser.getTelefon(), is("03643 / 123456"));
 
+        pruefeProjekte(responseUser, pizzaBackenId, fussballId, golfSpielenId);
+        pruefeAllergienKrankheitenEtc(responseUser);
+        pruefeBehinderungsdaten(responseUser);
+        pruefeErklaerung(responseUser);
+    }
 
-        List<Projekt> allProjects = getAllProjects();
+    private void pruefeProjekte(Teilnehmer responseUser, Long pizzaBackenId, Long fussballId, Long golfSpielenId) {
+        debugOutProjekte();
 
-        allProjects.forEach(projekt -> System.out.println(projekt.getId() + ", Name: " + projekt.getName()));
-        allProjects.forEach(projekt -> {
-            projekt.getAnmeldungen().forEach(teilnehmer -> System.out.println(projekt.getId() + ", Teilnehmer: " + teilnehmer.getVorname() ));
+        // Ist der User in Projekt Pizza backen & Golf spielen angemeldet?
+        List<Teilnehmer> anmeldungenPizzaBacken = getProjekt(pizzaBackenId).getAnmeldungen();
+        assertThat(containsTeilnehmer(responseUser, anmeldungenPizzaBacken), is(true));
 
-        });
-        System.out.println("Projekte " + allProjects);
+        List<Teilnehmer> anmeldungenFussball = getProjekt(fussballId).getAnmeldungen();
+        assertThat(containsTeilnehmer(responseUser, anmeldungenFussball), is(false));
 
+        List<Teilnehmer> anmeldungenGolfSpielen = getProjekt(golfSpielenId).getAnmeldungen();
+        assertThat(containsTeilnehmer(responseUser, anmeldungenGolfSpielen), is(true));
+    }
 
-        // Ist der User in Projekt 1 & 3 angemeldet?
-//        List<Teilnehmer> anmeldungenProjekt1 = getProjekt(allProjects,"Ball Werfen").getAnmeldungen();
-//        System.out.println("Projekt 1 contains User? " + containsTeilnehmer(responseUser, anmeldungenProjekt1));
-//        System.out.println("Projekt 1 " + anmeldungenProjekt1);
-//        assertThat(containsTeilnehmer(responseUser, anmeldungenProjekt1), is(true));
+    @Test
+    public void pruefeRegistrierungProjekteBeiApiCallAnmeldungMicroservice() throws IOException {
+        // Zuerst fuer klare Verhältnisse sorgen und Seiteneffekte vermeiden!
+        // Daher neue Projekte anlegen ...
+        Long pizzaBackenId = addProjekt(ProjektTest.createProjekt("Pizza backen", LocalDate.of(2018, 7, 12), 15, 3));
+        Long fussballId = addProjekt(ProjektTest.createProjekt("Fussball", LocalDate.of(2018, 8, 12), 10, 7));
+        Long golfSpielenId = addProjekt(ProjektTest.createProjekt("Golf spielen", LocalDate.of(2018, 7, 2), 18, 5));
 
-        List<Teilnehmer> anmeldungenProjekt2 = getProjekt(allProjects,"Bauspielplatz").getAnmeldungen();
-        System.out.println("Projekt 2 contains User? " + containsTeilnehmer(responseUser, anmeldungenProjekt2));
-        assertThat(containsTeilnehmer(responseUser, anmeldungenProjekt2), is(false));
+        // ... und deren Ids im anmeldung-post-data.json ueberschreiben
+        AnmeldungJson anmeldungJson = objectMapper.readValue(anmeldungJsonFile.getInputStream(), AnmeldungJson.class);
+        anmeldungJson.getProjects().get(0).setId(pizzaBackenId.intValue());
+        anmeldungJson.getProjects().get(1).setId(fussballId.intValue());
+        anmeldungJson.getProjects().get(2).setId(golfSpielenId.intValue());
 
-        List<Teilnehmer> anmeldungenProjekt3 = getProjekt(allProjects,"Papier-Werkstatt").getAnmeldungen();
-        System.out.println("Projekt 3 contains User? " + containsTeilnehmer(responseUser, anmeldungenProjekt3));
-        assertThat(containsTeilnehmer(responseUser, anmeldungenProjekt3), is(true));
+        // Nun den API-call aus dem Anmeldungs-Frontend ausfuehren
+        Long userId = registerNewUserFromAnmeldungFrontend(anmeldungJson);
 
+        // Pizza backen startet mit 15 Slots gesamt und 3 reserviert
+        // Da im anmeldung-post-data.json Pizza backen 1x fuer den Teilnehmer reserviert wird
+        // sollten jetzt nur noch 15 - 3 - 1 = 11 Plaetze frei sein - sowie 4 reserviert
+        Projekt pizzaBacken = getProjekt(pizzaBackenId);
+        assertThat(pizzaBacken.getSlotsReserviert(), is(4));
+        assertThat(pizzaBacken.getSlotsFrei(), is(11));
 
+        // Fussball 10 gesamt - 7 reserviert - keine Anmeldung = 3 frei bzw. 7 reserviert
+        Projekt fussball = getProjekt(fussballId);
+        assertThat(fussball.getSlotsReserviert(), is(7));
+        assertThat(fussball.getSlotsFrei() , is(3));
+
+        // Golf spielen 18 gesamt - 5 reserviert - 1 Anmeldung = 12 frei bzw. 6 reserviert
+        Projekt golfSpielen = getProjekt(golfSpielenId);
+        assertThat(golfSpielen.getSlotsReserviert(), is(6));
+        assertThat(golfSpielen.getSlotsFrei(), is(12));
+
+        // Slotsfrei bei Fussball auf 0 fahren
+        // Dafuer Pizza backen nicht mehr reservieren
+        anmeldungJson.getProjects().get(0).setRegistered(false);
+        // aber Fussball
+        anmeldungJson.getProjects().get(1).setRegistered(true);
+        // Golf spielen auch nicht
+        anmeldungJson.getProjects().get(2).setRegistered(false);
+
+        // 3 Teilnehmer auf Fussball registrieren - 3 Frontend-API-calls
+        registerNewUserFromAnmeldungFrontend(anmeldungJson);
+        registerNewUserFromAnmeldungFrontend(anmeldungJson);
+        registerNewUserFromAnmeldungFrontend(anmeldungJson);
+
+        Projekt fussballNach3Anmeldungen = getProjekt(fussballId);
+        assertThat(fussballNach3Anmeldungen.getSlotsFrei(), is(0));
+        assertThat(fussballNach3Anmeldungen.getSlotsReserviert(), is(10));
+    }
+
+    private void pruefeErklaerung(Teilnehmer responseUser) {
+        assertThat(responseUser.isDarfAlleinNachHause(), is(true));
+        assertThat(responseUser.isDarfReiten(), is(false));
+        assertThat(responseUser.isDarfSchwimmen(), is(false));
+    }
+
+    private void pruefeBehinderungsdaten(Teilnehmer responseUser) {
+        assertThat(responseUser.isLiegtBehinderungVor(), is(true));
+        Behinderung behinderung = responseUser.getBehinderung();
+
+        // Merkzeichen
+        assertThat(behinderung.isMerkzeichen_AussergewoehnlicheGehbehinderung_aG(), is(true));
+        assertThat(behinderung.isMerkzeichen_Hilflosigkeit_H(), is(false));
+        assertThat(behinderung.isMerkzeichen_Blind_Bl(), is(false));
+        assertThat(behinderung.isMerkzeichen_Gehoerlos_Gl(), is(true));
+        assertThat(behinderung.isMerkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B(), is(false));
+        assertThat(behinderung.isMerkzeichen_ErheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G(), is(true));
+        assertThat(behinderung.isMerkzeichen_Taubblind_TBL(), is(true));
+
+        assertThat(behinderung.isRollstuhlNutzungNotwendig(), is(true));
+        assertThat(behinderung.getWeitereHilfsmittel(), is("Krücken"));
+        assertThat(behinderung.isWertmarkeVorhanden(), is(true));
+
+        // Begleitperson
+        assertThat(behinderung.isBegleitungNotwendig(), is(true));
+        assertThat(behinderung.isBegleitpersonPflege(), is(false));
+        assertThat(behinderung.isBegleitpersonMedizinischeVersorgung(), is(true));
+        assertThat(behinderung.isBegleitpersonMobilitaet(), is(false));
+        assertThat(behinderung.isBegleitpersonOrientierung(), is(false));
+        assertThat(behinderung.isBegleitpersonSozialeBegleitung(), is(true));
+
+        assertThat(behinderung.getEingeschraenkteSinne(), is("Sicht; Gehör; Geschmack; Geruch"));
+
+        assertThat(behinderung.getHinweiseZumUmgangMitDemKind(), is("Bei unserem Kind ist insbesondere darauf zu achten, dass es manchmal spontan..."));
+        assertThat(behinderung.isUnterstuetzungSucheBegleitpersonNotwendig(), is(true));
+        assertThat(behinderung.getGewohnterBegleitpersonenDienstleister(), is("Mensch im Mittelpunkt e.V."));
+        assertThat(behinderung.isBeantragungKostenuebernahmeBegleitpersonNotwendig(), is(false));
+    }
+
+    private void pruefeAllergienKrankheitenEtc(Teilnehmer responseUser) {
         List<Allergie> allergien = responseUser.getAllergien();
         assertThat(allergien.get(0).getName(), is("Heuschnupfen"));
         assertThat(allergien.get(1).getName(), is("Hausstaub"));
@@ -309,43 +406,6 @@ public class BackendControllerTest {
         assertThat(hausarzt.getName(), is("Dr. Martin Schreiber"));
         assertThat(hausarzt.getAddress(), is("Amadeusstrasse 2"));
         assertThat(hausarzt.getTelephone(), is("0364 / 0123456"));
-
-        assertThat(responseUser.isLiegtBehinderungVor(), is(true));
-        Behinderung behinderung = responseUser.getBehinderung();
-
-        // Merkzeichen
-        assertThat(behinderung.isMerkzeichen_AussergewoehnlicheGehbehinderung_aG(), is(true));
-        assertThat(behinderung.isMerkzeichen_Hilflosigkeit_H(), is(false));
-        assertThat(behinderung.isMerkzeichen_Blind_Bl(), is(false));
-        assertThat(behinderung.isMerkzeichen_Gehoerlos_Gl(), is(true));
-        assertThat(behinderung.isMerkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B(), is(false));
-        assertThat(behinderung.isMerkzeichen_ErheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G(), is(true));
-        assertThat(behinderung.isMerkzeichen_Taubblind_TBL(), is(true));
-
-        assertThat(behinderung.isRollstuhlNutzungNotwendig(), is(true));
-        assertThat(behinderung.getWeitereHilfsmittel(), is("Krücken"));
-        assertThat(behinderung.isWertmarkeVorhanden(), is(true));
-
-        // Begleitperson
-        assertThat(behinderung.isBegleitungNotwendig(), is(true));
-        assertThat(behinderung.isBegleitpersonPflege(), is(false));
-        assertThat(behinderung.isBegleitpersonMedizinischeVersorgung(), is(true));
-        assertThat(behinderung.isBegleitpersonMobilitaet(), is(false));
-        assertThat(behinderung.isBegleitpersonOrientierung(), is(false));
-        assertThat(behinderung.isBegleitpersonSozialeBegleitung(), is(true));
-
-        assertThat(behinderung.getEingeschraenkteSinne(), is("Sicht; Gehör; Geschmack; Geruch"));
-
-        assertThat(behinderung.getHinweiseZumUmgangMitDemKind(), is("Bei unserem Kind ist insbesondere darauf zu achten, dass es manchmal spontan..."));
-        assertThat(behinderung.isUnterstuetzungSucheBegleitpersonNotwendig(), is(true));
-        assertThat(behinderung.getGewohnterBegleitpersonenDienstleister(), is("Mensch im Mittelpunkt e.V."));
-        assertThat(behinderung.isBeantragungKostenuebernahmeBegleitpersonNotwendig(), is(false));
-
-        assertThat(responseUser.isDarfAlleinNachHause(), is(true));
-        assertThat(responseUser.isDarfReiten(), is(false));
-        assertThat(responseUser.isDarfSchwimmen(), is(false));
-
-
     }
 
     private boolean containsTeilnehmer(Teilnehmer teilnehmer, List<Teilnehmer> anmeldungen) {
@@ -670,5 +730,16 @@ public class BackendControllerTest {
                 .statusCode(HttpStatus.SC_CREATED)
                 .assertThat()
                 .extract().as(Boolean.class);
+    }
+
+    private void debugOutProjekte() {
+        List<Projekt> allProjects = getAllProjects();
+
+        allProjects.forEach(projekt -> System.out.println(projekt.getId() + ", Name: " + projekt.getName()));
+        allProjects.forEach(projekt -> {
+            projekt.getAnmeldungen().forEach(teilnehmer -> System.out.println(projekt.getId() + ", Teilnehmer: " + teilnehmer.getVorname() ));
+
+        });
+        System.out.println("Projekte " + allProjects);
     }
 }
