@@ -153,6 +153,7 @@ public class BackendController {
         return new ResponseEntity(savedTeilnehmer.getId(), HttpStatus.CREATED);
     }
 
+    /*
     //Delete an item from a list of a user (e.g., an illness or so)
     @RequestMapping(path="/deletelistitem", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
@@ -217,7 +218,7 @@ public class BackendController {
                 LOG.info("Failed to find an according list type for the given id " + delete_information.get("item"));
                 return false;
         }
-    }
+    }*/
 
     /*******************************************
      * API for projects (Projekte) functionality

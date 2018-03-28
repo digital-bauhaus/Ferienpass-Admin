@@ -58,156 +58,36 @@ public class BackendControllerTest {
     public void addNewUserAddSeveralListItemsAndRemoveThemAgain() {
         Teilnehmer user = teilnehmerRepositoryTest.createUser();
 
-        //add some allergies
-        Allergie a1 = new Allergie("Arbeiten","Viele Aufgaben und viel reden");
-        Allergie a2 = new Allergie("Freizeit","Urlaub und Spaß haben");
-        user.setAllergien(new ArrayList<>());
-        user.getAllergien().add(a1);
-        user.getAllergien().add(a2);
-        assertThat(user.getAllergien().size(), is(2));
+        String allergy = "Arbeiten: Viele Aufgaben und viel reden \n"+
+        "Freizeit: Urlaub und Spaß haben";
+        user.setAllergien(allergy);
 
-        //add some food limitations
-        EssenLimitierung e1 = new EssenLimitierung("Fleisch", "vegetarier");
-        EssenLimitierung e2 = new EssenLimitierung("Obst", "Sollte dennoch Obst essen");
-        user.setEssenLimitierungen(new ArrayList<>());
-        user.getEssenLimitierungen().add(e1);
-        user.getEssenLimitierungen().add(e2);
-        assertThat(user.getEssenLimitierungen().size(), is(2));
+        String nutrition = "Fleisch ist verboten, da Vegetarier\n"+
+                "Obst: Sollte dennoch Obst essen";
+        user.setEssenLimitierungen(nutrition);
 
-        //add some illnesses
-        Krankheit k1 = new Krankheit("Grippe", "Sollte viel Pausen machen", "Keine");
-        Krankheit k2 = new Krankheit("Husten", "Immer in den Arm husten", "Hustensaft");
-        user.setKrankheiten(new ArrayList<>());
-        user.getKrankheiten().add(k1);
-        user.getKrankheiten().add(k2);
-        assertThat(user.getKrankheiten().size(), is(2));
+        String illness = "Grippe: Sollte viel Pausen machen\n"+
+            "Husten: Immer in den Arm husten";
+        user.setKrankheiten(illness);
 
         //add some drugs
-        Medikament m1 = new Medikament("Nasentropfen","2x am Tag");
-        Medikament m2 = new Medikament("Hustensaft", "nach dem Essen");
-        user.setMedikamente(new ArrayList<>());
-        user.getMedikamente().add(m1);
-        user.getMedikamente().add(m2);
-        assertThat(user.getMedikamente().size(),is(2));
+        String drugs = "Nasentropfen: 2x am Tag\n" +
+                "Hustensaft: nach dem Essen";
+        user.setMedikamente(drugs);
 
         //add some heat problems
-        Hitzeempfindlichkeit h1 = new Hitzeempfindlichkeit("heiss","ausschlag muss behandelt werden");
-        user.setHitzeempfindlichkeiten(new ArrayList<>());
-        user.getHitzeempfindlichkeiten().add(h1);
-        assertThat(user.getHitzeempfindlichkeiten().size(),is(1));
-
+        String heat = "heiss: ausschlag muss behandelt werden";
+        user.setHitzeempfindlichkeiten(heat);
 
         Long userId = addUser(user);
 
         Teilnehmer responseUser = getUser(userId);
 
-        assertThat(responseUser.getAllergien().size(), is(2));
-        assertThat(responseUser.getEssenLimitierungen().size(), is(2));
-        assertThat(responseUser.getKrankheiten().size(), is(2));
-        assertThat(responseUser.getHitzeempfindlichkeiten().size(),is(1));
-        assertThat(responseUser.getMedikamente().size(),is(2));
-
-        //Begin with test
-
-        //Remove second allergy
-        Map<String,Long> newID_Map = new HashMap<String, Long>();
-        newID_Map.put("user_id",userId);
-        newID_Map.put("type", new Integer(ListType.allergien.ordinal()).longValue());
-        newID_Map.put("item", new Long(1));
-        Boolean success =
-                given()
-                        .body(newID_Map)
-                        .contentType(ContentType.JSON)
-                        .when()
-                        .post(BASE_URL+"/deletelistitem")
-                        .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .extract().as(Boolean.class);
-        assertThat(success,is(true));
-
-        responseUser = getUser(userId);
-        assertThat(responseUser.getAllergien().size(),is(1));
-        assertThat(responseUser.getAllergien().get(0).getName(),is(a1.getName()));
-
-        //remove first food limitation
-        newID_Map = new HashMap<String, Long>();
-        newID_Map.put("user_id",userId);
-        newID_Map.put("type", new Integer(ListType.essenslimitierungen.ordinal()).longValue());
-        newID_Map.put("item", new Long(0L));
-        success =
-                given()
-                        .body(newID_Map)
-                        .contentType(ContentType.JSON)
-                        .when()
-                        .post(BASE_URL+"/deletelistitem")
-                        .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .extract().as(Boolean.class);
-        assertThat(success,is(true));
-
-        responseUser = getUser(userId);
-        assertThat(responseUser.getEssenLimitierungen().size(),is(1));
-        assertThat(responseUser.getEssenLimitierungen().get(0).getName(),is(e2.getName()));
-
-        //remove second illness
-        newID_Map = new HashMap<String, Long>();
-        newID_Map.put("user_id",userId);
-        newID_Map.put("type", new Integer(ListType.krankheiten.ordinal()).longValue());
-        newID_Map.put("item", new Long(1L));
-        success =
-                given()
-                        .body(newID_Map)
-                        .contentType(ContentType.JSON)
-                        .when()
-                        .post(BASE_URL+"/deletelistitem")
-                        .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .extract().as(Boolean.class);
-        assertThat(success,is(true));
-
-        responseUser = getUser(userId);
-        assertThat(responseUser.getKrankheiten().size(),is(1));
-        assertThat(responseUser.getKrankheiten().get(0).getName(),is(k1.getName()));
-
-        //Remove second drug
-        newID_Map = new HashMap<String, Long>();
-        newID_Map.put("user_id",userId);
-        newID_Map.put("type", new Integer(ListType.medikamente.ordinal()).longValue());
-        newID_Map.put("item", new Long(1));
-        success =
-                given()
-                        .body(newID_Map)
-                        .contentType(ContentType.JSON)
-                        .when()
-                        .post(BASE_URL+"/deletelistitem")
-                        .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .extract().as(Boolean.class);
-
-        assertThat(success,is(true));
-        responseUser = getUser(userId);
-        assertThat(responseUser.getMedikamente().size(),is(1));
-        assertThat(responseUser.getMedikamente().get(0).getName(),is(m1.getName()));
-
-        //Remove hitzeempfindlichkeit
-        newID_Map = new HashMap<String, Long>();
-        newID_Map.put("user_id",userId);
-        newID_Map.put("type", new Integer(ListType.hitzeempfindlichkeit.ordinal()).longValue());
-        newID_Map.put("item", new Long(0));
-        success =
-                given()
-                        .body(newID_Map)
-                        .contentType(ContentType.JSON)
-                        .when()
-                        .post(BASE_URL+"/deletelistitem")
-                        .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .extract().as(Boolean.class);
-
-        assertThat(success,is(true));
-        responseUser = getUser(userId);
-        assertThat(responseUser.getHitzeempfindlichkeiten().size(),is(0));
-
+        assertThat(responseUser.getAllergien(), is(allergy));
+        assertThat(responseUser.getEssenLimitierungen(), is(nutrition));
+        assertThat(responseUser.getKrankheiten(), is(illness));
+        assertThat(responseUser.getHitzeempfindlichkeiten(),is(heat));
+        assertThat(responseUser.getMedikamente(),is(drugs));
     }
 
     @Test
@@ -443,21 +323,30 @@ public class BackendControllerTest {
     }
 
     private void pruefeAllergienKrankheitenEtc(Teilnehmer responseUser) {
-        List<Allergie> allergien = responseUser.getAllergien();
+        //ToDo: Woher kommen die Daten dieses Users?
+        String expextedAllergies = "Heuschnupfen\nHausstaub\nNussallergie\nKatzenhaarallergie\nRegenallergie";
+        assertThat(responseUser.getAllergien(),is(expextedAllergies));
+        /*List<Allergie> allergien = responseUser.getAllergien();
         assertThat(allergien.get(0).getName(), is("Heuschnupfen"));
         assertThat(allergien.get(1).getName(), is("Hausstaub"));
         assertThat(allergien.get(2).getName(), is("Nussallergie"));
         assertThat(allergien.get(3).getName(), is("Katzenhaarallergie"));
-        assertThat(allergien.get(4).getName(), is("Regenallergie"));
+        assertThat(allergien.get(4).getName(), is("Regenallergie"));*/
 
-        List<Krankheit> krankheiten = responseUser.getKrankheiten();
+        String expextedIllnesses = "Epilepsie\nSchnupfen\nHalschmerzen\nKopfschmerzen\nBauchschmerzen\n";
+        assertThat(responseUser.getKrankheiten(),is(expextedIllnesses));
+        /*List<Krankheit> krankheiten = responseUser.getKrankheiten();
         assertThat(krankheiten.get(0).getName(), is("Epilepsie"));
         assertThat(krankheiten.get(1).getName(), is("Schnupfen"));
         assertThat(krankheiten.get(2).getName(), is("Halschmerzen"));
         assertThat(krankheiten.get(3).getName(), is("Kopfschmerzen"));
-        assertThat(krankheiten.get(4).getName(), is("Bauchschmerzen"));
+        assertThat(krankheiten.get(4).getName(), is("Bauchschmerzen"));*/
 
-        List<EssenLimitierung> essenLimitierungen = responseUser.getEssenLimitierungen();
+
+        String expextedNutrition = "Schokoladenunverträglichkeit\nSofortiges Kotzen nach Nutellagenuss\nWasserunverträglichkeit\n" +
+                "Weizenunverträglichkeit\nBierunverträglichkeit\n";
+        assertThat(responseUser.getEssenLimitierungen(),is(expextedNutrition));
+        /*List<EssenLimitierung> essenLimitierungen = responseUser.getEssenLimitierungen();
 
         assertThat(essenLimitierungen.get(0).getName(), is("Vegetarier"));
         assertThat(essenLimitierungen.get(1).getName(), is("Laktose-Unverträglichkeit"));
@@ -466,7 +355,8 @@ public class BackendControllerTest {
         assertThat(essenLimitierungen.get(4).getName(), is("Sofortiges Kotzen nach Nutellagenuss"));
         assertThat(essenLimitierungen.get(5).getName(), is("Wasserunverträglichkeit"));
         assertThat(essenLimitierungen.get(6).getName(), is("Weizenunverträglichkeit"));
-        assertThat(essenLimitierungen.get(7).getName(), is("Bierunverträglichkeit"));
+        assertThat(essenLimitierungen.get(7).getName(), is("Bierunverträglichkeit"));*/
+
 
         assertThat(responseUser.isErlaubeMedikamentation(), is(false));
 

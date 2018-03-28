@@ -39,22 +39,15 @@ public class FerienpassAdminApplication implements CommandLineRunner{
 				"555-6891");
 		Kontakt kontact = new Kontakt("Igor Eich", "Route 4 Neuborkia  96825", "555-2532");
 
-		List<EssenLimitierung> essenLimitierungen = new ArrayList<EssenLimitierung>();
-		EssenLimitierung laktose = new EssenLimitierung("Laktoseintoleranz", "");
-		essenLimitierungen.add(laktose);
-		List<Krankheit> krankheiten = new ArrayList<Krankheit>();
-		Krankheit krank = new Krankheit("Grippe", "Muss oft Husten", "Hustenbonbons");
-		krankheiten.add(krank);
-		List<Allergie> allergien = new ArrayList<Allergie>();
-		allergien.add(new Allergie("Heuschnupfen","braucht Nasenspray, siehe Medikamente"));
+		String essenLimitierungen = "Laktoseintoleranz";
+		String krankheiten = "Grippe: Muss oft Husten und braucht Hustenbonbons";
+		String allergien = "Heuschnupfen: braucht Nasenspray, siehe Medikamente";
 		Behinderung behinderung = new Behinderung();
 		behinderung.setRollstuhlNutzungNotwendig(true);
 		behinderung.setMerkzeichen_Taubblind_TBL(true);
 		String schwimmAbzeichen = "Seepferdchen";
-		List<Hitzeempfindlichkeit> hitze = new ArrayList<>();
-		hitze.add(new Hitzeempfindlichkeit("Wärme","bis 25 Grad okay"));
-		List<Medikament> medikamente = new ArrayList<>();
-		medikamente.add(new Medikament("Nasentropfen","maximal 2x am Tag ein Schub"));
+		String hitze = "Wärme: bis 25 Grad ist alles okay";
+		String medikamente = "Nasentropfen_ maximal 2x am Tag ein Schub";
 
 		Teilnehmer user = new Teilnehmer(
 		        "Gary",

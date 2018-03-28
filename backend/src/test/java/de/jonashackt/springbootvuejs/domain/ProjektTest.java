@@ -38,26 +38,19 @@ public class ProjektTest {
         Arzt arzt = new Arzt("Eich", "Route 1 Alabastia, 39829",
                 "555-6891");
         Kontakt kontact = new Kontakt("Igor Eich", "Route 4 Neuborkia  96825", "555-2532");
-        EssenLimitierung laktose = new EssenLimitierung("Laktoseintoleranz", "");
-        Krankheit krank = new Krankheit("Grippe", "Muss oft Husten", "Hustenbonbons");
+        String essenLimitierungen = "Laktoseintoleranz";
+        String krankheiten = "Grippe: Muss oft Husten Hustenbonbons";
 
+        String allergien = "Heuschnupfen: Nasenspray nur 2x am Tag";
 
-        List<EssenLimitierung> essenLimitierungen = new ArrayList<EssenLimitierung>();
-        essenLimitierungen.add(laktose);
-        List<Krankheit> krankheiten = new ArrayList<Krankheit>();
-        krankheiten.add(krank);
-        List<Allergie> allergien = new ArrayList<Allergie>();
-        allergien.add(new Allergie("Heuschnupfen","Nasenspray nur 2x am Tag"));
 
         Behinderung behinderung = new Behinderung();
         behinderung.setRollstuhlNutzungNotwendig(true);
         behinderung.setMerkzeichen_Taubblind_TBL(true);
 
-        List<Medikament> medikaments = new ArrayList<>();
-        medikaments.add(new Medikament("Nasenspray von Forte","2x am Tag"));
+        String medikaments = "Nasenspray von Forte: 2x am Tag";
 
-        List<Hitzeempfindlichkeit> hitzeempfindlichkeits = new ArrayList<>();
-        hitzeempfindlichkeits.add(new Hitzeempfindlichkeit("grosse Hitze","eincremen"));
+        String hitzeempfindlichkeits = "grosse Hitze: eincremen";
 
         Teilnehmer user = new Teilnehmer(vorname,name, LocalDate.of(2005,10,20),registerDate, "Bahnhofstraße 4", "Weimar", "99423", "03544444", "0453434", true, kontact,
                 true, false, false, "Seepferdchen", false, false, arzt,  allergien, essenLimitierungen, krankheiten, true, behinderung,hitzeempfindlichkeits,medikaments);

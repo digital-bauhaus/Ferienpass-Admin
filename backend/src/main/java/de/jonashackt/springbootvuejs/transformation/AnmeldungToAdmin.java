@@ -31,7 +31,7 @@ public class AnmeldungToAdmin {
         teilnehmer.setDarfAlleinNachHause(mappeYesOrNoToBoolean(anmeldungJson.getDeclarationGoingHomeAloneAllowed()));
         teilnehmer.setDarfReiten(mappeYesOrNoToBoolean(anmeldungJson.getDeclarationHorseRidingAllowed()));
         teilnehmer.setDarfSchwimmen(mappeYesOrNoToBoolean(anmeldungJson.getDeclarationSwimmingAllowed()));
-        //TODO: Das Admin-Datenmodell kennt kein Schwimmabzeichen! Aktuell daher ungemappt!
+        teilnehmer.setSchwimmAbzeichen(anmeldungJson.getDeclarationSwimmingBadge());
     }
 
     private static boolean mappeYesOrNoToBoolean(String yesOrNo) {
@@ -102,7 +102,6 @@ public class AnmeldungToAdmin {
         teilnehmer.setNachname(anmeldungJson.getBaseFamilyName());
         teilnehmer.setVorname(anmeldungJson.getBaseForename());
         teilnehmer.setGeburtsdatum(mappeGeburtsdatum(anmeldungJson));
-        //TODO: Hat das Adminbackend Strasse und Hausnummer getrennt?
         teilnehmer.setStrasse(anmeldungJson.getBaseStreetName() + " " + anmeldungJson.getBaseHouseNumber());
         teilnehmer.setPostleitzahl(anmeldungJson.getBaseZipCode());
         teilnehmer.setStadt(anmeldungJson.getBaseResidence());
@@ -110,21 +109,19 @@ public class AnmeldungToAdmin {
     }
 
     private static void mappeAllergienKrankheitenNotfallkontaktEtc(AnmeldungJson anmeldungJson, Teilnehmer teilnehmer) {
-        teilnehmer.setAllergien(mappeAllergien(anmeldungJson));
-        teilnehmer.setKrankheiten(mappeKrankheiten(anmeldungJson));
+        teilnehmer.setAllergien(anmeldungJson.getConditionsAllergies0()+"\n"+anmeldungJson.getConditionsAllergies1()+"\n"+anmeldungJson.getConditionsAllergies2()+
+                "\n"+anmeldungJson.getConditionsAllergies3()+"\n"+anmeldungJson.getConditionsAllergies4());
+        teilnehmer.setKrankheiten(anmeldungJson.getConditionsDiseases0()+"\n"+anmeldungJson.getConditionsDiseases1()+"\n"+anmeldungJson.getConditionsDiseases2()+
+                "\n"+anmeldungJson.getConditionsDiseases3()+"\n"+anmeldungJson.getConditionsDiseases4()+"\n");
 
-        //TODO: Wir haben aktuell keine Hitzeempfindlichkeit im Admindatenmodell
-
-        //TODO: Wir haben aktuell die Medikamente den Allergien und Krankheiten zugeordnet im Datenmodell. Aber so kommen die von der Anmeldeseite gar nicht an, sondern als Einzelliste
-
-        teilnehmer.setEssenLimitierungen(mappeEssenslimitierungen(anmeldungJson));
-        // TODO: ist setErlaubeMedikamentation() das Gleiche wie "Behandlungserlaubnis bei Erkrankungen und Unfällen"?
+        teilnehmer.setEssenLimitierungen(anmeldungJson.getConditionsNutrition0()+"\n"+anmeldungJson.getConditionsNutrition1()+"\n"+anmeldungJson.getConditionsNutrition2()+"\n"+
+                anmeldungJson.getConditionsNutrition3()+"\n"+anmeldungJson.getConditionsNutrition4()+"\n");
+        // TODO: ist setErlaubeMedikamentation() das Gleiche wie "Behandlungserlaubnis bei Erkrankungen und Unfällen"? Nein. Es gibt jetzt 2 Felder dafür
         teilnehmer.setErlaubeMedikamentation(mappeYesOrNoToBoolean(anmeldungJson.getConditionsChildTreatmentAllowed()));
 
-        //TODO: Was ist mit der Krankenkasse?
-
+        teilnehmer.setKrankenkasse(anmeldungJson.getConditionsHealthInsurance());
         teilnehmer.setNotfallKontakt(mappeNotfallKontakt(anmeldungJson));
-        //TODO: Warum muss die Notrufnummer zweimal gesetzt werden?
+        //TODO: Warum muss die Notrufnummer zweimal gesetzt werden? verstehe die Frage nicht.
         teilnehmer.setKrankenkasse(anmeldungJson.getConditionsEmergencyPhoneNumber());
 
         teilnehmer.setArzt(mappeArzt(anmeldungJson));
@@ -143,54 +140,7 @@ public class AnmeldungToAdmin {
                 anmeldungJson.getConditionsEmergencyAddress(),
                 anmeldungJson.getConditionsEmergencyPhoneNumber());
     }
-
-    private static List<EssenLimitierung> mappeEssenslimitierungen(AnmeldungJson anmeldungJson) {
-
-        List<EssenLimitierung> essenLimitierungen = new ArrayList<>();
-
-        // TODO: Wozu ist die info?
-        if(anmeldungJson.getConditionsVegetarian()) {
-            // TODO: Die Namen der Essensunvertraeglichkeiten sollten direkt im Datenmodell abgebildet sein!
-            essenLimitierungen.add(new EssenLimitierung("Vegetarier", null));
-        }
-        if(anmeldungJson.getConditionsLactoseIntolerance()) {
-            essenLimitierungen.add(new EssenLimitierung("Laktose-Unverträglichkeit", null));
-        }
-        if(anmeldungJson.getConditionsEggIntolerance()) {
-            essenLimitierungen.add(new EssenLimitierung("Eier-Unverträglichkeit", null));
-        }
-        essenLimitierungen.add(new EssenLimitierung(anmeldungJson.getConditionsNutrition0(), null));
-        essenLimitierungen.add(new EssenLimitierung(anmeldungJson.getConditionsNutrition1(), null));
-        essenLimitierungen.add(new EssenLimitierung(anmeldungJson.getConditionsNutrition2(), null));
-        essenLimitierungen.add(new EssenLimitierung(anmeldungJson.getConditionsNutrition3(), null));
-        essenLimitierungen.add(new EssenLimitierung(anmeldungJson.getConditionsNutrition4(), null));
-
-        return essenLimitierungen;
-    }
-
-    private static List<Allergie> mappeAllergien(AnmeldungJson anmeldungJson) {
-
-        // TODO: Aktuell haben wir keine Zuordnung im Anmeldefrontend von Allergien zu Medikamenten!
-        return Arrays.asList(
-                new Allergie(anmeldungJson.getConditionsAllergies0(), null),
-                new Allergie(anmeldungJson.getConditionsAllergies1(), null),
-                new Allergie(anmeldungJson.getConditionsAllergies2(), null),
-                new Allergie(anmeldungJson.getConditionsAllergies3(), null),
-                new Allergie(anmeldungJson.getConditionsAllergies4(), null)
-        );
-    }
-
-    private static List<Krankheit> mappeKrankheiten(AnmeldungJson anmeldungJson) {
-
-        // TODO: Aktuell haben wir keine Zuordnung im Anmeldefrontend von Krankheiten zu Medikamenten!
-        return Arrays.asList(
-                new Krankheit(anmeldungJson.getConditionsDiseases0(), null, null),
-                new Krankheit(anmeldungJson.getConditionsDiseases1(), null, null),
-                new Krankheit(anmeldungJson.getConditionsDiseases2(), null, null),
-                new Krankheit(anmeldungJson.getConditionsDiseases3(), null, null),
-                new Krankheit(anmeldungJson.getConditionsDiseases4(), null, null)
-        );
-    }
+    
 
     private static LocalDate mappeGeburtsdatum(AnmeldungJson anmeldungJson) {
         return LocalDate.of(

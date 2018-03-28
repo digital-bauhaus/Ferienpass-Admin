@@ -45,25 +45,31 @@ public class Teilnehmer {
     @JoinColumn(name="arzt_id")
     private Arzt arzt;
 
-    @ManyToMany(cascade=CascadeType.ALL)
-    private List<Allergie> allergien = new ArrayList<>();
+    //@ManyToMany(cascade=CascadeType.ALL)
+    //private List<Allergie> allergien = new ArrayList<>();
+    private String allergien;
 
-    @ManyToMany(cascade=CascadeType.ALL)
-    private List<Medikament> medikamente = new ArrayList<>();
+    //@ManyToMany(cascade=CascadeType.ALL)
+    //private List<Medikament> medikamente = new ArrayList<>();
+    private String medikamente;
 
-    @ManyToMany(cascade=CascadeType.ALL)
-    private List<Hitzeempfindlichkeit> hitzeempfindlichkeiten = new ArrayList<>();
+    //@ManyToMany(cascade=CascadeType.ALL)
+    //private List<Hitzeempfindlichkeit> hitzeempfindlichkeiten = new ArrayList<>();
+    private String hitzeempfindlichkeiten;
 
-    @ManyToMany(cascade=CascadeType.ALL)
-    private List<Krankheit> krankheiten = new ArrayList<>();
+    //@ManyToMany(cascade=CascadeType.ALL)
+    //private List<Krankheit> krankheiten = new ArrayList<>();
+    private String krankheiten;
+
+    private String essenLimitierungen;
 
     private boolean liegtBehinderungVor;
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="behinderung_id")
     private Behinderung behinderung;
 
-    @ManyToMany(cascade=CascadeType.ALL)
-    private List<EssenLimitierung> essenLimitierungen= new ArrayList<>();
+//    @ManyToMany(cascade=CascadeType.ALL)
+//    private List<EssenLimitierung> essenLimitierungen= new ArrayList<>();
 
 
 
@@ -104,8 +110,8 @@ public class Teilnehmer {
     public Teilnehmer(String firstName, String lastName, LocalDate birthDate, LocalDate registerDate, String street, String city, String postcode, String telephone, String krankenkasse,
                       boolean allowTreatment, Kontakt emergencyContact, boolean allowHomeAlone, boolean allowRiding, boolean allowSwimming, String schwimmAbzeichen, boolean hasPayed,
                       boolean darfBehandeltWerden, Arzt doctor,
-                      List<Allergie> allergien, List<EssenLimitierung> essenLimitierungen, List<Krankheit> krankheiten, boolean beeintraechtigt, Behinderung behinderung,
-                      List<Hitzeempfindlichkeit> hitzempfindlichkeiten, List<Medikament> medikamente) {
+                      String allergien, String essenLimitierungen, String krankheiten, boolean beeintraechtigt, Behinderung behinderung,
+                      String hitzempfindlichkeiten, String medikamente) {
 
         this.setVorname(firstName);
         this.setNachname(lastName);
@@ -279,19 +285,19 @@ public class Teilnehmer {
         this.arzt = arzt;
     }
 
-    public List<Allergie> getAllergien() {
+    public String getAllergien() {
         return allergien;
     }
 
-    public void setAllergien(List<Allergie> allergien) {
+    public void setAllergien(String allergien) {
         this.allergien = allergien;
     }
 
-    public List<Krankheit> getKrankheiten() {
+    public String getKrankheiten() {
         return krankheiten;
     }
 
-    public void setKrankheiten(List<Krankheit> krankheiten) {
+    public void setKrankheiten(String krankheiten) {
         this.krankheiten = krankheiten;
     }
 
@@ -304,11 +310,11 @@ public class Teilnehmer {
         return behinderung;
     }
 
-    public List<EssenLimitierung> getEssenLimitierungen() {
+    public String getEssenLimitierungen() {
         return essenLimitierungen;
     }
 
-    public void setEssenLimitierungen(List<EssenLimitierung> essenLimitierungen) {
+    public void setEssenLimitierungen(String essenLimitierungen) {
         this.essenLimitierungen = essenLimitierungen;
     }
 
@@ -328,19 +334,19 @@ public class Teilnehmer {
         this.schwimmAbzeichen = schwimmAbzeichen;
     }
 
-    public List<Medikament> getMedikamente() {
+    public String getMedikamente() {
         return medikamente;
     }
 
-    public void setMedikamente(List<Medikament> medikamente) {
+    public void setMedikamente(String medikamente) {
         this.medikamente = medikamente;
     }
 
-    public List<Hitzeempfindlichkeit> getHitzeempfindlichkeiten() {
+    public String getHitzeempfindlichkeiten() {
         return hitzeempfindlichkeiten;
     }
 
-    public void setHitzeempfindlichkeiten(List<Hitzeempfindlichkeit> hitzeempfindlichkeiten) {
+    public void setHitzeempfindlichkeiten(String hitzeempfindlichkeiten) {
         this.hitzeempfindlichkeiten = hitzeempfindlichkeiten;
     }
 
