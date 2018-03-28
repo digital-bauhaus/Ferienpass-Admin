@@ -23,6 +23,7 @@ import java.util.*;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(
@@ -282,9 +283,9 @@ public class BackendControllerTest {
     public void pruefeRegistrierungProjekteBeiApiCallAnmeldungMicroservice() throws IOException {
         // Zuerst fuer klare Verhältnisse sorgen und Seiteneffekte vermeiden!
         // Daher neue Projekte anlegen ...
-        Long pizzaBackenId = addProjekt(ProjektTest.createProjekt("Pizza backen", LocalDate.of(2018, 7, 12), 15, 3));
+        Long pizzaBackenId = addProjekt(ProjektTest.createProjekt("Pizza backen", LocalDate.of(2018, 7, 12), 8, 3));
         Long fussballId = addProjekt(ProjektTest.createProjekt("Fussball", LocalDate.of(2018, 8, 12), 10, 7));
-        Long golfSpielenId = addProjekt(ProjektTest.createProjekt("Golf spielen", LocalDate.of(2018, 7, 2), 18, 5));
+        Long golfSpielenId = addProjekt(ProjektTest.createProjekt("Golf spielen", LocalDate.of(2018, 7, 2), 9, 5));
 
         // ... und deren Ids im anmeldung-post-data.json ueberschreiben
         AnmeldungJson anmeldungJson = objectMapper.readValue(anmeldungJsonFile.getInputStream(), AnmeldungJson.class);
@@ -297,28 +298,28 @@ public class BackendControllerTest {
 
         // Pizza backen startet mit 15 Slots gesamt und 3 reserviert
         // Da im anmeldung-post-data.json Pizza backen 1x fuer den Teilnehmer reserviert wird
-        // sollten jetzt nur noch 15 - 3 - 1 = 11 Plaetze frei sein - sowie 4 reserviert
+        // sollten jetzt nur noch 8 - 3 - 1 = 4 Plaetze frei sein - sowie 4 reserviert
         Projekt pizzaBacken = getProjekt(pizzaBackenId);
         assertThat(pizzaBacken.getSlotsReserviert(), is(4));
-        assertThat(pizzaBacken.getSlotsFrei(), is(11));
+        assertThat(pizzaBacken.getSlotsFrei(), is(4));
 
         // Fussball 10 gesamt - 7 reserviert - keine Anmeldung = 3 frei bzw. 7 reserviert
         Projekt fussball = getProjekt(fussballId);
         assertThat(fussball.getSlotsReserviert(), is(7));
         assertThat(fussball.getSlotsFrei() , is(3));
 
-        // Golf spielen 18 gesamt - 5 reserviert - 1 Anmeldung = 12 frei bzw. 6 reserviert
+        // Golf spielen 9 gesamt - 5 reserviert - 1 Anmeldung = 3 frei bzw. 6 reserviert
         Projekt golfSpielen = getProjekt(golfSpielenId);
         assertThat(golfSpielen.getSlotsReserviert(), is(6));
-        assertThat(golfSpielen.getSlotsFrei(), is(12));
+        assertThat(golfSpielen.getSlotsFrei(), is(3));
 
         // Slotsfrei bei Fussball auf 0 fahren
         // Dafuer Pizza backen nicht mehr reservieren
-        anmeldungJson.getProjects().get(0).setRegistered(false);
+        setzeAnmeldungFuerPizza(anmeldungJson, false);
         // aber Fussball
-        anmeldungJson.getProjects().get(1).setRegistered(true);
+        setzeAnmeldungFuerFussball(anmeldungJson, true);
         // Golf spielen auch nicht
-        anmeldungJson.getProjects().get(2).setRegistered(false);
+        setzeAnmeldungFuerGolfSpielen(anmeldungJson, false);
 
         // 3 Teilnehmer auf Fussball registrieren - 3 Frontend-API-calls
         registerNewUserFromAnmeldungFrontend(anmeldungJson);
@@ -328,6 +329,78 @@ public class BackendControllerTest {
         Projekt fussballNach3Anmeldungen = getProjekt(fussballId);
         assertThat(fussballNach3Anmeldungen.getSlotsFrei(), is(0));
         assertThat(fussballNach3Anmeldungen.getSlotsReserviert(), is(10));
+
+        // Wenn wir noch einen Teilnehmer auf Fussball reservieren wollen,
+        // sollte die API uns einen HTTP 409 schicken und das Projekt Fussball
+        // zurueckgeben als Projekt, das keinen Platz mehr frei hat
+        // siehe https://github.com/digital-bauhaus/Ferienpass-Admin/issues/27
+        List<Projekt> projekteOhneFreieSlots = registerNewUserFromAnmeldungFrontendForEmptySlotProjekts(anmeldungJson);
+        assertThat(projekteOhneFreieSlots.iterator().next().getName(), is("Fussball"));
+
+        // Wie sieht das bei mehreren Projekten aus, die nicht mehr frei sind?
+        // Dafuer setzen reservieren wir auch noch alle freien Slots von Golf spielen
+        // Dafuer muessen wir Fussball wieder de-registrieren (sonst laufen wir ja gleich in den Fehler)
+        // und Golf registrieren
+        setzeAnmeldungFuerFussball(anmeldungJson, false);
+        setzeAnmeldungFuerGolfSpielen(anmeldungJson, true);
+        registerNewUserFromAnmeldungFrontend(anmeldungJson);
+        registerNewUserFromAnmeldungFrontend(anmeldungJson);
+        registerNewUserFromAnmeldungFrontend(anmeldungJson);
+        // Nun sollte Golf spielen auch voll sein
+        Projekt golfSpielenNach3WeiterenAnmeldungen = getProjekt(golfSpielenId);
+        assertThat(golfSpielenNach3WeiterenAnmeldungen.getSlotsFrei(), is(0));
+
+        // Nun auch wieder fuer Fussball registrieren wollen
+        setzeAnmeldungFuerFussball(anmeldungJson, true);
+
+        // Wenn wir noch einen Teilnehmer auf Fussball & Golf spielen reservieren wollen,
+        // sollte die API uns wieder einen HTTP 409 schicken und die Projekte Fussball
+        // und Golf spielen als Liste der Projekte zurueckgeben, die keinen Platz mehr
+        // frei haben (https://github.com/digital-bauhaus/Ferienpass-Admin/issues/27)
+        projekteOhneFreieSlots = registerNewUserFromAnmeldungFrontendForEmptySlotProjekts(anmeldungJson);
+
+        assertThat(projekteOhneFreieSlots.size(), is(2));
+        assertThat(projekteOhneFreieSlots.get(0).getName(), is("Fussball"));
+        assertThat(projekteOhneFreieSlots.get(1).getName(), is("Golf spielen"));
+
+        // Nun haben wir 2 ausgebuchte Projekte und nur Pizza backen hat noch Slots frei
+        // Wenn ein Teilnehmer sich auf ausgebuchte Projekte nicht mehr anmelden kann,
+        // dann soll auch sichergestellt sein, dass er sich nicht gleichzeitig auf
+        // noch freie Projekte angemeldet hat mit dem API-Aufruf
+
+        // Hierfuer nehmen wir einen neuen Teilnehmer auf Basis des anmeldung.json
+        setzeNeuenNamen(anmeldungJson, "Luis", "Fernandez");
+
+        // Pizza sollte nun noch 4 Plätze frei haben
+        // Fussball und Golf keine mehr
+        assertThat(getProjekt(pizzaBackenId).getSlotsFrei(), is(4));
+        assertThat(getProjekt(fussballId).getSlotsFrei(), is(0));
+        assertThat(getProjekt(golfSpielenId).getSlotsFrei(), is(0));
+
+        // Nun versuchen wir unseren Luis Fernandez zu registrieren
+        registerNewUserFromAnmeldungFrontendForEmptySlotProjekts(anmeldungJson);
+        Projekt pizzaNachGemischtemRequest = getProjekt(pizzaBackenId);
+        for(Teilnehmer angemeldeterTeilnehmer : pizzaNachGemischtemRequest.getAnmeldungen()) {
+            assertThat(angemeldeterTeilnehmer.getNachname(), not("Fernandez"));
+        }
+
+    }
+
+    private void setzeNeuenNamen(AnmeldungJson anmeldungJson, String vorname, String nachname) {
+        anmeldungJson.setBaseForename(vorname);
+        anmeldungJson.setBaseFamilyName(nachname);
+    }
+
+    private void setzeAnmeldungFuerPizza(AnmeldungJson anmeldungJson, boolean registriert) {
+        anmeldungJson.getProjects().get(0).setRegistered(registriert);
+    }
+
+    private void setzeAnmeldungFuerFussball(AnmeldungJson anmeldungJson, boolean registriert) {
+        anmeldungJson.getProjects().get(1).setRegistered(registriert);
+    }
+
+    private void setzeAnmeldungFuerGolfSpielen(AnmeldungJson anmeldungJson, boolean registriert) {
+        anmeldungJson.getProjects().get(2).setRegistered(registriert);
     }
 
     private void pruefeErklaerung(Teilnehmer responseUser) {
@@ -662,6 +735,18 @@ public class BackendControllerTest {
                 .statusCode(is(HttpStatus.SC_CREATED))
                 .extract()
                 .body().as(Long.class);
+    }
+
+    private List<Projekt> registerNewUserFromAnmeldungFrontendForEmptySlotProjekts(AnmeldungJson anmeldungJson) {
+        return Arrays.asList(given()
+                .contentType(ContentType.JSON)
+                .body(anmeldungJson)
+                .when()
+                .post(BASE_URL + "/register")
+                .then()
+                .statusCode(is(HttpStatus.SC_CONFLICT))
+                .extract()
+                .body().as(Projekt[].class));
     }
 
     private Long addProjekt(Projekt projekt) {

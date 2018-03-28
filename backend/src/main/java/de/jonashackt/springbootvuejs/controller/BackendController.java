@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -118,7 +119,7 @@ public class BackendController {
 
     @RequestMapping(path = "/register", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody Long registerNewTeilnehmer(@RequestBody AnmeldungJson anmeldungJson) throws Exception {
+    public ResponseEntity<?> registerNewTeilnehmer(@RequestBody AnmeldungJson anmeldungJson) throws Exception {
 
         LOG.info("New POST request from Ferienpass-Anmeldung Microservice containing new Teilnehmer");
         ObjectMapper mapper = new ObjectMapper();
@@ -126,26 +127,30 @@ public class BackendController {
 
         Teilnehmer neuAngemeldeterTeilnehmer = AnmeldungToAdmin.mapAnmeldedataToTeilnehmer(anmeldungJson);
 
+        List<Projekt> projekteOhneFreiSlots = new ArrayList<>();
+
         for (Project project : anmeldungJson.getProjects()) {
             if(project.isRegistered()) {
-                assignTeilnehmer2Projekt(neuAngemeldeterTeilnehmer, project);
+                Projekt projekt = projektRepository.findOne(project.getId().longValue());
+                if(projekt.hasProjektFreeSlots()) {
+                    projekt.addAnmeldung(neuAngemeldeterTeilnehmer);
+                } else {
+                    LOG.info("The Projekt " + projekt.getName() + " has no free Slots left!");
+                    projekteOhneFreiSlots.add(projekt);
+                }
             }
+        }
+
+        if(!projekteOhneFreiSlots.isEmpty()) {
+            LOG.info("Respond with Http 409 Conflict and the list of Projekt´s, that has no free slots.");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(projekteOhneFreiSlots);
         }
 
         Teilnehmer savedTeilnehmer = teilnehmerRepository.save(neuAngemeldeterTeilnehmer);
 
         LOG.info("Successfully saved new Teilnehmer " + neuAngemeldeterTeilnehmer.toString() + " into Admin-Backend-DB");
 
-        return savedTeilnehmer.getId();
-    }
-
-    private void assignTeilnehmer2Projekt(Teilnehmer neuAngemeldeterTeilnehmer, Project project) throws Exception {
-        Projekt projekt = projektRepository.findOne(project.getId().longValue());
-        if(projekt.hasProjektFreeSlots()) {
-            projekt.addAnmeldung(neuAngemeldeterTeilnehmer);
-        } else {
-            throw new Exception("Das Projekt " + projekt.getName() + " hat leider keine freien Slots mehr!");
-        }
+        return new ResponseEntity(savedTeilnehmer.getId(), HttpStatus.CREATED);
     }
 
     //Delete an item from a list of a user (e.g., an illness or so)
