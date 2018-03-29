@@ -202,14 +202,17 @@ public class BackendController {
     @RequestMapping(path = "/createproject")
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
-    Long addNewProject(@RequestParam String name, @RequestParam String date, @RequestParam int age, @RequestParam int price, @RequestParam int slots,
+    Long addNewProject(@RequestParam String name, @RequestParam String date, @RequestParam String endDate, @RequestParam int age, @RequestParam int price, @RequestParam int slots,
                        @RequestParam int slotsReserved, @RequestParam String traeger, @RequestParam String weblink) {
-        LocalDate d = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-        Projekt project = new Projekt(name, d, age, price, slots, slotsReserved, traeger, weblink);
+        Projekt project = new Projekt(name, dateString2LocalDate(date), dateString2LocalDate(endDate), age, price, slots, slotsReserved, traeger, weblink);
         projektRepository.save(project);
         LOG.info(project.toString() + "successfully saved into DB");
 
         return project.getId();
+    }
+
+    private LocalDate dateString2LocalDate(@RequestParam String date) {
+        return LocalDate.parse(date, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
     }
 
     // DELETE PROJECT

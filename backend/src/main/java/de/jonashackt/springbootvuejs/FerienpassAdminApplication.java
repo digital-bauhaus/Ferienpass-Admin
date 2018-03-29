@@ -29,9 +29,21 @@ public class FerienpassAdminApplication implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 		createSampleUser();
-		createSampleProject("Ball Werfen", 20, LocalDate.of(2018, 7, 16));
-		createSampleProject("Bauspielplatz", 10, LocalDate.of(2018, 8, 02));
-		createSampleProject("Papier-Werkstatt", 8, LocalDate.of(2018, 7, 23));
+		createSampleProject(
+				"Ball Werfen",
+				20,
+				LocalDate.of(2018, 7, 16),
+				LocalDate.of(2018, 7, 17));
+		createSampleProject(
+				"Bauspielplatz",
+				10,
+				LocalDate.of(2018, 8, 02),
+				LocalDate.of(2018, 8, 02));
+		createSampleProject(
+				"Papier-Werkstatt",
+				8,
+				LocalDate.of(2018, 7, 23),
+				LocalDate.of(2018, 7, 25));
 	}
 
 	private void createSampleUser() {
@@ -80,8 +92,8 @@ public class FerienpassAdminApplication implements CommandLineRunner{
 		System.out.println(user.toString() + " successfully saved into DB");
 	}
 
-	private Projekt createSampleProject(String projektName, int slotsGesamt, LocalDate datum) {
-		Projekt project = new Projekt(projektName, datum, 10, 20, slotsGesamt, 1, "Sportjugend Weimar", "www.google.com");
+	private Projekt createSampleProject(String projektName, int slotsGesamt, LocalDate datum, LocalDate endeDatum) {
+		Projekt project = new Projekt(projektName, datum, endeDatum, 10, 20, slotsGesamt, 1, "Sportjugend Weimar", "www.google.com");
 		projektRepository.save(project);
 		System.out.println(project.toString() + " successfully saved into DB");
 		return project;

@@ -116,9 +116,24 @@ public class BackendControllerTest {
 
         // Zuerst fuer klare Verhältnisse sorgen und Seiteneffekte vermeiden!
         // Daher neue Projekte anlegen ...
-        Long pizzaBackenId = addProjekt(ProjektTest.createProjekt("Pizza backen", LocalDate.of(2018, 7, 12), 15, 3));
-        Long fussballId = addProjekt(ProjektTest.createProjekt("Fussball", LocalDate.of(2018, 8, 12), 10, 7));
-        Long golfSpielenId = addProjekt(ProjektTest.createProjekt("Golf spielen", LocalDate.of(2018, 7, 2), 18, 5));
+        Long pizzaBackenId = addProjekt(ProjektTest.createProjekt(
+                "Pizza backen",
+                LocalDate.of(2018, 7, 12),
+                LocalDate.of(2018, 7, 13),
+                15,
+                3));
+        Long fussballId = addProjekt(ProjektTest.createProjekt(
+                "Fussball",
+                LocalDate.of(2018, 8, 14),
+                LocalDate.of(2018, 8, 17),
+                10,
+                7));
+        Long golfSpielenId = addProjekt(ProjektTest.createProjekt(
+                "Golf spielen",
+                LocalDate.of(2018, 7, 2),
+                LocalDate.of(2018, 7, 2),
+                18,
+                5));
 
         // ... und deren Ids im anmeldung-post-data.json ueberschreiben
         AnmeldungJson anmeldungJson = objectMapper.readValue(anmeldungJsonFile.getInputStream(), AnmeldungJson.class);
@@ -163,9 +178,24 @@ public class BackendControllerTest {
     public void pruefeRegistrierungProjekteBeiApiCallAnmeldungMicroservice() throws IOException {
         // Zuerst fuer klare Verhältnisse sorgen und Seiteneffekte vermeiden!
         // Daher neue Projekte anlegen ...
-        Long pizzaBackenId = addProjekt(ProjektTest.createProjekt("Pizza backen", LocalDate.of(2018, 7, 12), 8, 3));
-        Long fussballId = addProjekt(ProjektTest.createProjekt("Fussball", LocalDate.of(2018, 8, 12), 10, 7));
-        Long golfSpielenId = addProjekt(ProjektTest.createProjekt("Golf spielen", LocalDate.of(2018, 7, 2), 9, 5));
+        Long pizzaBackenId = addProjekt(ProjektTest.createProjekt(
+                "Pizza backen",
+                LocalDate.of(2018, 7, 12),
+                LocalDate.of(2018, 7, 13),
+                8,
+                3));
+        Long fussballId = addProjekt(ProjektTest.createProjekt(
+                "Fussball",
+                LocalDate.of(2018, 8, 14),
+                LocalDate.of(2018, 8, 17),
+                10,
+                7));
+        Long golfSpielenId = addProjekt(ProjektTest.createProjekt(
+                "Golf spielen",
+                LocalDate.of(2018, 7, 2),
+                LocalDate.of(2018, 7, 2),
+                9,
+                5));
 
         // ... und deren Ids im anmeldung-post-data.json ueberschreiben
         AnmeldungJson anmeldungJson = objectMapper.readValue(anmeldungJsonFile.getInputStream(), AnmeldungJson.class);
@@ -413,7 +443,8 @@ public class BackendControllerTest {
         Long projectID =
                 given()
                         .param("name", projekt.getName())
-                        .param("date",projekt.getDatum().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))
+                        .param("date", localDate2String(projekt.getDatum()))
+                        .param("endDate", localDate2String(projekt.getDatumEnde()))
                         .param("age",projekt.getAlterLimitierung())
                         .param("price",projekt.getKosten())
                         .param("slots",projekt.getSlotsGesamt())
@@ -438,6 +469,10 @@ public class BackendControllerTest {
         assertThat(responseProjekt.getSlotsGesamt(), is(projekt.getSlotsGesamt()));
         assertThat(responseProjekt.getWebLink(), is(projekt.getWebLink()));
         assertThat(responseProjekt.getAnmeldungen(), is(projekt.getAnmeldungen()));
+    }
+
+    private String localDate2String(LocalDate datum) {
+        return datum.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
     }
 
     @Test
@@ -489,7 +524,8 @@ public class BackendControllerTest {
             projectID =
                     given()
                             .param("name", projekt.getName())
-                            .param("date",projekt.getDatum().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))
+                            .param("date", localDate2String(projekt.getDatum()))
+                            .param("endDate", localDate2String(projekt.getDatumEnde()))
                             .param("age",projekt.getAlterLimitierung())
                             .param("price",projekt.getKosten())
                             .param("slots",projekt.getSlotsGesamt())

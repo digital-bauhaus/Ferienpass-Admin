@@ -13,14 +13,14 @@ public class ProjektTest {
 
     @Test public void
     when_adding_one_Teilnehmer_to_Projekt_slotsreserviert_should_decline_once() {
-        Projekt kinderuni = createProjekt("Kinderuni", LocalDate.of(2018, 7, 5), 20, 10);
+        Projekt kinderuni = createProjekt("Kinderuni", LocalDate.of(2018, 7, 5), LocalDate.of(2018, 7, 5), 20, 10);
         kinderuni.addAnmeldung(createUser("Müller", "Luis"));
         assertThat(kinderuni.getSlotsReserviert(), is(11));
     }
 
     @Test public void
     when_adding_5_Teilnehmer_to_Projekt_slotsreserviert_should_decline_5_times() {
-        Projekt gartenParty = createProjekt("Gartenparty", LocalDate.of(2018, 6, 4), 15, 3);
+        Projekt gartenParty = createProjekt("Gartenparty", LocalDate.of(2018, 6, 4), LocalDate.of(2018, 6, 6), 15, 3);
         gartenParty.addAnmeldung(createUser("Schulze", "Max"));
         gartenParty.addAnmeldung(createUser("Meier", "Moritz")  );
         gartenParty.addAnmeldung(createUser("Schreiner", "Paul"));
@@ -29,8 +29,8 @@ public class ProjektTest {
         assertThat(gartenParty.getSlotsReserviert(), is(8));
     }
 
-    public static Projekt createProjekt(String projektName, LocalDate datum, int slotsgesamt, int slotsReserviert) {
-        return new Projekt(projektName, datum, 15, 12, slotsgesamt, slotsReserviert, "Sportjugend Weimar", "www.google.com");
+    public static Projekt createProjekt(String projektName, LocalDate datum, LocalDate datumEnde, int slotsgesamt, int slotsReserviert) {
+        return new Projekt(projektName, datum, datumEnde, 15, 12, slotsgesamt, slotsReserviert, "Sportjugend Weimar", "www.google.com");
     }
 
     public static Teilnehmer createUser(String name, String vorname) {
