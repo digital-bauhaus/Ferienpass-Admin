@@ -127,7 +127,7 @@ public class BackendController {
 
         Teilnehmer neuAngemeldeterTeilnehmer = AnmeldungToAdmin.mapAnmeldedataToTeilnehmer(anmeldungJson);
 
-        List<Long> projekteOhneFreiSlots = new ArrayList<>();
+        boolean oneOrMoreProjekteVoll = false;
 
         for (Project project : anmeldungJson.getProjects()) {
             if(project.isRegistered()) {
@@ -135,15 +135,16 @@ public class BackendController {
                 if(projekt.hasProjektFreeSlots()) {
                     projekt.addAnmeldung(neuAngemeldeterTeilnehmer);
                 } else {
-                    LOG.info("The Projekt " + projekt.getName() + " has no free Slots left!");
-                    projekteOhneFreiSlots.add(projekt.getId());
+                    LOG.info("The Projekt " + projekt.getName() + " with Id " + projekt.getId() + " has no free Slots left!");
+                    oneOrMoreProjekteVoll = true;
                 }
             }
         }
 
-        if(!projekteOhneFreiSlots.isEmpty()) {
-            LOG.info("Respond with Http 409 Conflict and the list of Projekt´s, that has no free slots.");
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(projekteOhneFreiSlots);
+        if(oneOrMoreProjekteVoll) {
+            List<Long> everyProjektWithoutFreeSlots = addEveryProjektThatHasNoFreeSlots();
+            LOG.info("Respond with Http 409 Conflict and the list of all Projekt´s, that has no free slots.");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(everyProjektWithoutFreeSlots);
         }
 
         Teilnehmer savedTeilnehmer = teilnehmerRepository.save(neuAngemeldeterTeilnehmer);
@@ -151,6 +152,16 @@ public class BackendController {
         LOG.info("Successfully saved new Teilnehmer " + neuAngemeldeterTeilnehmer.toString() + " into Admin-Backend-DB");
 
         return new ResponseEntity(savedTeilnehmer.getId(), HttpStatus.CREATED);
+    }
+
+    private List<Long> addEveryProjektThatHasNoFreeSlots() {
+        List<Long> projekteOhneFreiSlots = new ArrayList<>();
+        projektRepository.findAllProjects().forEach(projekt -> {
+            if(!projekt.hasProjektFreeSlots()) {
+                projekteOhneFreiSlots.add(projekt.getId());
+            }
+        });
+        return projekteOhneFreiSlots;
     }
 
     /*******************************************

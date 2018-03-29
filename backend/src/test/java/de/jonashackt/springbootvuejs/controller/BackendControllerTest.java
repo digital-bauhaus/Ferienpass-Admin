@@ -294,6 +294,18 @@ public class BackendControllerTest {
             assertThat(angemeldeterTeilnehmer.getNachname(), not("Fernandez"));
         }
 
+        // Wir haben nun immer noch 2 ausgebuchte Projekte
+        // Wenn ein Teilnehmer nun NUR ein Projekt der beiden un-checked und eines der
+        // vollen Projekte trotzdem weiterhin auf checked setzt, soll in der Antwort
+        // die gesamte Liste aller Projekte zurückgeliefert werden, die
+        // keine Plätze mehr frei haben
+        setzeAnmeldungFuerFussball(anmeldungJson, false);
+        setzeAnmeldungFuerGolfSpielen(anmeldungJson, true);
+        setzeAnmeldungFuerPizza(anmeldungJson, false);
+
+        projekteOhneFreieSlots = registerNewUserFromAnmeldungFrontendForEmptySlotProjekts(anmeldungJson);
+        assertThat(projekteOhneFreieSlots.get(0), is(fussballId));
+        assertThat(projekteOhneFreieSlots.get(1), is(golfSpielenId));
     }
 
     private void setzeNeuenNamen(AnmeldungJson anmeldungJson, String vorname, String nachname) {
