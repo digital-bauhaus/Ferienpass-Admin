@@ -21,6 +21,7 @@ public class Projekt {
     private int slotsGesamt;
     private int slotsFrei;
     private int slotsReserviert;
+    private String traeger;
     private String webLink;
     private boolean aktiv;
     //@ManyToMany(cascade= CascadeType.ALL)
@@ -36,7 +37,7 @@ public class Projekt {
 
     protected Projekt() {}
 
-    public Projekt(String name, LocalDate datum, int alterLimitierung, int kosten, int slotsGesamt, int slotsReserviert, String webLink) {
+    public Projekt(String name, LocalDate datum, int alterLimitierung, int kosten, int slotsGesamt, int slotsReserviert, String traeger, String webLink) {
         this.setName(name);
         this.setDatum(datum);
         this.setAlterLimitierung(alterLimitierung);
@@ -44,6 +45,7 @@ public class Projekt {
         this.setSlotsGesamt(slotsGesamt);
         this.setSlotsFrei(slotsGesamt - slotsReserviert);
         this.setSlotsReserviert(slotsReserviert);
+        this.setTraeger(traeger);
         this.setWebLink(webLink);
         this.setAktiv(true);
     }
@@ -137,6 +139,14 @@ public class Projekt {
 
     public List<Teilnehmer> getAnmeldungen() {
         return anmeldungen;
+    }
+
+    public String getTraeger() {
+        return traeger;
+    }
+
+    public void setTraeger(String traeger) {
+        this.traeger = traeger;
     }
 
     public void addAnmeldung(Teilnehmer teilnehmer) {

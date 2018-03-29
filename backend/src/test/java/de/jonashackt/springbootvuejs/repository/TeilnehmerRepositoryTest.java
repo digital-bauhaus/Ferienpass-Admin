@@ -20,7 +20,6 @@ import java.util.*;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -70,13 +69,13 @@ public class TeilnehmerRepositoryTest {
     public List<Projekt> createProjects(int numberOfProjects) {
         ArrayList<Projekt> result = new ArrayList<Projekt>();
         for (int i = addedProjects; i < addedProjects+numberOfProjects; i++){
-            Projekt p = new Projekt("Testprojekt " + i, LocalDate.now(), 5+i, 20, 3+i, 1,"www.google.com");
+            Projekt p = new Projekt("Testprojekt " + i, LocalDate.now(), 5+i, 20, 3+i, 1, "Sportjugend Weimar", "www.google.com");
             result.add(p);}
         return result;
     }
 
     public Projekt createSingleProject() {
-       Projekt p = new Projekt("Schwimmen im See", LocalDate.now(), 15, 12, 10, 5,"www.google.com");
+       Projekt p = new Projekt("Schwimmen im See", LocalDate.now(), 15, 12, 10, 5, "Sportjugend Weimar","www.google.com");
        return p;
     }
 

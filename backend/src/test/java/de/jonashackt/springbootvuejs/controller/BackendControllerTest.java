@@ -418,6 +418,7 @@ public class BackendControllerTest {
                         .param("price",projekt.getKosten())
                         .param("slots",projekt.getSlotsGesamt())
                         .param("slotsReserved",projekt.getSlotsReserviert())
+                        .param("traeger",projekt.getTraeger())
                         .param("weblink",projekt.getWebLink())
                 .when()
                 .get(BASE_URL + "/createproject")

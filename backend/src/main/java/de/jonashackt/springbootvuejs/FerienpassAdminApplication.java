@@ -81,7 +81,7 @@ public class FerienpassAdminApplication implements CommandLineRunner{
 	}
 
 	private Projekt createSampleProject(String projektName, int slotsGesamt, LocalDate datum) {
-		Projekt project = new Projekt(projektName, datum, 10, 20, slotsGesamt, 1, "www.google.com");
+		Projekt project = new Projekt(projektName, datum, 10, 20, slotsGesamt, 1, "Sportjugend Weimar", "www.google.com");
 		projektRepository.save(project);
 		System.out.println(project.toString() + " successfully saved into DB");
 		return project;

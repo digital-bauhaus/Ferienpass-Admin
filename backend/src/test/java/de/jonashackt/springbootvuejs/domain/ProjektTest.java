@@ -30,7 +30,7 @@ public class ProjektTest {
     }
 
     public static Projekt createProjekt(String projektName, LocalDate datum, int slotsgesamt, int slotsReserviert) {
-        return new Projekt(projektName, datum, 15, 12, slotsgesamt, slotsReserviert,"www.google.com");
+        return new Projekt(projektName, datum, 15, 12, slotsgesamt, slotsReserviert, "Sportjugend Weimar", "www.google.com");
     }
 
     public static Teilnehmer createUser(String name, String vorname) {

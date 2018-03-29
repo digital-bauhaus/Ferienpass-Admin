@@ -203,9 +203,9 @@ public class BackendController {
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
     Long addNewProject(@RequestParam String name, @RequestParam String date, @RequestParam int age, @RequestParam int price, @RequestParam int slots,
-                       @RequestParam int slotsReserved, @RequestParam String weblink) {
+                       @RequestParam int slotsReserved, @RequestParam String traeger, @RequestParam String weblink) {
         LocalDate d = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-        Projekt project = new Projekt(name, d, age, price, slots, slotsReserved, weblink);
+        Projekt project = new Projekt(name, d, age, price, slots, slotsReserved, traeger, weblink);
         projektRepository.save(project);
         LOG.info(project.toString() + "successfully saved into DB");
 
@@ -228,20 +228,6 @@ public class BackendController {
         return true;
     }
 
-    // CREATE A SAMPLE PROJECT
-    @RequestMapping(path = "/sampleproject")
-    @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody
-    Long addNewProject() {
-        // EXAMPLE Project
-        LocalDate localDate = LocalDate.of(2018, 5, 10);
-        Projekt project = new Projekt("Ball Werfen", LocalDate.of(2018, 5, 10), 10, 20, 2, 1, "www.google.com");
-        projektRepository.save(project);
-
-        LOG.info(project.toString() + " successfully saved into DB");
-
-        return project.getId();
-    }
 
     @RequestMapping(path = "/addproject", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
