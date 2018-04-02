@@ -25,11 +25,7 @@ public class Projekt {
     private String traeger;
     private String webLink;
     private boolean aktiv;
-    //@ManyToMany(cascade= CascadeType.ALL)
-    //@JoinTable(name="project_user",
-    //        joinColumns = @JoinColumn(name="projekt_id"),
-    //        inverseJoinColumns = @JoinColumn(name="id")
-    //)
+
     @ManyToMany(cascade= CascadeType.ALL)
     private List<Teilnehmer> anmeldungen = new ArrayList<>();
 

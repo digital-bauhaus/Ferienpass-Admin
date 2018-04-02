@@ -209,7 +209,7 @@ public class BackendController {
         return resultList;
     }
 
-    // CREATE NEW PROJECT
+    // CREATE PROJECT
     @RequestMapping(path = "/createproject")
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
@@ -220,6 +220,44 @@ public class BackendController {
         LOG.info(project.toString() + "successfully saved into DB");
 
         return project.getId();
+    }
+
+    // UPDATE PROJECT
+    @RequestMapping(path = "/updateproject")
+    @ResponseStatus(HttpStatus.CREATED)
+    public @ResponseBody
+    Boolean updateProject(@RequestParam Long id, @RequestParam String name, @RequestParam String date, @RequestParam String endDate, @RequestParam int age, @RequestParam int price, @RequestParam int slots,
+                       @RequestParam int slotsReserved, @RequestParam String traeger, @RequestParam String weblink) {
+        Projekt project = projektRepository.findOne(id);
+        if (project == null) {
+            LOG.info("Could not find a project to update with id:" + id);
+            return false;
+        }
+        if (slots < project.getSlotsGesamt() && slots < project.getSlotsGesamt() - project.getSlotsFrei()) {
+            LOG.info("Could not update project, because there are already too many slots taken.");
+            return  false;
+        }
+        if(slotsReserved > project.getSlotsReserviert() && slotsReserved - project.getSlotsReserviert() > project.getSlotsFrei()) {
+            LOG.info("Could not update project, because you want to reserve more slots than slots are free.");
+            return  false;
+        }
+        project.setName(name);
+
+        String[] dateRaw = date.split(",");
+        project.setDatum(LocalDate.of(Integer.valueOf(dateRaw[0]), Integer.valueOf(dateRaw[1]), Integer.valueOf(dateRaw[2])));
+        dateRaw = endDate.split(",");
+        project.setDatumEnde(LocalDate.of(Integer.valueOf(dateRaw[0]), Integer.valueOf(dateRaw[1]), Integer.valueOf(dateRaw[2])));
+
+        project.setAlterLimitierung(age);
+        project.setKosten(price);
+        project.setSlotsGesamt(slots);
+        project.setSlotsReserviert(slotsReserved);
+        project.setTraeger(traeger);
+        project.setWebLink(weblink);
+        projektRepository.save(project);
+        LOG.info(project.toString() + "successfully saved into DB");
+
+        return true;
     }
 
     private LocalDate dateString2LocalDate(@RequestParam String date) {

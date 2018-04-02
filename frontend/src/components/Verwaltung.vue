@@ -3,7 +3,7 @@
       <nav>
         <input type="text" class="searchbar" placeholder="Suche ...">
         <a href="/#/Verwaltung/" class="selected">Alle Veranstaltungen</a>
-        <a href="/#/Veranstaltung/" >Veranstaltung erstellen </a>
+        <a href="/#/VeranstaltungEdit?id=-1" >Veranstaltung erstellen </a>
         <a href="/#/Teilnehmer/" >Alle Teilnehmer</a>
         <a href="/#/TeilnehmerAdd/" >Teilnehmer erstellen</a>
       </nav>
@@ -21,8 +21,8 @@
                    <td>{{allproject.name}}</td>
                    <td>{{allproject.datum}}</td>
                    <td>{{allproject.slotsFrei}} / </nobr> {{allproject.slotsGesamt}} / </nobr> [{{allproject.slotsReserviert}}]</td>
-                   <td><nobr><span v-on:click="kill($event,allproject.project_id)" class="fakebutton"><a>löschen</a></span>
-                     <router-link :to="{path: '../VeranstaltungEdit', query: {id: allproject.project_id }}" class="fakebutton">Bearbeiten</router-link>
+                   <td><nobr><span v-on:click="kill($event,allproject.id)" class="fakebutton"><a>löschen</a></span>
+                     <router-link :to="{path: '../VeranstaltungEdit', query: {id: allproject.id }}" class="fakebutton">Bearbeiten</router-link>
                      <span class="fakebutton" v-on:click="exportPDF(index)"><a>PDF exportieren</a></span></nobr>
                    </td>
                  </tr>

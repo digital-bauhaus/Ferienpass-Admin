@@ -2,7 +2,7 @@
     <html>
     <nav>
       <a href="/#/Verwaltung/" >Alle Veranstaltungen</a>
-      <a href="/#/Veranstaltung/" class="selected" >Veranstaltung erstellen </a>
+      <a href="/#/VeranstaltungEdit?id=-1" class="selected" >Veranstaltung erstellen </a>
       <a href="/#/Teilnehmer/" >Alle Teilnehmer</a>
       <a href="/#/TeilnehmerAdd/" >Teilnehmer erstellen</a>
     </nav>
