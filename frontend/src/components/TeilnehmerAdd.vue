@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { AXIOS } from './http-common';
 
 export default {
   name: 'Teilnehmer',
@@ -26,7 +26,7 @@ export default {
   },
   created () {
     var id = parseFloat(this.$route.query.id);
-    axios.get('http://localhost:8088/api/user/' + id)
+    AXIOS.get('/user/' + id)
     .then(response => {
       this.user = response.data
     })

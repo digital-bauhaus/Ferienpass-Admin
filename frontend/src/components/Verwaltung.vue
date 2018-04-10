@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { AXIOS } from './http-common';
 import jsPDF from 'jspdf'
 
 export default {
@@ -61,7 +61,7 @@ export default {
   },
   methods: {
     getProjects () {
-      axios.get('http://localhost:8088/api/allprojects')
+      AXIOS.get('/allprojects')
       .then(response => {
         this.allprojects = response.data
       })
@@ -87,7 +87,7 @@ export default {
       doc.text('Web Link: ' + this.allprojects[projectID].webLink, 20, y += deltaLine)
       doc.text('Projekt aktiv: ' + this.allprojects[projectID].aktiv, 20, y += deltaLine)
 
-      axios.get('http://localhost:8088/api/projectRegistrations/' + this.allprojects[projectID].id)
+      AXIOS.get('/projectRegistrations/' + this.allprojects[projectID].id)
         .then(response => {
           this.teilnehmerOfProject = response.data
         })
@@ -205,7 +205,7 @@ export default {
     archiveProject (id) {
       var params = new URLSearchParams();
       params.append('project_id', id);
-      axios.post('http://localhost:8088/api/deleteproject', params)
+      AXIOS.post('/deleteproject', params)
       .then(response => {
         this.closeModal();
         this.getProjects();

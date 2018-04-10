@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { AXIOS } from './http-common';
 
 export default {
   name: 'Veranstaltung',
@@ -65,7 +65,7 @@ export default {
     var id = parseInt(this.$route.query.id);
     this.id = id;
     if (id !== -1) {
-      axios.get('http://localhost:8088/api/project/' + id)
+      AXIOS.get('/project/' + id)
       .then(response => {
         this.project = response.data
       })
@@ -95,14 +95,14 @@ export default {
       params.append('traeger', this.project.traeger);
 
       if (this.id < 0) {
-        axios.post('http://localhost:8088/api/createproject', params)
+        AXIOS.post('/createproject', params)
         .then(response => {})
         .catch(e => {
           this.errors.push(e)
         })
       } else {
         params.append('id', id);
-        axios.post('http://localhost:8088/api/updateproject', params)
+        AXIOS.post('/updateproject', params)
         .then(response => { this.updateSuccess = (response.data === 'true') })
         .catch(e => {
           this.errors.push(e)

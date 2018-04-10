@@ -202,7 +202,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { AXIOS } from './http-common';
 
 export default {
   name: 'Teilnehmer',
@@ -284,7 +284,7 @@ export default {
       params.append('untersützungKontakt', this.user.behinderung.gewohnterBegleitpersonenDienstleister);
       params.append('kostenÜbernahme', (this.user.behinderung.beantragungKostenuebernahmeBegleitpersonNotwendig === true));
 
-      axios.post('http://localhost:8088/api/updateUser', params)
+      AXIOS.post('/updateUser', params)
       .then(response => {
         this.popupClass = 'fadeIn'
         var self = this;
@@ -298,7 +298,7 @@ export default {
     },
     deleteListItem (id, typeList, itemPos) {
     /* note that the numbers of variable typeList correspond to the index value of the enumeration ListType in the backend */
-      axios.post('http://localhost:8088/api/deletelistitem', {
+      AXIOS.post('/deletelistitem', {
         user_id: id,
         type: typeList,
         item: itemPos
@@ -315,7 +315,7 @@ export default {
       })
     },
     cancelProject (id, projectId) {
-      axios.post('http://localhost:8088/api/cancelproject', {
+      AXIOS.post('/cancelproject', {
         user_id: id,
         project: projectId
       })
@@ -331,7 +331,7 @@ export default {
           })
     },
     assignProject (id, projectId) {
-      axios.post('http://localhost:8088/api/assignProject', {
+      AXIOS.post('/assignProject', {
         user: id,
         project: projectId
       })
@@ -349,7 +349,7 @@ export default {
     },
     getUserData () {
       var id = parseInt(this.$route.query.id);
-      axios.get('http://localhost:8088/api/user/' + id)
+      AXIOS.get('/user/' + id)
         .then(response => {
           this.user = response.data
         })
@@ -358,7 +358,7 @@ export default {
         })
     },
     getAllProjects () {
-      axios.get('http://localhost:8088/api/allprojects')
+      AXIOS.get('/allprojects')
         .then(response => {
           this.allAvailableProjects = response.data
         })
@@ -376,7 +376,7 @@ export default {
     },
     getProjectsOfUser () {
       var id = parseInt(this.$route.query.id);
-      axios.get('http://localhost:8088/api/projectsofid', {
+      AXIOS.get('/projectsofid', {
         params: {
           userID: id
         }

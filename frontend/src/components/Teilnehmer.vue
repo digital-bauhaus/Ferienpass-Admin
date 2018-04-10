@@ -27,7 +27,7 @@
          <td><div v-html="getProjectName(user.id)"></div></td>
          <td>{{user.registrierungsdatum}}</td>
          <td>{{user.strasse}}, {{user.stadt}}</td>
-         <td>{{user.telefon}}</th>
+         <td>{{user.telefon}}</td>
          <td>{{user.geburtsdatum}}</td>
          <td>
            <router-link :to="{path: '../TeilnehmerEdit', query: {id: user.id }}" class="fakebutton">Bearbeiten</router-link>
@@ -52,7 +52,7 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script>
 
-import axios from 'axios';
+import { AXIOS } from './http-common';
 
 export default {
   name: 'Teilnehmer',
@@ -65,14 +65,14 @@ export default {
     };
   },
   created () {
-    axios.get('http://localhost:8088/api/allusers')
+    AXIOS.get('/allusers')
     .then(response => {
       this.allusers = response.data
     })
     .catch(e => {
       this.errors.push(e)
     })
-    axios.get('http://localhost:8088/api/allprojects')
+    AXIOS.get('/allprojects')
     .then(response => {
       this.allAvailableProjects = response.data
     })

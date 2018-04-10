@@ -33,7 +33,7 @@
 
 
 <script>
-import axios from 'axios';
+import { AXIOS } from './http-common';
 
 export default {
   name: 'Veranstaltung-erstellen',
@@ -61,7 +61,7 @@ export default {
       params.append('slots', parseInt(this.projectSlots));
       params.append('slotsReserved', parseInt(this.projectSlotsreserved));
       params.append('weblink', this.projectWeblink);
-      axios.post('http://localhost:8088/api/createproject', params)
+      AXIOS.post('/createproject', params)
       .then(response => {})
       .catch(e => {
         this.errors.push(e)

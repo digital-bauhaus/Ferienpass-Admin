@@ -2,9 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Test from '@/components/Test'
 import Verwaltung from '@/components/Verwaltung'
-import Hello from '@/components/Hello'
-import Service from '@/components/Service'
-import Bootstrap from '@/components/Bootstrap'
 import Login from '@/components/Login'
 import Teilnehmer from '@/components/Teilnehmer'
 import Reservierung from '@/components/Reservierung'
@@ -49,16 +46,6 @@ export default new Router({
       component: Verwaltung
     },
     {
-      path: '/Hello',
-      name: 'Hello',
-      component: Hello
-    },
-    {
-      path: '/callservice',
-      name: 'Service',
-      component: Service
-    },
-    {
       path: '/VeranstaltungEdit',
       name: 'VeranstaltungEdit',
       component: VeranstaltungEdit
@@ -72,11 +59,6 @@ export default new Router({
       path: '/TeilnehmerAdd',
       name: 'TeilnehmerAdd',
       component: TeilnehmerAdd
-    },
-    {
-      path: '/bootstrap',
-      name: 'Bootstrap',
-      component: Bootstrap
     }
   ]
 })
