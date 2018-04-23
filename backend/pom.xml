@@ -47,10 +47,11 @@
 			<artifactId>h2</artifactId>
 		</dependency>
 
+		<!-- PostgreSQL used in Staging and Production environment, e.g. on Heroku -->
 		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>5.0.7.Final</version>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.2.2</version>
 		</dependency>
 
 		<!-- Testing -->
