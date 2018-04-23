@@ -39,7 +39,53 @@ public class TeilnehmerRepositoryTest {
 
     private static int addedProjects = 0;
 
-    private Teilnehmer user = createUser();
+    public static Teilnehmer createSampleUser() {
+        Arzt arzt = new Arzt("Eich", "Route 1 Alabastia, 39829",
+                "555-6891");
+        Kontakt kontact = new Kontakt("Igor Eich", "Route 4 Neuborkia  96825", "555-2532");
+
+        String essenLimitierungen = "Laktoseintoleranz";
+        String krankheiten = "Grippe: Muss oft Husten und braucht Hustenbonbons";
+        String allergien = "Heuschnupfen: braucht Nasenspray, siehe Medikamente";
+        Behinderung behinderung = new Behinderung();
+        behinderung.setRollstuhlNutzungNotwendig(true);
+        behinderung.setMerkzeichen_Taubblind_TBL(true);
+        String schwimmAbzeichen = "Seepferdchen";
+        String hitze = "Wärme: bis 25 Grad ist alles okay";
+        String medikamente = "Nasentropfen_ maximal 2x am Tag ein Schub";
+
+        Teilnehmer user = new Teilnehmer(
+                "Gary",
+                "Eich",
+                LocalDate.of(2005,10,20),LocalDate.now(),
+                "Bahnhofstraße 4",
+                "Weimar",
+                "99423",
+                "03544444",
+                "0453434",
+                true,
+                kontact,
+                true,
+                false,
+                false,
+                schwimmAbzeichen,
+                false,
+                false,
+                arzt,
+                allergien,
+                essenLimitierungen,
+                krankheiten,
+                true,
+                behinderung,
+                hitze,
+                medikamente);
+
+        return user;
+    }
+
+    public static Projekt createSampleProject(String projektName, int slotsGesamt, LocalDate datum, LocalDate endeDatum, String traeger, int alterLimitierung) {
+        return new Projekt(projektName, datum, endeDatum, alterLimitierung, 20, slotsGesamt, 1, traeger, "www.google.com");
+    }
 
     public static Teilnehmer createUser() {
         LocalDate registerDate = LocalDate.now();
@@ -75,15 +121,37 @@ public class TeilnehmerRepositoryTest {
     }
 
     public Projekt createSingleProject() {
-       Projekt p = new Projekt("Schwimmen im See", LocalDate.of(2018, 7, 1), LocalDate.of(2018, 7, 3), 15, 12, 10, 5, "Sportjugend Weimar","www.google.com");
-       return p;
+       return new Projekt("Schwimmen im See", LocalDate.of(2018, 7, 1), LocalDate.of(2018, 7, 3), 15, 12, 10, 5, "Sportjugend Weimar","www.google.com");
     }
 
     @Before
-    public void fillSomeDataIntoOurDb() {
-        // Add new Users to Database
-        entityManager.persist(user);
+    public void init() {
+        entityManager.persist(createUser());
+        entityManager.persist(createSampleUser());
+
+        projects.save(createSampleProject(
+                "Ball Werfen",
+                20,
+                LocalDate.of(2018, 7, 16),
+                LocalDate.of(2018, 7, 17),
+                "Tasifan",
+                10));
+        projects.save(createSampleProject(
+                "Bauspielplatz",
+                10,
+                LocalDate.of(2018, 8, 02),
+                LocalDate.of(2018, 8, 02),
+                "Nordlicht e.V.",
+                6));
+        projects.save(createSampleProject(
+                "Papier-Werkstatt",
+                8,
+                LocalDate.of(2018, 7, 23),
+                LocalDate.of(2018, 7, 25),
+                "Sektion Weimar des Deutschen Alpenvereins e.V.",
+                8));
     }
+
     @Test
     public void testFindByLastName() throws Exception {
         // Search for specific User in Database according to lastname

@@ -518,42 +518,11 @@ public class BackendControllerTest {
 
     @Test
     public void assignProjektToUserAndRetrieveAllProjectsForTheUsers() {
-        //Make sure we have a user in the DB
-        List<Teilnehmer> allUsers = getAllUsers();
+        Long userId = addUser(teilnehmerRepositoryTest.createUser());
+        Long projectId = addProjekt(teilnehmerRepositoryTest.createSingleProject());
 
-        Long userId = 0L;
-
-        if(allUsers.size() <= 0) {
-            userId = addUser(teilnehmerRepositoryTest.createUser());
-        } else
-            userId = allUsers.get(0).getId();
-
-        //Make sure we have a project in the DB
-        List<Projekt> allProjects = getAllProjects();
-        Long projectID = 0L;
-        if(allProjects.size() <= 0) {
-            Projekt projekt = teilnehmerRepositoryTest.createSingleProject();
-            projectID =
-                    given()
-                            .param("name", projekt.getName())
-                            .param("date", localDate2String(projekt.getDatum()))
-                            .param("endDate", localDate2String(projekt.getDatumEnde()))
-                            .param("age",projekt.getAlterLimitierung())
-                            .param("price",projekt.getKosten())
-                            .param("slots",projekt.getSlotsGesamt())
-                            .param("slotsReserved",projekt.getSlotsReserviert())
-                            .param("weblink",projekt.getWebLink())
-                            .when()
-                            .get(BASE_URL + "/createproject")
-                            .then()
-                            .statusCode(HttpStatus.SC_CREATED)
-                            .assertThat()
-                            .extract().as(Long.class);
-        } else
-            projectID = allProjects.get(0).getId();
-
-        //Assign user to project
-        assertThat(assignUser2Projekt(projectID, userId),is(true));
+        Boolean wasTeilnehmerAssignedToProjekt = assignUser2Projekt(projectId, userId);
+        assertThat(wasTeilnehmerAssignedToProjekt, is(true));
 
         //Get the user again
         Teilnehmer responseUser = getUser(userId);
@@ -561,7 +530,7 @@ public class BackendControllerTest {
         //Get all projects fo the userID
         List<Projekt> projectsOfUserID = getAllProjekteWhereUserIsAssigned(responseUser);
         assertThat(projectsOfUserID.size(),is(1));
-        assertThat(projectsOfUserID.get(0).getId(), is(projectID));
+        assertThat(projectsOfUserID.get(0).getId(), is(projectId));
 
     }
 
