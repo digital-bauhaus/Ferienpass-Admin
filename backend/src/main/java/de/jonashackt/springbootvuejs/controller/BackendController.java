@@ -20,8 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static java.lang.Math.toIntExact;
-
 @RestController()
 @RequestMapping("/api")
 public class BackendController {
@@ -345,7 +343,7 @@ public class BackendController {
         teilnehmer.setLiegtBehinderungVor(liegtBehinderungVor);
         if (liegtBehinderungVor) {
             Behinderung b = teilnehmer.getBehinderung();
-            b.setMerkzeichen_ErheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G(behinderungG);
+            b.setMerkzeichen_BeeintraechtigungImStrassenverkehr_G(behinderungG);
             b.setMerkzeichen_Taubblind_TBL(behinderungTBL);
             b.setMerkzeichen_AussergewoehnlicheGehbehinderung_aG(behinderungAG);
             b.setMerkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B(behinderungB);

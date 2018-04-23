@@ -3,9 +3,6 @@ package de.jonashackt.springbootvuejs.transformation;
 import de.jonashackt.springbootvuejs.domain.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class AnmeldungToAdmin {
 
@@ -93,7 +90,7 @@ public class AnmeldungToAdmin {
         behinderung.setMerkzeichen_Blind_Bl(anmeldungJson.getDisabilitiesMarkBl());
         behinderung.setMerkzeichen_Gehoerlos_Gl(anmeldungJson.getDisabilitiesMarkGl());
         behinderung.setMerkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B(anmeldungJson.getDisabilitiesMarkB());
-        behinderung.setMerkzeichen_ErheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G(anmeldungJson.getDisabilitiesMarkG());
+        behinderung.setMerkzeichen_BeeintraechtigungImStrassenverkehr_G(anmeldungJson.getDisabilitiesMarkG());
         behinderung.setMerkzeichen_Taubblind_TBL(anmeldungJson.getDisabilitiesMarkTbl());
     }
 

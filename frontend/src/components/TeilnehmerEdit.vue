@@ -115,7 +115,7 @@
       <table>
       <tr><th colspan="4">Art der Behinderung</th></tr>
       <tr>
-      <td><label><input v-model="user.behinderung.merkzeichen_ErheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G" type="checkbox" id="check">„G“ (erhebliche Gehbehinderung) </label></td>
+      <td><label><input v-model="user.behinderung.merkzeichen_BeeintraechtigungImStrassenverkehr_G" type="checkbox" id="check">„G“ (erhebliche Gehbehinderung) </label></td>
       <td><label><input v-model="user.behinderung.merkzeichen_Hilflosigkeit_H" type="checkbox" id="check">„H“ (Hilflosigkeit) </label></td>
       <td><label><input v-model="user.behinderung.merkzeichen_AussergewoehnlicheGehbehinderung_aG" type="checkbox" id="check">„aG“ (außergewöhnliche Gehbehinderung) </label></td>
       </tr><tr>
@@ -260,7 +260,7 @@ export default {
       params.append('hitzeempfindlichkeiten', this.user.hitzeempfindlichkeiten);
 
       params.append('liegtBehinderungVor', (this.user.liegtBehinderungVor === true));
-      params.append('behinderungG', (this.user.behinderung.merkzeichen_ErheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G === true));
+      params.append('behinderungG', (this.user.behinderung.merkzeichen_BeeintraechtigungImStrassenverkehr_G === true));
       params.append('behinderungH', (this.user.behinderung.merkzeichen_Hilflosigkeit_H === true));
       params.append('behinderungAG', (this.user.behinderung.merkzeichen_AussergewoehnlicheGehbehinderung_aG === true));
       params.append('behinderungB1', (this.user.behinderung.merkzeichen_Blind_Bl === true));

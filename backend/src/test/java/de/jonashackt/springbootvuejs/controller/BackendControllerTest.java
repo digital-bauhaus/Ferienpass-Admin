@@ -341,7 +341,7 @@ public class BackendControllerTest {
         assertThat(behinderung.isMerkzeichen_Blind_Bl(), is(false));
         assertThat(behinderung.isMerkzeichen_Gehoerlos_Gl(), is(true));
         assertThat(behinderung.isMerkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B(), is(false));
-        assertThat(behinderung.isMerkzeichen_ErheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G(), is(true));
+        assertThat(behinderung.isMerkzeichen_BeeintraechtigungImStrassenverkehr_G(), is(true));
         assertThat(behinderung.isMerkzeichen_Taubblind_TBL(), is(true));
 
         assertThat(behinderung.isRollstuhlNutzungNotwendig(), is(true));

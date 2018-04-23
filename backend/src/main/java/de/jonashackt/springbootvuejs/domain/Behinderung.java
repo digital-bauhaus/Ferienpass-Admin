@@ -14,7 +14,7 @@ public class Behinderung {
     private boolean merkzeichen_Blind_Bl;
     private boolean merkzeichen_Gehoerlos_Gl;
     private boolean merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B;
-    private boolean merkzeichen_ErheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G;
+    private boolean merkzeichen_BeeintraechtigungImStrassenverkehr_G;
     private boolean merkzeichen_Taubblind_TBL;
     private boolean rollstuhlNutzungNotwendig;
 
@@ -54,8 +54,8 @@ public class Behinderung {
         this.merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B = merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B;
     }
 
-    public void setMerkzeichen_ErheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G(boolean merkzeichen_ErheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G) {
-        this.merkzeichen_ErheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G = merkzeichen_ErheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G;
+    public void setMerkzeichen_BeeintraechtigungImStrassenverkehr_G(boolean merkzeichen_BeeintraechtigungImStrassenverkehr_G) {
+        this.merkzeichen_BeeintraechtigungImStrassenverkehr_G = merkzeichen_BeeintraechtigungImStrassenverkehr_G;
     }
 
     public void setMerkzeichen_Taubblind_TBL(boolean merkzeichen_Taubblind_TBL) {
@@ -139,8 +139,8 @@ public class Behinderung {
         return merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B;
     }
 
-    public boolean isMerkzeichen_ErheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G() {
-        return merkzeichen_ErheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G;
+    public boolean isMerkzeichen_BeeintraechtigungImStrassenverkehr_G() {
+        return merkzeichen_BeeintraechtigungImStrassenverkehr_G;
     }
 
     public boolean isMerkzeichen_Taubblind_TBL() {
@@ -218,7 +218,7 @@ public class Behinderung {
         this.merkzeichen_Blind_Bl = false;
         this.merkzeichen_Gehoerlos_Gl = false;
         this.merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B = false;
-        this.merkzeichen_ErheblicheBeeintraechtigungDerBewegungsfaehigkeitImStrassenverkehr_G = false;
+        this.merkzeichen_BeeintraechtigungImStrassenverkehr_G = false;
         this.merkzeichen_Taubblind_TBL = false;
         this.rollstuhlNutzungNotwendig = false;
         this.weitereHilfsmittel = "";
