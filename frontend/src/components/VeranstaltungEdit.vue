@@ -28,7 +28,7 @@
      <td><label>Plätze (reserviert): </label></td>
      <td><input type="text" id="reserve" placeholder="Reservierte Plätze" v-model="project.slotsReserviert"></td>
      </tr><tr>
-     <td><label>Maximales Alter: </label></td>
+     <td><label>Minimales Alter: </label></td>
      <td><input type="text" id="age" placeholder="Altersbegrenzung" v-model="project.alterLimitierung"></td>
      </tr><tr>
      <td><label>Preis: </label></td>
@@ -79,6 +79,7 @@ export default {
       var params = new URLSearchParams();
       var id = parseInt(this.$route.query.id);
       var age = parseInt(this.project.alterLimitierung);
+      var minAge = parseInt(this.project.alterLimitierungMin);
       var price = parseInt(this.project.kosten);
       var slots = parseInt(this.project.slotsGesamt);
       var slotsFree = parseInt(this.project.slotsFrei);
@@ -87,6 +88,7 @@ export default {
       params.append('date', this.project.datum);
       params.append('endDate', this.project.datumEnde);
       params.append('age', age);
+      params.append('minAge', minAge);
       params.append('price', price);
       params.append('slots', slots);
       params.append('slotsFree', slotsFree);
