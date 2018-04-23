@@ -24,12 +24,15 @@ public class Teilnehmer {
     private String stadt;
     private String postleitzahl;
     private String telefon;
+
+    private String email;
+
     private String krankenkasse;
     private boolean erlaubeMedikamentation;
-
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="kontakt_id")
     private Kontakt notfallKontakt;
+
     private boolean darfAlleinNachHause;
     private boolean darfReiten;
     private boolean darfSchwimmen;
@@ -37,7 +40,6 @@ public class Teilnehmer {
     private boolean bezahlt;
     private boolean aktiv;
     private boolean darfBehandeltWerden;
-
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="arzt_id")
     private Arzt arzt;
@@ -53,10 +55,10 @@ public class Teilnehmer {
     private String essenLimitierungen;
 
     private boolean liegtBehinderungVor;
+
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="behinderung_id")
     private Behinderung behinderung;
-
 
     @Override
     public String toString() {
@@ -124,6 +126,14 @@ public class Teilnehmer {
         this.setMedikamente(medikamente);
         this.setHitzeempfindlichkeiten(hitzempfindlichkeiten);
         this.setDarfBehandeltWerden(darfBehandeltWerden);
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public long getId() {

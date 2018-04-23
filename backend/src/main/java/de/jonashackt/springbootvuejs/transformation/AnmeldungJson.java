@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "base__family-name",
@@ -24,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "base__zip-code",
         "base__residence",
         "base__phone-number",
+        "base__email",
         "projects",
         "conditions__allergies-0",
         "conditions__allergies-1",
@@ -110,6 +110,8 @@ public class AnmeldungJson {
     private String baseResidence;
     @JsonProperty("base__phone-number")
     private String basePhoneNumber;
+    @JsonProperty("base__email")
+    private String baseEmail;
     @JsonProperty("projects")
     private List<Project> projects = null;
     @JsonProperty("conditions__allergies-0")
@@ -337,6 +339,16 @@ public class AnmeldungJson {
     @JsonProperty("base__phone-number")
     public void setBasePhoneNumber(String basePhoneNumber) {
         this.basePhoneNumber = basePhoneNumber;
+    }
+
+    @JsonProperty("base__email")
+    public String getBaseEmail() {
+        return baseEmail;
+    }
+
+    @JsonProperty("base__email")
+    public void setBaseEmail(String baseEmail) {
+        this.baseEmail = baseEmail;
     }
 
     @JsonProperty("projects")

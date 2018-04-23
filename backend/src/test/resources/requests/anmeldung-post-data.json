@@ -9,6 +9,7 @@
   "base__zip-code": "99423",
   "base__residence": "Weimar",
   "base__phone-number": "03643 / 123456",
+  "base__email": "luigi.mueller@web.de",
   "projects": [
     {
       "id": 1,

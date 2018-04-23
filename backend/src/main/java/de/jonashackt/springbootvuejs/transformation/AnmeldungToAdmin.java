@@ -103,6 +103,7 @@ public class AnmeldungToAdmin {
         teilnehmer.setPostleitzahl(anmeldungJson.getBaseZipCode());
         teilnehmer.setStadt(anmeldungJson.getBaseResidence());
         teilnehmer.setTelefon(anmeldungJson.getBasePhoneNumber());
+        teilnehmer.setEmail(anmeldungJson.getBaseEmail());
     }
 
     private static void mappeAllergienKrankheitenNotfallkontaktEtc(AnmeldungJson anmeldungJson, Teilnehmer teilnehmer) {

@@ -153,6 +153,7 @@ public class BackendControllerTest {
         assertThat(responseUser.getPostleitzahl(), is("99423"));
         assertThat(responseUser.getStadt(), is("Weimar"));
         assertThat(responseUser.getTelefon(), is("03643 / 123456"));
+        assertThat(responseUser.getEmail(), is("luigi.mueller@web.de"));
 
         pruefeProjekte(responseUser, pizzaBackenId, fussballId, golfSpielenId);
         pruefeAllergienKrankheitenEtc(responseUser);
